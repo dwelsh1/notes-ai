@@ -41,6 +41,15 @@ a {
   text-decoration: none;
 }
 
+/* Inline code style in editor (exclude code blocks) */
+:not(pre) > code {
+  background-color: #f3f4f6; /* gray box */
+  color: #ef4444; /* red text */
+  padding: 2px 6px;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+}
+
 textarea {
   padding: 0.6em;
 }
