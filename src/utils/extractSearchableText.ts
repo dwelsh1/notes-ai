@@ -2,16 +2,16 @@
 
 interface BlockContent {
   type: string;
-  content?: any[];
-  children?: any[];
+  content?: unknown[];
+  children?: unknown[];
   props?: {
     textColor?: string;
     backgroundColor?: string;
     textAlignment?: string;
     level?: number;
-    [key: string]: any;
+    [key: string]: unknown;
   };
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 /**

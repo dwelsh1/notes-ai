@@ -6,12 +6,13 @@ export { GET };
 
 interface BlockContent {
   type: string;
-  content?: any[];
-  children?: any[];
-  [key: string]: any;
+  content?: unknown[];
+  children?: unknown[];
+  [key: string]: unknown;
 }
 
 // Extract plain text from BlockNote JSON content
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const extractTextFromBlocks = (content: string): string => {
   try {
     const blocks: BlockContent[] = JSON.parse(content);

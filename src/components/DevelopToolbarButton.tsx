@@ -1,10 +1,5 @@
 import { Block } from '@blocknote/core';
-import {
-  ToolbarButton,
-  useBlockNoteEditor,
-  useEditorContentOrSelectionChange,
-} from '@blocknote/react';
-import { useState } from 'react';
+import { ToolbarButton, useBlockNoteEditor } from '@blocknote/react';
 import { updateBlock } from '../utils/blockManipulation';
 import { convertBlockToString } from '../utils/ParserBlockToString';
 
@@ -51,27 +46,17 @@ export function DevelopToolbarButton({
     setOutput('');
   }
 
-  const [selectedBlocks, setSelectedBlocks] = useState<Block[]>([]);
-
-  // Updates state on content or selection change.
-  useEditorContentOrSelectionChange(() => {
-    const selection = editor.getSelection();
-    if (selection !== undefined) {
-      setSelectedBlocks(selection.blocks);
-    } else {
-      const cursorPosition = editor.getTextCursorPosition();
-      if (cursorPosition?.block) {
-        setSelectedBlocks([cursorPosition.block]);
-      }
-    }
-  }, editor);
+  // Selection state not needed for current onClick path; rely on editor.getSelection()
 
   return (
     <ToolbarButton
       mainTooltip={'Develop'}
       isDisabled={isFetching || isGenerating}
       onClick={() => {
-        developBlocks(editor.getSelection()?.blocks, editor);
+        const selection = editor.getSelection();
+        if (selection?.blocks) {
+          developBlocks(selection.blocks);
+        }
       }}
     >
       Develop

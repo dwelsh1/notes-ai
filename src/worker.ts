@@ -4,8 +4,12 @@ import { WebWorkerMLCEngineHandler, MLCEngine } from '@mlc-ai/web-llm';
 // Vite exposes import.meta.env in module workers; guard defensively.
 const isDev = (() => {
   try {
-    // @ts-ignore
-    return typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.DEV;
+    // @ts-expect-error import.meta is not typed in some worker contexts
+    return (
+      typeof import.meta !== 'undefined' &&
+      import.meta.env &&
+      import.meta.env.DEV
+    );
   } catch {
     return false;
   }

@@ -52,7 +52,10 @@ export const Dashboard: React.FC<DashboardProps> = ({
         const recentActivity = totalPages; // simple proxy
         const pagesThisWeek = totalPages; // simple proxy
         const bytes = new Blob([JSON.stringify(pages)]).size;
-        const storageUsedMB = Math.max(0.01, +(bytes / (1024 * 1024)).toFixed(2));
+        const storageUsedMB = Math.max(
+          0.01,
+          +(bytes / (1024 * 1024)).toFixed(2)
+        );
 
         setStats({ totalPages, recentActivity, pagesThisWeek, storageUsedMB });
 
@@ -194,9 +197,12 @@ export const Dashboard: React.FC<DashboardProps> = ({
           {(() => {
             const gb = stats.storageUsedMB / 1024;
             const color = gb < 5 ? '#10b981' : gb < 9 ? '#f59e0b' : '#dc2626';
-            const value = gb >= 0.1 ? `${gb.toFixed(2)} GB` : `${stats.storageUsedMB} MB`;
+            const value =
+              gb >= 0.1 ? `${gb.toFixed(2)} GB` : `${stats.storageUsedMB} MB`;
             return (
-              <div style={{ fontSize: '28px', fontWeight: 700, color }}>{value}</div>
+              <div style={{ fontSize: '28px', fontWeight: 700, color }}>
+                {value}
+              </div>
             );
           })()}
           <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '4px' }}>
@@ -205,7 +211,14 @@ export const Dashboard: React.FC<DashboardProps> = ({
         </div>
       </div>
       {/* Recent Pages row */}
-      <div style={{ display: 'flex', gap: '16px', marginTop: '24px', flexWrap: 'wrap' }}>
+      <div
+        style={{
+          display: 'flex',
+          gap: '16px',
+          marginTop: '24px',
+          flexWrap: 'wrap',
+        }}
+      >
         <div
           style={{
             flex: '1 1 0',

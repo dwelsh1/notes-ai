@@ -150,11 +150,7 @@ export const Sidebar = forwardRef<SidebarRef, SidebarProps>(
       setDropPosition(null);
     };
 
-    const handleDragOver = (
-      e: React.DragEvent,
-      pageId: string,
-      pageIndex: number
-    ) => {
+    const handleDragOver = (e: React.DragEvent, pageId: string) => {
       e.preventDefault();
 
       // Calculate drop position based on cursor Y position relative to the page item
@@ -236,11 +232,7 @@ export const Sidebar = forwardRef<SidebarRef, SidebarProps>(
 
     const isCollapsed = (pageId: string) => collapsedPages.has(pageId);
 
-    const renderPageItem = (
-      page: Page,
-      depth: number = 0,
-      index: number = 0
-    ) => {
+    const renderPageItem = (page: Page, depth: number = 0) => {
       const isActive = page.id === currentPageId;
       const hasChildren = page.children && page.children.length > 0;
       const isDragging = draggedPageId === page.id;
@@ -267,7 +259,7 @@ export const Sidebar = forwardRef<SidebarRef, SidebarProps>(
           <div
             draggable
             onDragStart={() => handleDragStart(page.id)}
-            onDragOver={e => handleDragOver(e, page.id, index)}
+            onDragOver={e => handleDragOver(e, page.id)}
             onDrop={e => handleDrop(e, page)}
             onDragEnd={handleDragEnd}
             style={{
@@ -398,9 +390,7 @@ export const Sidebar = forwardRef<SidebarRef, SidebarProps>(
           )}
           {hasChildren &&
             !collapsed &&
-            page.children?.map((child, childIndex) =>
-              renderPageItem(child, depth + 1, childIndex)
-            )}
+            page.children?.map(child => renderPageItem(child, depth + 1))}
         </div>
       );
     };
@@ -627,7 +617,7 @@ export const Sidebar = forwardRef<SidebarRef, SidebarProps>(
                 : 'No pages yet'}
             </div>
           ) : (
-            displayPages.map((page, index) => renderPageItem(page, 0, index))
+            displayPages.map(page => renderPageItem(page))
           )}
         </div>
 

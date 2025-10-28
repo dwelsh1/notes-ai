@@ -32,31 +32,7 @@ export function CorrectToolbarButton({
     setIsGenerating(true);
     setCurrentProcess('correction');
     const correctedTextColor = 'blue';
-    if (false && blocks.length == 1) {
-      const block = blocks[0];
-      const correctProps = { ...block.props } as Record<string, unknown>;
-      (correctProps as Record<string, unknown>)['textColor'] =
-        correctedTextColor;
-      const newBlocks = editor.insertBlocks(
-        [
-          {
-            props: correctProps,
-            type: block.type,
-          },
-        ],
-        block.id,
-        'after'
-      );
-      const newBlock = newBlocks[0];
-      await correctSingleBlock(
-        //                {"content": [{"type":"text", "text": text}]},
-        block,
-        newBlock,
-        editor,
-        editor,
-        onSend
-      );
-    } else {
+    {
       console.log('correctBlocks');
       for (const block of blocks) {
         const correctProps = { ...block.props } as Record<string, unknown>;

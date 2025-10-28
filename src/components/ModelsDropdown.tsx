@@ -32,7 +32,12 @@ const ModelsDropdown = ({
     if (IS_MODEL_STATUS_CHECK_ENABLED) {
       updateModelStatus();
     }
-  }, []);
+  }, [IS_MODEL_STATUS_CHECK_ENABLED]);
+
+  // mark store selectors as used to satisfy linter without changing UI
+  void selectedModel;
+  void setSelectedModel;
+  void resetEngineAndChatHistory;
 
   return (
     <div>

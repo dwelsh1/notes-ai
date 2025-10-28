@@ -58,7 +58,16 @@ export default async function handler(
       } = req.body;
 
       // Build update data object with only provided fields
-      const updateData: any = {};
+      type UpdateData = Partial<{
+        title: string;
+        content: string;
+        parentId: string | null;
+        order: number;
+        isFavorite: boolean;
+        tags: string;
+        searchableText: string;
+      }>;
+      const updateData: UpdateData = {};
       if (title !== undefined) updateData.title = title;
       if (content !== undefined) updateData.content = content;
       if (parentId !== undefined) updateData.parentId = parentId;

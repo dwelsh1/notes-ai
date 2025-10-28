@@ -38,6 +38,9 @@ export const Header: React.FC<HeaderProps> = ({
   onBreadcrumbClick,
   onHome,
 }) => {
+  // Mark unused props as used to satisfy linting without changing behavior
+  void onClear;
+  void currentProcess;
   return (
     <header
       style={{
@@ -105,11 +108,15 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* Breadcrumbs */}
           {breadcrumbs && breadcrumbs.length > 0 && (
-            <nav style={{ marginLeft: '12px', minWidth: 0, overflow: 'hidden' }}>
+            <nav
+              style={{ marginLeft: '12px', minWidth: 0, overflow: 'hidden' }}
+            >
               {breadcrumbs.map((bc, idx) => (
                 <span key={bc.id} style={{ whiteSpace: 'nowrap' }}>
                   <button
-                    onClick={() => onBreadcrumbClick && onBreadcrumbClick(bc.id)}
+                    onClick={() =>
+                      onBreadcrumbClick && onBreadcrumbClick(bc.id)
+                    }
                     style={{
                       background: 'none',
                       border: 'none',
@@ -124,7 +131,9 @@ export const Header: React.FC<HeaderProps> = ({
                     {bc.label}
                   </button>
                   {idx < breadcrumbs.length - 1 && (
-                    <span style={{ color: '#9ca3af', padding: '0 6px' }}>›</span>
+                    <span style={{ color: '#9ca3af', padding: '0 6px' }}>
+                      ›
+                    </span>
                   )}
                 </span>
               ))}
@@ -172,7 +181,9 @@ export const Header: React.FC<HeaderProps> = ({
           </button>
 
           {/* Divider */}
-          <div style={{ width: '1px', height: '20px', backgroundColor: '#e5e7eb' }} />
+          <div
+            style={{ width: '1px', height: '20px', backgroundColor: '#e5e7eb' }}
+          />
 
           {/* AI Action Icons moved to right side */}
           <button
@@ -204,7 +215,9 @@ export const Header: React.FC<HeaderProps> = ({
             }}
             title="Translate the entire document in a new block note"
           >
-            <Languages style={{ width: '18px', height: '18px', color: '#6b7280' }} />
+            <Languages
+              style={{ width: '18px', height: '18px', color: '#6b7280' }}
+            />
           </button>
 
           <button
@@ -236,7 +249,9 @@ export const Header: React.FC<HeaderProps> = ({
             }}
             title="Correct the entire document in a new block note"
           >
-            <CheckCircle style={{ width: '18px', height: '18px', color: '#6b7280' }} />
+            <CheckCircle
+              style={{ width: '18px', height: '18px', color: '#6b7280' }}
+            />
           </button>
 
           <button
@@ -268,7 +283,9 @@ export const Header: React.FC<HeaderProps> = ({
             }}
             title="Summarize the entire document"
           >
-            <FileText style={{ width: '18px', height: '18px', color: '#6b7280' }} />
+            <FileText
+              style={{ width: '18px', height: '18px', color: '#6b7280' }}
+            />
           </button>
 
           <button
@@ -300,7 +317,9 @@ export const Header: React.FC<HeaderProps> = ({
             }}
             title="Generate text from bullet points"
           >
-            <Lightbulb style={{ width: '18px', height: '18px', color: '#6b7280' }} />
+            <Lightbulb
+              style={{ width: '18px', height: '18px', color: '#6b7280' }}
+            />
           </button>
 
           {/* Stop */}
@@ -339,7 +358,9 @@ export const Header: React.FC<HeaderProps> = ({
           </button>
 
           {/* Divider between Stop and Settings */}
-          <div style={{ width: '1px', height: '20px', backgroundColor: '#e5e7eb' }} />
+          <div
+            style={{ width: '1px', height: '20px', backgroundColor: '#e5e7eb' }}
+          />
 
           <button
             onClick={() =>

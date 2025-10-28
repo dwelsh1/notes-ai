@@ -6,7 +6,9 @@ function diffText(
   correctedText: string,
   design: number = 2
 ): [StyledText<StyleSchema>[], StyledText<StyleSchema>[]] {
+  // eslint-disable-next-line no-irregular-whitespace
   const originalWords = originalText.split(/[   ]/);
+  // eslint-disable-next-line no-irregular-whitespace
   const correctedWords = correctedText.split(/[   ]/);
   const formattedSourceContent: StyledText<StyleSchema>[] = [];
   const formattedCorrectedContent: StyledText<StyleSchema>[] = [];

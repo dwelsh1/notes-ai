@@ -13,7 +13,6 @@ import {
 import { TranslateToolbarButton } from './TranslateToolbarButton';
 import { CorrectToolbarButton } from './CorrectToolbarButton';
 import { DevelopToolbarButton } from './DevelopToolbarButton';
-import { MLCEngine } from '@mlc-ai/web-llm';
 
 export function CustomFormattingToolbar({
   onSend,

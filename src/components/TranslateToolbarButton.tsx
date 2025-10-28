@@ -11,7 +11,6 @@ export function TranslateToolbarButton({
   onSend,
   isGenerating,
   setIsGenerating,
-  currentProccess,
   setCurrentProcess,
   isFetching,
   setOutput,

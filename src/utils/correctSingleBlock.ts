@@ -1,7 +1,6 @@
 import { Block, BlockNoteEditor } from '@blocknote/core';
 import diffText from './diffText';
 import { diffWords, diffChars } from 'diff';
-import { MLCEngine } from '@mlc-ai/web-llm';
 import { convertBlockToString } from './ParserBlockToString';
 
 async function correctSingleBlock(
@@ -9,7 +8,7 @@ async function correctSingleBlock(
   destBlock: Block | undefined,
   sourceEditor: BlockNoteEditor,
   destEditor: BlockNoteEditor,
-  onSend: Function,
+  onSend: (...args: unknown[]) => unknown,
   design: number = 1
 ) {
   const text = convertBlockToString(sourceBlock);

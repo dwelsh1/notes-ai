@@ -71,9 +71,9 @@ const App = () => {
     undefined
   );
   const [pageTitle, setPageTitle] = useState('Untitled Page');
-  const [breadcrumbs, setBreadcrumbs] = useState<{ id: string; label: string }[]>([
-    { id: 'dashboard', label: 'Dashboard' },
-  ]);
+  const [breadcrumbs, setBreadcrumbs] = useState<
+    { id: string; label: string }[]
+  >([{ id: 'dashboard', label: 'Dashboard' }]);
   const sidebarRef = useRef<SidebarRef>(null);
   const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -207,7 +207,6 @@ const App = () => {
 
   useEffect(() => {
     buildBreadcrumbs(currentPageId);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPageId]);
 
   //const loadTokenizer = async () => {
@@ -639,8 +638,13 @@ const App = () => {
         setCurrentPageId(newPage.id);
         try {
           localStorage.setItem('lastOpenPageId', newPage.id);
-          localStorage.setItem('lastOpenPageTitle', newPage.title || 'Untitled Page');
-        } catch {}
+          localStorage.setItem(
+            'lastOpenPageTitle',
+            newPage.title || 'Untitled Page'
+          );
+        } catch {
+          // localStorage may be unavailable (private mode or blocked)
+        }
         // Refresh sidebar to show new page
         sidebarRef.current?.refreshPages();
         // Auto-select the title field
@@ -682,8 +686,13 @@ const App = () => {
         setCurrentPageId(pageId);
         try {
           localStorage.setItem('lastOpenPageId', pageId);
-          localStorage.setItem('lastOpenPageTitle', page.title || 'Untitled Page');
-        } catch {}
+          localStorage.setItem(
+            'lastOpenPageTitle',
+            page.title || 'Untitled Page'
+          );
+        } catch {
+          // localStorage may be unavailable (private mode or blocked)
+        }
       } else {
         console.error('Failed to load page');
       }
@@ -805,8 +814,13 @@ const App = () => {
         setCurrentPageId(newPage.id);
         try {
           localStorage.setItem('lastOpenPageId', newPage.id);
-          localStorage.setItem('lastOpenPageTitle', newPage.title || 'Untitled Page');
-        } catch {}
+          localStorage.setItem(
+            'lastOpenPageTitle',
+            newPage.title || 'Untitled Page'
+          );
+        } catch {
+          // localStorage may be unavailable (private mode or blocked)
+        }
         // Refresh sidebar to show new subpage
         sidebarRef.current?.refreshPages();
         // Auto-select the title field
@@ -850,17 +864,22 @@ const App = () => {
       if (!allPagesResponse.ok) {
         return;
       }
-      const allPages = await allPagesResponse.json();
+      interface ReorderPageMinimal {
+        id: string;
+        parentId: string | null;
+        order: number;
+      }
+      const allPages: ReorderPageMinimal[] = await allPagesResponse.json();
 
       // Get siblings at the OLD level
       const oldSiblings = allPages.filter(
-        (p: any) =>
+        (p: ReorderPageMinimal) =>
           p.parentId === oldParentId && p.id !== pageId && p.order > oldOrder
       );
 
       // Get siblings at the NEW level
       const newSiblings = allPages.filter(
-        (p: any) =>
+        (p: ReorderPageMinimal) =>
           p.parentId === newParentId && p.id !== pageId && p.order >= newOrder
       );
 
@@ -943,33 +962,36 @@ const App = () => {
             <div className="flex-1 bg-white min-w-0 overflow-auto">
               {/* Dashboard when no page selected */}
               {!currentPageId && (
-                <Dashboard onNewPage={createNewPage} onSelectPage={loadPageContent} />
+                <Dashboard
+                  onNewPage={createNewPage}
+                  onSelectPage={loadPageContent}
+                />
               )}
               {/* Always mount editor; just hide when no page */}
               <div style={{ display: currentPageId ? 'block' : 'none' }}>
                 {/* Title Input Field */}
                 <input
-                type="text"
-                value={pageTitle}
-                onChange={e => {
-                  setPageTitle(e.target.value);
-                }}
-                onBlur={() => {
-                  if (currentPageId) {
-                    handleTitleChange(pageTitle);
-                  }
-                }}
-                placeholder="Untitled Page"
-                style={{
-                  fontSize: '40px',
-                  fontWeight: 'bold',
-                  border: 'none',
-                  outline: 'none',
-                  padding: '16px',
-                  width: '100%',
-                  boxSizing: 'border-box',
-                  backgroundColor: 'transparent',
-                }}
+                  type="text"
+                  value={pageTitle}
+                  onChange={e => {
+                    setPageTitle(e.target.value);
+                  }}
+                  onBlur={() => {
+                    if (currentPageId) {
+                      handleTitleChange(pageTitle);
+                    }
+                  }}
+                  placeholder="Untitled Page"
+                  style={{
+                    fontSize: '40px',
+                    fontWeight: 'bold',
+                    border: 'none',
+                    outline: 'none',
+                    padding: '16px',
+                    width: '100%',
+                    boxSizing: 'border-box',
+                    backgroundColor: 'transparent',
+                  }}
                 />
                 <BlockNoteView
                   editor={mainEditor}
@@ -1004,7 +1026,12 @@ const App = () => {
           </div>
         </main>
 
-        {(isFetching || isGenerating || !!progress || !!output || !!error || !!errorBrowserMessage) && (
+        {(isFetching ||
+          isGenerating ||
+          !!progress ||
+          !!output ||
+          !!error ||
+          !!errorBrowserMessage) && (
           <Footer
             progress={progress}
             progressPercentage={progressPercentage}

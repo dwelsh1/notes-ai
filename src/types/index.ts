@@ -10,7 +10,7 @@ export interface CustomFormattingToolbarProps {
     task: 'translation' | 'correction' | 'summary' | 'develop',
     updateEditor: (
       text: string,
-      editor?: any,
+      editor?: unknown,
       idBlock?: string,
       textColor?: string
     ) => void
@@ -31,7 +31,7 @@ export interface ToolbarButtonProps {
     task: 'translation' | 'correction' | 'summary' | 'develop',
     updateEditor: (
       text: string,
-      editor?: any,
+      editor?: unknown,
       idBlock?: string,
       textColor?: string
     ) => void
@@ -50,7 +50,7 @@ export type TaskType = 'translation' | 'correction' | 'summary' | 'develop';
 
 export type UpdateEditorFunction = (
   text: string,
-  editor?: any,
+  editor?: unknown,
   idBlock?: string,
   textColor?: string
 ) => void;
