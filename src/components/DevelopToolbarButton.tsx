@@ -51,7 +51,7 @@ export function DevelopToolbarButton({
 
   return (
     <ToolbarButton
-      mainTooltip={'Develop'}
+      mainTooltip={'Develop: expand selected bullets/notes into fuller prose (adds a new paragraph)'}
       isDisabled={isFetching || isGenerating}
       onClick={() => {
         const selection = editor.getSelection();

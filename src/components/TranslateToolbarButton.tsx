@@ -109,7 +109,7 @@ export function TranslateToolbarButton({
 
   return (
     <ToolbarButton
-      mainTooltip={'Translate'}
+      mainTooltip={'Translate selection to English in a new block (keeps formatting)'}
       isDisabled={isFetching || isGenerating}
       onClick={() => {
         translateBlocks(selectedBlocks, editor);

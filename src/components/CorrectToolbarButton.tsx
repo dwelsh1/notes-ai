@@ -64,7 +64,7 @@ export function CorrectToolbarButton({
 
   return (
     <ToolbarButton
-      mainTooltip={'Correct'}
+      mainTooltip={'Correct grammar and spelling for selection (writes improved text to a new block)'}
       isDisabled={isFetching || isGenerating}
       onClick={() => {
         correctBlocks(editor.getSelection()?.blocks, editor);
