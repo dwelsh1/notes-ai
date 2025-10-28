@@ -997,10 +997,11 @@ const App = () => {
                     backgroundColor: 'transparent',
                   }}
                 />
-                <BlockNoteView
+              <BlockNoteView
                   editor={mainEditor}
                   className="h-full w-full"
-                  formattingToolbar={false}
+                formattingToolbar={false}
+                slashMenu={false}
                 >
                   <FormattingToolbarController
                     formattingToolbar={() => (
@@ -1027,21 +1028,39 @@ const App = () => {
                       title: 'Divider',
                       group: 'Basic blocks',
                       subtext: 'Insert a horizontal divider',
-                      aliases: ['hr', '---', 'divider'] as const,
+                      aliases: ['hr', 'divider', '---'] as const,
                       onItemClick: async () => {
-                        const currentBlock = mainEditor.getTextCursorPosition()
-                          .block;
-                        const blocks = await mainEditor.tryParseMarkdownToBlocks(
-                          '---'
-                        );
+                        const cursorPos = mainEditor.getTextCursorPosition();
+                        const currentBlock = cursorPos.block;
+                        const hrBlocks = await mainEditor.tryParseMarkdownToBlocks('---');
+                        // Insert/replace HR
+                        let hrId: string;
                         if (
                           Array.isArray(currentBlock.content) &&
                           currentBlock.content.length === 0
                         ) {
-                          mainEditor.updateBlock(currentBlock, blocks[0]);
+                          mainEditor.updateBlock(currentBlock, hrBlocks[0]);
+                          hrId = currentBlock.id;
                         } else {
-                          mainEditor.insertBlocks(blocks, currentBlock, 'after');
+                          const inserted = mainEditor.insertBlocks(
+                            hrBlocks,
+                            currentBlock,
+                            'after'
+                          );
+                          hrId = inserted[0].id;
                         }
+                        // Ensure caret is placed after the divider in a new paragraph
+                        const afterParagraph = mainEditor.insertBlocks(
+                          [
+                            {
+                              type: 'paragraph',
+                              content: [],
+                            },
+                          ],
+                          hrId,
+                          'after'
+                        );
+                        mainEditor.setTextCursorPosition(afterParagraph[0], 'end');
                       },
                     };
                     return filterSuggestionItems(
