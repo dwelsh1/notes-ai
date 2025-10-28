@@ -9,7 +9,8 @@
   color: #213547;
   background-color: #ffffff;
 
-  font-synthesis: none;
+  /* Allow browser to synthesize italic/bold if the exact variant isn't loaded */
+  font-synthesis: weight style;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
