@@ -1,16 +1,16 @@
-import { EngineInterface } from '@mlc-ai/web-llm';
+import { MLCEngineInterface } from '@mlc-ai/web-llm';
 import { appConfig } from '../config/app-config';
 import { BlockNoteEditor } from '@blocknote/core';
 
 export default class ChatUI {
-  private engine: EngineInterface;
+  private engine: MLCEngineInterface;
   private chatLoaded = false;
   private requestInProgress = false;
   // We use a request chain to ensure that
   // all requests send to chat are sequentialized
   private chatRequestChain: Promise<void> = Promise.resolve();
 
-  constructor(engine: EngineInterface) {
+  constructor(engine: MLCEngineInterface) {
     this.engine = engine;
   }
   /**
