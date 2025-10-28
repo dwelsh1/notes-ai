@@ -1,10 +1,5 @@
 import { Block, BlockNoteEditor } from '@blocknote/core';
-import {
-  ToolbarButton,
-  useBlockNoteEditor,
-  useEditorContentOrSelectionChange,
-} from '@blocknote/react';
-import { useState } from 'react';
+import { ToolbarButton, useBlockNoteEditor } from '@blocknote/react';
 import correctSingleBlock from '../utils/correctSingleBlock';
 
 // Custom Formatting Toolbar Button to correct the selected text
