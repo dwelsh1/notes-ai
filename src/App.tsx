@@ -19,6 +19,7 @@ import { CustomFormattingToolbar } from './components/CustomFormattingToolbar';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { Sidebar, SidebarRef } from './components/Sidebar';
+import { Dashboard } from './components/Dashboard';
 import { appConfig } from './config/app-config';
 import {
   addBlock,
@@ -883,11 +884,18 @@ const App = () => {
           isGenerating={isGenerating}
           isFetching={isFetching}
           currentProcess={currentProccess}
+          breadcrumbs={currentPageId ? [{ id: currentPageId, label: pageTitle }] : []}
+          onBreadcrumbClick={id => loadPageContent(id)}
         />
 
         <main className="flex-1 flex overflow-hidden">
           <div className="flex-1 flex min-w-0">
             <div className="flex-1 bg-white min-w-0 overflow-auto">
+              {/* Dashboard when no page selected */}
+              {!currentPageId ? (
+                <Dashboard onNewPage={createNewPage} onSelectPage={loadPageContent} />
+              ) : (
+                <>
               {/* Title Input Field */}
               <input
                 type="text"
@@ -931,6 +939,8 @@ const App = () => {
                   )}
                 />
               </BlockNoteView>
+                </>
+              )}
             </div>
 
             {showSecondEditor && (
@@ -952,6 +962,7 @@ const App = () => {
           errorBrowserMessage={errorBrowserMessage}
           runtimeStats={runtimeStats}
           isFetching={isFetching}
+          currentPageTitle={currentPageId ? pageTitle : undefined}
         />
       </div>
     </div>

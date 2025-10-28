@@ -8,6 +8,7 @@ interface FooterProps {
   errorBrowserMessage: string | null;
   runtimeStats: string;
   isFetching: boolean;
+  currentPageTitle?: string;
 }
 
 export const Footer: React.FC<FooterProps> = ({
@@ -18,6 +19,7 @@ export const Footer: React.FC<FooterProps> = ({
   errorBrowserMessage,
   runtimeStats,
   isFetching,
+  currentPageTitle,
 }) => {
   return (
     <footer
@@ -134,8 +136,8 @@ export const Footer: React.FC<FooterProps> = ({
           </div>
         </div>
 
-        {/* Right side - Performance stats */}
-        {runtimeStats && (
+        {/* Right side - Page + Performance */}
+        {(currentPageTitle || runtimeStats) && (
           <div style={{ marginLeft: '8px', flexShrink: 0 }}>
             <p
               style={{
@@ -148,7 +150,9 @@ export const Footer: React.FC<FooterProps> = ({
                 margin: 0,
               }}
             >
-              Performance: {runtimeStats}
+              {currentPageTitle ? `Page: ${currentPageTitle}` : ''}
+              {currentPageTitle && runtimeStats ? ' • ' : ''}
+              {runtimeStats ? `Performance: ${runtimeStats}` : ''}
             </p>
           </div>
         )}

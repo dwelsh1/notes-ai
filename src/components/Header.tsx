@@ -18,6 +18,8 @@ interface HeaderProps {
   isGenerating: boolean;
   isFetching: boolean;
   currentProcess: 'translation' | 'correction' | 'summary' | 'develop' | null;
+  breadcrumbs?: { id: string; label: string }[];
+  onBreadcrumbClick?: (id: string) => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -30,6 +32,8 @@ export const Header: React.FC<HeaderProps> = ({
   isGenerating,
   isFetching,
   currentProcess,
+  breadcrumbs,
+  onBreadcrumbClick,
 }) => {
   return (
     <header
@@ -95,6 +99,36 @@ export const Header: React.FC<HeaderProps> = ({
           >
             NotesAI
           </h2>
+
+          {/* Breadcrumbs */}
+          {breadcrumbs && breadcrumbs.length > 0 && (
+            <nav style={{ marginLeft: '12px', minWidth: 0, overflow: 'hidden' }}>
+              {breadcrumbs.map((bc, idx) => {
+                const isLast = idx === breadcrumbs.length - 1;
+                return (
+                  <span key={bc.id} style={{ whiteSpace: 'nowrap' }}>
+                    <button
+                      onClick={() => onBreadcrumbClick && onBreadcrumbClick(bc.id)}
+                      disabled={isLast}
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        color: isLast ? '#111827' : '#2563eb',
+                        fontWeight: isLast ? 600 : 500,
+                        cursor: isLast ? 'default' : 'pointer',
+                        padding: 0,
+                        margin: 0,
+                      }}
+                      title={isLast ? undefined : `Go to ${bc.label}`}
+                    >
+                      {bc.label}
+                    </button>
+                    {!isLast && <span style={{ color: '#9ca3af', padding: '0 6px' }}>/</span>}
+                  </span>
+                );
+              })}
+            </nav>
+          )}
 
           {/* AI Action Icons */}
           <div
