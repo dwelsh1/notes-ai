@@ -40,7 +40,8 @@ export function CorrectToolbarButton({
     if (false && blocks.length == 1) {
       const block = blocks[0];
       const correctProps = { ...block.props } as Record<string, unknown>;
-      (correctProps as Record<string, unknown>)['textColor'] = correctedTextColor;
+      (correctProps as Record<string, unknown>)['textColor'] =
+        correctedTextColor;
       const newBlocks = editor.insertBlocks(
         [
           {
@@ -64,7 +65,8 @@ export function CorrectToolbarButton({
       console.log('correctBlocks');
       for (const block of blocks) {
         const correctProps = { ...block.props } as Record<string, unknown>;
-        (correctProps as Record<string, unknown>)['textColor'] = correctedTextColor;
+        (correctProps as Record<string, unknown>)['textColor'] =
+          correctedTextColor;
         if (block.content !== undefined) {
           const newBlocks = editor.insertBlocks(
             [
