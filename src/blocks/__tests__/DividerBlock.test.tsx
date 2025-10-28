@@ -14,7 +14,10 @@ jest.mock('@blocknote/react', () => ({
 
 // Now import subject under test (after mocks)
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { DividerBlock, createSchemaWithDivider } = require('../../blocks/DividerBlock');
+const {
+  DividerBlock,
+  createSchemaWithDivider,
+} = require('../../blocks/DividerBlock');
 
 describe('DividerBlock', () => {
   it('registers a divider block in the schema', () => {
@@ -28,7 +31,10 @@ describe('DividerBlock', () => {
     const { container } = render(<>{el}</>);
     const hr = container.querySelector('hr');
     expect(hr).toBeTruthy();
-    expect(hr).toHaveStyle({ borderTop: '1px solid #e5e7eb', margin: '12px 0' });
+    expect(hr).toHaveStyle({
+      borderTop: '1px solid #e5e7eb',
+      margin: '12px 0',
+    });
   });
 
   it('toExternalHTML() outputs an hr element', () => {
@@ -38,5 +44,3 @@ describe('DividerBlock', () => {
     expect(hr).toBeTruthy();
   });
 });
-
-
