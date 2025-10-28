@@ -1,5 +1,12 @@
 import React from 'react';
-import { Settings, Square, Languages, CheckCircle, FileText, Lightbulb } from 'lucide-react';
+import {
+  Settings,
+  Square,
+  Languages,
+  CheckCircle,
+  FileText,
+  Lightbulb,
+} from 'lucide-react';
 
 interface HeaderProps {
   onTranslate: () => void;
