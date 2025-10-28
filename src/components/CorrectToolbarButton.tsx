@@ -16,7 +16,9 @@ interface CorrectToolbarButtonProps {
   ) => Promise<string | void>;
   isGenerating: boolean;
   setIsGenerating: (v: boolean) => void;
-  setCurrentProcess: (p: 'translation' | 'correction' | 'summary' | 'develop' | null) => void;
+  setCurrentProcess: (
+    p: 'translation' | 'correction' | 'summary' | 'develop' | null
+  ) => void;
   isFetching: boolean;
   setOutput: (v: string) => void;
 }
