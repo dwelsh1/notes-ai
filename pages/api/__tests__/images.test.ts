@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import handler from '../images/index';
+import { prisma } from '../../../lib/prisma';
 
 // Mock Prisma
 jest.mock('../../../lib/prisma', () => ({
@@ -34,7 +35,6 @@ describe('/api/images', () => {
 
   describe('GET', () => {
     it('should return all images', async () => {
-      const { prisma } = require('../../../lib/prisma');
       const mockImages = [
         {
           id: '1',
@@ -56,7 +56,6 @@ describe('/api/images', () => {
     });
 
     it('should handle errors when fetching images', async () => {
-      const { prisma } = require('../../../lib/prisma');
       prisma.image.findMany.mockRejectedValue(new Error('Database error'));
 
       await handler(req as NextApiRequest, res as NextApiResponse);
@@ -81,7 +80,6 @@ describe('/api/images', () => {
     });
 
     it('should create a new image', async () => {
-      const { prisma } = require('../../../lib/prisma');
       const mockImage = {
         id: '1',
         filename: 'test.jpg',
@@ -109,7 +107,6 @@ describe('/api/images', () => {
     });
 
     it('should handle errors when creating an image', async () => {
-      const { prisma } = require('../../../lib/prisma');
       prisma.image.create.mockRejectedValue(new Error('Database error'));
 
       await handler(req as NextApiRequest, res as NextApiResponse);

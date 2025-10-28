@@ -12,12 +12,12 @@ interface BlockContent {
 }
 
 // Extract plain text from BlockNote JSON content
-function extractTextFromBlocks(content: string): string {
+const extractTextFromBlocks = (content: string): string => {
   try {
     const blocks: BlockContent[] = JSON.parse(content);
     const textParts: string[] = [];
 
-    function traverseBlock(block: BlockContent): void {
+    const traverseBlock = (block: BlockContent): void => {
       // Extract text from type property and any string content
       if (block.type && typeof block.type === 'string') {
         textParts.push(block.type);
@@ -59,14 +59,14 @@ function extractTextFromBlocks(content: string): string {
           });
         }
       });
-    }
+    };
 
     blocks.forEach(traverseBlock);
     return textParts.join(' ');
   } catch (error) {
     return '';
   }
-}
+};
 
 async function GET(req: NextApiRequest, res: NextApiResponse) {
   // Enable CORS

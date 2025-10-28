@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import handler from '../pages/index';
+import { prisma } from '../../../lib/prisma';
 
 // Mock Prisma
 jest.mock('../../../lib/prisma', () => ({
@@ -37,7 +38,6 @@ describe('/api/pages', () => {
 
   describe('GET', () => {
     it('should return all pages', async () => {
-      const { prisma } = require('../../../lib/prisma');
       const mockPages = [
         {
           id: '1',
@@ -63,7 +63,6 @@ describe('/api/pages', () => {
     });
 
     it('should handle errors when fetching pages', async () => {
-      const { prisma } = require('../../../lib/prisma');
       prisma.page.findMany.mockRejectedValue(new Error('Database error'));
 
       await handler(req as NextApiRequest, res as NextApiResponse);
@@ -88,7 +87,6 @@ describe('/api/pages', () => {
     });
 
     it('should create a new page', async () => {
-      const { prisma } = require('../../../lib/prisma');
       const mockPage = {
         id: '2',
         title: 'New Page',
@@ -118,7 +116,6 @@ describe('/api/pages', () => {
     });
 
     it('should handle errors when creating a page', async () => {
-      const { prisma } = require('../../../lib/prisma');
       prisma.page.create.mockRejectedValue(new Error('Database error'));
 
       await handler(req as NextApiRequest, res as NextApiResponse);

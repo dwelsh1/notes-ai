@@ -22,7 +22,7 @@ export function extractSearchableText(content: string): string {
     const blocks: BlockContent[] = JSON.parse(content);
     const textParts: string[] = [];
 
-    function traverseBlock(block: BlockContent): void {
+    const traverseBlock = (block: BlockContent): void => {
       // Extract text from content array
       if (Array.isArray(block.content)) {
         block.content.forEach(item => {
@@ -55,7 +55,7 @@ export function extractSearchableText(content: string): string {
           }
         });
       }
-    }
+    };
 
     blocks.forEach(traverseBlock);
     return textParts.join(' ').trim();
