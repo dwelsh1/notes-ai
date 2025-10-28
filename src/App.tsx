@@ -1060,7 +1060,15 @@ const App = () => {
                           hrId,
                           'after'
                         );
-                        mainEditor.setTextCursorPosition(afterParagraph[0], 'end');
+                        // Defer caret placement to avoid selection into non-inline blocks
+                        setTimeout(() => {
+                          try {
+                            mainEditor.setTextCursorPosition(
+                              afterParagraph[0],
+                              'end'
+                            );
+                          } catch {}
+                        }, 0);
                       },
                     } as const;
 
