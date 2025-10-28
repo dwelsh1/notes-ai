@@ -1041,45 +1041,19 @@ const App = () => {
                         />
                       ),
                       onItemClick: async () => {
-                        // Run after the menu closes to avoid transient selection issues
-                        setTimeout(async () => {
-                          const cursorPos = mainEditor.getTextCursorPosition();
-                          const currentBlock = cursorPos.block;
-                          const hrBlocks = await mainEditor.tryParseMarkdownToBlocks('---');
-                          let hrId: string;
-                          if (
-                            Array.isArray(currentBlock.content) &&
-                            currentBlock.content.length === 0
-                          ) {
-                            mainEditor.updateBlock(currentBlock, hrBlocks[0]);
-                            hrId = currentBlock.id;
-                          } else {
-                            const inserted = mainEditor.insertBlocks(
-                              hrBlocks,
-                              currentBlock,
-                              'after'
-                            );
-                            hrId = inserted[0].id;
+                        // Insert a true horizontal rule via TipTap and move caret below
+                        setTimeout(() => {
+                          try {
+                            const tt = (mainEditor as any)._tiptapEditor;
+                            if (tt?.commands?.setHorizontalRule) {
+                              tt.chain().focus().setHorizontalRule().run();
+                              // Create a new paragraph below and place caret there
+                              tt.commands.splitBlock();
+                              tt.commands.focus();
+                            }
+                          } catch {
+                            // no-op
                           }
-
-                          const afterParagraph = mainEditor.insertBlocks(
-                            [
-                              {
-                                type: 'paragraph',
-                                content: [],
-                              },
-                            ],
-                            hrId,
-                            'after'
-                          );
-                          setTimeout(() => {
-                            try {
-                              mainEditor.setTextCursorPosition(
-                                afterParagraph[0],
-                                'end'
-                              );
-                            } catch {}
-                          }, 0);
                         }, 0);
                       },
                     } as const;
