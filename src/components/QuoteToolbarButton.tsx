@@ -1,5 +1,6 @@
 import { ToolbarButton, useBlockNoteEditor } from '@blocknote/react';
 import { Quote } from 'lucide-react';
+import { convertBlockToString } from '../utils/ParserBlockToString';
 
 export function QuoteToolbarButton() {
   const editor = useBlockNoteEditor();
@@ -14,8 +15,20 @@ export function QuoteToolbarButton() {
         : [];
       if (!targets.length) return;
       for (const b of targets) {
-        // @ts-expect-error: union includes blockquote
-        editor.updateBlock(b.id, { type: 'blockquote' });
+        const text = convertBlockToString(b as any);
+        const inserted = editor.insertBlocks(
+          [
+            {
+              // @ts-expect-error: union includes blockquote
+              type: 'blockquote',
+              content: [],
+            },
+          ],
+          (b as any).id,
+          'after'
+        );
+        editor.updateBlock(inserted[0].id, { content: text } as any);
+        editor.setTextCursorPosition(inserted[0], 'end');
       }
     } catch {
       /* no-op */

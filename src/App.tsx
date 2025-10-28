@@ -35,6 +35,7 @@ import { env } from '@xenova/transformers';
 import { extractSearchableText } from './utils/extractSearchableText';
 import { filterSuggestionItems } from '@blocknote/core';
 import { createSchemaWithDivider } from './blocks/DividerBlock';
+import { Quote as QuoteIcon } from 'lucide-react';
 
 declare global {
   interface Window {
@@ -1132,9 +1133,7 @@ const App = () => {
                         group: 'Basic blocks',
                         subtext: 'Insert a block quote',
                         badge: '"',
-                        icon: (
-                          <span style={{ fontWeight: 700 }}>&quot;</span>
-                        ),
+                        icon: <QuoteIcon style={{ width: 18, height: 18 }} />,
                         onItemClick: async () => {
                           setTimeout(() => {
                             try {
