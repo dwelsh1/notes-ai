@@ -1129,7 +1129,7 @@ const App = () => {
                       // Additional Heading levels (H4–H6)
                       const headingItems = [4, 5, 6].map(level => ({
                         title: `Heading ${level}`,
-                        group: 'Basic blocks',
+                        group: 'Headings',
                         subtext: `Insert an H${level} heading`,
                         aliases: [`h${level}`, `heading ${level}`] as const,
                         icon: (
