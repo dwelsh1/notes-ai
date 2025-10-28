@@ -128,7 +128,7 @@ export default class ChatUI {
     try {
       const selectedModel = 'CroissantLLMChat-v0.1-q4f16_1';
       // const selectedModel = "TinyLlama-1.1B-Chat-v0.4-q4f16_1-1k";
-      await this.engine.reload(selectedModel, appConfig);
+      await this.engine.reload(selectedModel);
     } catch (err: unknown) {
       messageUpdate('error', 'Init error, ' + (err?.toString() ?? ''), true);
       console.log(err);
