@@ -146,6 +146,11 @@ export function CustomFormattingToolbar({
       <TextAlignButton textAlignment={'left'} key={'textAlignLeftButton'} />
       <TextAlignButton textAlignment={'center'} key={'textAlignCenterButton'} />
       <TextAlignButton textAlignment={'right'} key={'textAlignRightButton'} />
+      {/* Divider after Align right */}
+      <div
+        key={'divider-after-align'}
+        style={{ width: '1px', height: '20px', background: '#e5e7eb', margin: '0 6px' }}
+      />
 
       <ColorStyleButton key={'colorStyleButton'} />
 
