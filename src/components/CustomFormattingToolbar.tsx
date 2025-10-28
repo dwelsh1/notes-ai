@@ -13,6 +13,7 @@ import {
 import { TranslateToolbarButton } from './TranslateToolbarButton';
 import { CorrectToolbarButton } from './CorrectToolbarButton';
 import { DevelopToolbarButton } from './DevelopToolbarButton';
+import { QuoteToolbarButton } from './QuoteToolbarButton';
 
 export function CustomFormattingToolbar({
   onSend,
@@ -134,6 +135,13 @@ export function CustomFormattingToolbar({
       />
       {/* Extra button to toggle code styles */}
       <BasicTextStyleButton key={'codeStyleButton'} basicTextStyle={'code'} />
+      {/* Quote block button */}
+      <QuoteToolbarButton />
+      {/* Divider after Quote */}
+      <div
+        key={'divider-after-quote'}
+        style={{ width: '1px', height: '20px', background: '#e5e7eb', margin: '0 6px' }}
+      />
 
       <TextAlignButton textAlignment={'left'} key={'textAlignLeftButton'} />
       <TextAlignButton textAlignment={'center'} key={'textAlignCenterButton'} />

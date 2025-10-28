@@ -1126,6 +1126,48 @@ const App = () => {
                         },
                       } as const;
 
+                      // Quote block
+                      const quoteItem = {
+                        title: 'Quote',
+                        group: 'Basic blocks',
+                        subtext: 'Insert a block quote',
+                        badge: '"',
+                        icon: (
+                          <span style={{ fontWeight: 700 }}>&quot;</span>
+                        ),
+                        onItemClick: async () => {
+                          setTimeout(() => {
+                            try {
+                              const cursorPos =
+                                (mainEditor as any).getTextCursorPosition();
+                              const currentBlock = cursorPos.block;
+                              const inserted = (mainEditor as any).insertBlocks(
+                                [
+                                  {
+                                    type: 'blockquote',
+                                    content: [],
+                                  },
+                                ],
+                                currentBlock,
+                                'after'
+                              );
+                              setTimeout(() => {
+                                try {
+                                  (mainEditor as any).setTextCursorPosition(
+                                    inserted[0],
+                                    'end'
+                                  );
+                                } catch (e) {
+                                  // no-op
+                                }
+                              }, 0);
+                            } catch (e) {
+                              // no-op
+                            }
+                          }, 0);
+                        },
+                      } as const;
+
                       // Additional Heading levels (H4–H6)
                       const headingItems = [4, 5, 6].map(level => ({
                         title: `Heading ${level}`,
@@ -1171,13 +1213,18 @@ const App = () => {
                         },
                       }));
 
-                      // Insert Divider directly after "Paragraph" inside the existing Basic blocks group and add H4–H6 after H3
+                      // Insert Divider and Quote directly after "Paragraph" inside the existing Basic blocks group and add H4–H6 after H3
                       const items = [...defaults];
                       const paragraphIndex = items.findIndex(
                         i => i.title === 'Paragraph'
                       );
                       if (paragraphIndex !== -1) {
-                        items.splice(paragraphIndex + 1, 0, dividerItem as any);
+                        items.splice(
+                          paragraphIndex + 1,
+                          0,
+                          dividerItem as any,
+                          quoteItem as any
+                        );
                       } else {
                         // Fallback: insert before first item whose group changes from Basic blocks
                         const firstAdvanced = items.findIndex(
@@ -1185,7 +1232,7 @@ const App = () => {
                         );
                         const insertAt =
                           firstAdvanced === -1 ? items.length : firstAdvanced;
-                        items.splice(insertAt, 0, dividerItem as any);
+                        items.splice(insertAt, 0, dividerItem as any, quoteItem as any);
                       }
 
                       // Place H4–H6 after Heading 3
