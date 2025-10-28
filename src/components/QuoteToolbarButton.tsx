@@ -1,20 +1,25 @@
 import { ToolbarButton, useBlockNoteEditor } from '@blocknote/react';
+import { Quote } from 'lucide-react';
 
 export function QuoteToolbarButton() {
   const editor = useBlockNoteEditor();
 
   const applyQuote = () => {
     try {
-      const selection = editor.getSelection();
-      const targets = selection?.blocks?.length
-        ? selection.blocks
-        : editor.getTextCursorPosition()?.block
-        ? [editor.getTextCursorPosition().block]
-        : [];
-      for (const b of targets) {
-        // @ts-expect-error: union type for block kinds includes quote/blockquote
-        editor.updateBlock(b.id, { type: 'blockquote' });
-      }
+      const cursor = editor.getTextCursorPosition();
+      if (!cursor?.block) return;
+      const inserted = editor.insertBlocks(
+        [
+          {
+            // @ts-expect-error: BlockNote supports blockquote type
+            type: 'blockquote',
+            content: [],
+          },
+        ],
+        cursor.block,
+        'after'
+      );
+      editor.setTextCursorPosition(inserted[0], 'end');
     } catch {
       /* no-op */
     }
@@ -26,8 +31,7 @@ export function QuoteToolbarButton() {
       mainTooltip={'Quote: format selection as a block quote'}
       onClick={applyQuote}
     >
-      {/* simple quote glyph */}
-      <span style={{ fontWeight: 700, color: '#6b7280' }}>&quot;</span>
+      <Quote style={{ width: 18, height: 18, color: '#6b7280' }} />
     </ToolbarButton>
   );
 }

@@ -1140,6 +1140,7 @@ const App = () => {
                             try {
                               const cursorPos =
                                 (mainEditor as any).getTextCursorPosition();
+                              if (!cursorPos || !cursorPos.block) return;
                               const currentBlock = cursorPos.block;
                               const inserted = (mainEditor as any).insertBlocks(
                                 [
