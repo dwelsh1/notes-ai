@@ -1062,11 +1062,25 @@ const App = () => {
                         );
                         mainEditor.setTextCursorPosition(afterParagraph[0], 'end');
                       },
-                    };
-                    return filterSuggestionItems(
-                      [...defaults, dividerItem],
-                      query
-                    ) as any;
+                    } as const;
+
+                    // Insert Divider directly after "Paragraph" inside the existing Basic blocks group
+                    const items = [...defaults];
+                    const paragraphIndex = items.findIndex(
+                      i => i.title === 'Paragraph'
+                    );
+                    if (paragraphIndex !== -1) {
+                      items.splice(paragraphIndex + 1, 0, dividerItem as any);
+                    } else {
+                      // Fallback: insert before first item whose group changes from Basic blocks
+                      const firstAdvanced = items.findIndex(
+                        i => i.group && i.group !== 'Basic blocks'
+                      );
+                      const insertAt = firstAdvanced === -1 ? items.length : firstAdvanced;
+                      items.splice(insertAt, 0, dividerItem as any);
+                    }
+
+                    return filterSuggestionItems(items as any, query) as any;
                   }}
                 />
                 </BlockNoteView>
