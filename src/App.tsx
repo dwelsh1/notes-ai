@@ -522,13 +522,10 @@ const App = () => {
         updateBlock(mainEditor, 'New block summary', text, 'blue');
       });
 
-      if (res) {
-        const blocks = await mainEditor.tryParseMarkdownToBlocks(res);
-        for (const block of blocks) {
-          block.props.textColor = 'blue';
-        }
-        mainEditor.replaceBlocks(['New block summary'], blocks);
-      }
+    if (res) {
+      const blocks = await mainEditor.tryParseMarkdownToBlocks(res);
+      mainEditor.replaceBlocks(['New block summary'], blocks);
+    }
     }
     setIsGenerating(false);
     setCurrentProcess(null);
@@ -566,13 +563,10 @@ const App = () => {
         updateBlock(mainEditor, 'New block development', text, 'blue');
       });
     }
-    if (res) {
-      const blocks = await mainEditor.tryParseMarkdownToBlocks(res);
-      for (const block of blocks) {
-        block.props.textColor = 'blue';
-      }
-      mainEditor.replaceBlocks(['New block development'], blocks);
-    }
+  if (res) {
+    const blocks = await mainEditor.tryParseMarkdownToBlocks(res);
+    mainEditor.replaceBlocks(['New block development'], blocks);
+  }
     setIsGenerating(false);
     setCurrentProcess(null);
     setOutput('');
