@@ -8,15 +8,27 @@ import { useState } from 'react';
 import correctSingleBlock from '../utils/correctSingleBlock';
 
 // Custom Formatting Toolbar Button to correct the selected text
+interface CorrectToolbarButtonProps {
+  onSend: (
+    prompt: string,
+    task: 'translation' | 'correction' | 'summary' | 'develop',
+    update: (text: string) => void
+  ) => Promise<string | void>;
+  isGenerating: boolean;
+  setIsGenerating: (v: boolean) => void;
+  setCurrentProcess: (p: 'translation' | 'correction' | 'summary' | 'develop' | null) => void;
+  isFetching: boolean;
+  setOutput: (v: string) => void;
+}
+
 export function CorrectToolbarButton({
   onSend,
   isGenerating,
   setIsGenerating,
-  // currentProccess (unused)
   setCurrentProcess,
   isFetching,
   setOutput,
-}) {
+}: CorrectToolbarButtonProps) {
   const editor = useBlockNoteEditor();
 
   async function correctBlocks(blocks: Block[], editor: BlockNoteEditor) {
