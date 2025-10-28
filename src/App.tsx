@@ -10,7 +10,6 @@ import './styles/App.css';
 import {
   ChatCompletionMessageParam,
   CreateWebWorkerMLCEngine,
-  MLCEngine,
   InitProgressReport,
   hasModelInCache,
 } from '@mlc-ai/web-llm';
@@ -45,9 +44,11 @@ declare global {
 }
 env.localModelPath = '/blocknote-llm/';
 
+type EngineType = Awaited<ReturnType<typeof CreateWebWorkerMLCEngine>>;
+
 const App = () => {
   const selectedModel = 'Llama-3.2-1B-Instruct-q4f16_1-MLC';
-  const [engine, setEngine] = useState<MLCEngine | null>(null);
+  const [engine, setEngine] = useState<EngineType | null>(null);
   const [progress, setProgress] = useState('Not loaded');
   const [progressPercentage, setProgressPercentage] = useState(0);
   const [isFetching, setIsFetching] = useState(false);
@@ -187,7 +188,7 @@ const App = () => {
     setIsFetching(true);
     setOutput('Loading model...');
 
-    const engine: MLCEngine = await CreateWebWorkerMLCEngine(
+    const engine: EngineType = await CreateWebWorkerMLCEngine(
       new Worker(new URL('./worker.ts', import.meta.url), {
         type: 'module',
       }),
@@ -316,7 +317,7 @@ const App = () => {
     mainEditor.replaceBlocks(mainEditor.document, editorWithoutNestedBlocks);
   };
 
-  const ensureEngineLoaded = async (currentEngine: MLCEngine | null) => {
+  const ensureEngineLoaded = async (currentEngine: EngineType | null) => {
     if (currentEngine) {
       console.log('Engine loaded');
       return currentEngine;
