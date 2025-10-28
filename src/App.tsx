@@ -1132,6 +1132,7 @@ const App = () => {
                         group: 'Headings',
                         subtext: `Insert an H${level} heading`,
                         aliases: [`h${level}`, `heading ${level}`] as const,
+                        badge: `Ctrl+Alt+${level}`,
                         icon: (
                           <span style={{ fontWeight: 600 }}>{`H${level}`}</span>
                         ),
