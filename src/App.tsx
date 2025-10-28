@@ -366,8 +366,12 @@ const App = () => {
         await onSend(prompt, 'translation', async (translatedText: string) => {
           const translatedBlocks =
             await secondEditor.tryParseMarkdownToBlocks(translatedText);
-          const translatedContent = translatedBlocks[0].content;
-          secondEditor.updateBlock(secondBlock, { content: translatedContent });
+          const translatedContent = translatedBlocks[0]?.content;
+          if (secondBlock && translatedContent) {
+            secondEditor.updateBlock(secondBlock, {
+              content: translatedContent,
+            });
+          }
           // updateBlock(editorEnglish, id, translatedText, 'red');
         });
       }
