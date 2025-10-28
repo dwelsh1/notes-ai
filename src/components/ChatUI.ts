@@ -1,5 +1,4 @@
 import { MLCEngineInterface } from '@mlc-ai/web-llm';
-import { appConfig } from '../config/app-config';
 import { BlockNoteEditor } from '@blocknote/core';
 
 export default class ChatUI {
