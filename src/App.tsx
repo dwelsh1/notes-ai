@@ -640,12 +640,8 @@ const App = () => {
         // Parse content and load into editor
         const blocks = JSON.parse(page.content);
 
-        // Replace all blocks with loaded content
-        if (mainEditor.document.length > 0) {
-          mainEditor.replaceBlocks(mainEditor.document, blocks);
-        } else {
-          mainEditor.insertBlocks(blocks, undefined, 'before');
-        }
+        // Replace editor content with loaded blocks
+        mainEditor.replaceBlocks(mainEditor.document, blocks);
 
         setCurrentPageId(pageId);
       } else {
