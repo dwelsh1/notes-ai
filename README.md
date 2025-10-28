@@ -59,7 +59,7 @@ The application supports multiple AI-powered features:
 - **Grammar Correction**: Fix spelling and grammar errors with diff highlighting
 - **Summarization**: Generate concise summaries of long texts
 - **Text Development**: Expand bullet points into full paragraphs
- - **Divider**: Insert a horizontal rule via the slash menu (Divider under Basic blocks) or by typing `---` on an empty paragraph
+- **Divider**: Insert a horizontal rule via the slash menu (Divider under Basic blocks) or by typing `---` on an empty paragraph
 
 You can also use other models. To do that, you can compile your own model and weights with [MLC LLM](https://github.com/mlc-ai/mlc-llm). Then you just need to update [app-config](./src/config/app-config.ts) with:
 

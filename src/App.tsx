@@ -155,9 +155,13 @@ const App = () => {
           setTimeout(() => {
             try {
               mainEditor.setTextCursorPosition(after[0], 'end');
-            } catch {}
+            } catch (e) {
+              // no-op
+            }
           }, 0);
-        } catch {}
+        } catch (e) {
+          // no-op
+        }
       }, 0);
     };
     document.addEventListener('keyup', handler);
@@ -1036,11 +1040,11 @@ const App = () => {
                     backgroundColor: 'transparent',
                   }}
                 />
-              <BlockNoteView
+                <BlockNoteView
                   editor={mainEditor}
                   className="h-full w-full"
-                formattingToolbar={false}
-                slashMenu={false}
+                  formattingToolbar={false}
+                  slashMenu={false}
                 >
                   <FormattingToolbarController
                     formattingToolbar={() => (
@@ -1056,86 +1060,92 @@ const App = () => {
                     )}
                   />
 
-                {/* Slash menu with custom Divider item */}
-                <SuggestionMenuController
-                  triggerCharacter="/"
-                  getItems={async query => {
-                    const defaults = (await import(
-                      '@blocknote/react'
-                    )).getDefaultReactSlashMenuItems(mainEditor as any);
-                    const dividerItem = {
-                      title: 'Divider',
-                      group: 'Basic blocks',
-                      subtext: 'Insert a horizontal divider',
-                      badge: '---',
-                      aliases: ['hr', 'divider', '---'] as const,
-                      icon: (
-                        <span
-                          style={{
-                            width: 18,
-                            height: 18,
-                            display: 'inline-block',
-                            borderTop: '2px solid #6b7280',
-                          }}
-                        />
-                      ),
-                      onItemClick: async () => {
-                        // Insert custom divider block and move caret below
-                        setTimeout(() => {
-                          try {
-                            const cursorPos = mainEditor.getTextCursorPosition();
-                            const currentBlock = cursorPos.block;
-                            const inserted = mainEditor.insertBlocks(
-                              [
-                                {
-                                  type: 'divider' as any,
-                                },
-                              ],
-                              currentBlock,
-                              'after'
-                            );
-                            const afterParagraph = mainEditor.insertBlocks(
-                              [
-                                {
-                                  type: 'paragraph',
-                                  content: [],
-                                },
-                              ],
-                              inserted[0].id,
-                              'after'
-                            );
-                            setTimeout(() => {
-                              try {
-                                mainEditor.setTextCursorPosition(
-                                  afterParagraph[0],
-                                  'end'
-                                );
-                              } catch {}
-                            }, 0);
-                          } catch {}
-                        }, 0);
-                      },
-                    } as const;
+                  {/* Slash menu with custom Divider item */}
+                  <SuggestionMenuController
+                    triggerCharacter="/"
+                    getItems={async query => {
+                      const defaults = (
+                        await import('@blocknote/react')
+                      ).getDefaultReactSlashMenuItems(mainEditor as any);
+                      const dividerItem = {
+                        title: 'Divider',
+                        group: 'Basic blocks',
+                        subtext: 'Insert a horizontal divider',
+                        badge: '---',
+                        aliases: ['hr', 'divider', '---'] as const,
+                        icon: (
+                          <span
+                            style={{
+                              width: 18,
+                              height: 18,
+                              display: 'inline-block',
+                              borderTop: '2px solid #6b7280',
+                            }}
+                          />
+                        ),
+                        onItemClick: async () => {
+                          // Insert custom divider block and move caret below
+                          setTimeout(() => {
+                            try {
+                              const cursorPos =
+                                mainEditor.getTextCursorPosition();
+                              const currentBlock = cursorPos.block;
+                              const inserted = mainEditor.insertBlocks(
+                                [
+                                  {
+                                    type: 'divider' as any,
+                                  },
+                                ],
+                                currentBlock,
+                                'after'
+                              );
+                              const afterParagraph = mainEditor.insertBlocks(
+                                [
+                                  {
+                                    type: 'paragraph',
+                                    content: [],
+                                  },
+                                ],
+                                inserted[0].id,
+                                'after'
+                              );
+                              setTimeout(() => {
+                                try {
+                                  mainEditor.setTextCursorPosition(
+                                    afterParagraph[0],
+                                    'end'
+                                  );
+                                } catch (e) {
+                                  // no-op
+                                }
+                              }, 0);
+                            } catch (e) {
+                              // no-op
+                            }
+                          }, 0);
+                        },
+                      } as const;
 
-                    // Insert Divider directly after "Paragraph" inside the existing Basic blocks group
-                    const items = [...defaults];
-                    const paragraphIndex = items.findIndex(
-                      i => i.title === 'Paragraph'
-                    );
-                    if (paragraphIndex !== -1) {
-                      items.splice(paragraphIndex + 1, 0, dividerItem as any);
-                    } else {
-                      // Fallback: insert before first item whose group changes from Basic blocks
-                      const firstAdvanced = items.findIndex(
-                        i => i.group && i.group !== 'Basic blocks'
+                      // Insert Divider directly after "Paragraph" inside the existing Basic blocks group
+                      const items = [...defaults];
+                      const paragraphIndex = items.findIndex(
+                        i => i.title === 'Paragraph'
                       );
-                      const insertAt = firstAdvanced === -1 ? items.length : firstAdvanced;
-                      items.splice(insertAt, 0, dividerItem as any);
-                    }
+                      if (paragraphIndex !== -1) {
+                        items.splice(paragraphIndex + 1, 0, dividerItem as any);
+                      } else {
+                        // Fallback: insert before first item whose group changes from Basic blocks
+                        const firstAdvanced = items.findIndex(
+                          i => i.group && i.group !== 'Basic blocks'
+                        );
+                        const insertAt =
+                          firstAdvanced === -1 ? items.length : firstAdvanced;
+                        items.splice(insertAt, 0, dividerItem as any);
+                      }
 
-                    return filterSuggestionItems(items as any, query) as any;
-                  }}
-                />
+                      return filterSuggestionItems(items as any, query) as any;
+                    }}
+                  />
                 </BlockNoteView>
               </div>
             </div>

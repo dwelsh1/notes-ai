@@ -13,9 +13,23 @@ export const DividerBlock = createReactBlockSpec(
     content: 'none',
   },
   {
-    render: () => <hr style={{ border: 'none', borderTop: '1px solid #e5e7eb', margin: '12px 0' }} />,
+    render: () => (
+      <hr
+        style={{
+          border: 'none',
+          borderTop: '1px solid #e5e7eb',
+          margin: '12px 0',
+        }}
+      />
+    ),
     toExternalHTML: () => (
-      <hr style={{ border: 'none', borderTop: '1px solid #e5e7eb', margin: '12px 0' }} />
+      <hr
+        style={{
+          border: 'none',
+          borderTop: '1px solid #e5e7eb',
+          margin: '12px 0',
+        }}
+      />
     ),
   }
 );
@@ -27,5 +41,3 @@ export const createSchemaWithDivider = () =>
       divider: DividerBlock,
     },
   });
-
-
