@@ -4,8 +4,8 @@ interface FooterProps {
   progress: string;
   progressPercentage: number;
   output: string;
-  error: string;
-  errorBrowserMessage: string;
+  error: string | null;
+  errorBrowserMessage: string | null;
   runtimeStats: string;
   isFetching: boolean;
 }
