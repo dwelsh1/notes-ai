@@ -4,6 +4,7 @@ import {
   BlockNoteView,
   useCreateBlockNote,
   FormattingToolbarController,
+  SuggestionMenuController,
 } from '@blocknote/react';
 import '@blocknote/react/style.css';
 import './styles/App.css';
@@ -32,6 +33,7 @@ import { systemPrompt } from './config/prompt';
 import { checkInputLength } from './utils/tokenizer';
 import { env } from '@xenova/transformers';
 import { extractSearchableText } from './utils/extractSearchableText';
+import { filterSuggestionItems } from '@blocknote/core';
 
 declare global {
   interface Window {
@@ -1013,6 +1015,41 @@ const App = () => {
                       />
                     )}
                   />
+
+                {/* Slash menu with custom Divider item */}
+                <SuggestionMenuController
+                  triggerCharacter="/"
+                  getItems={async query => {
+                    const defaults = (await import(
+                      '@blocknote/react'
+                    )).getDefaultReactSlashMenuItems(mainEditor as any);
+                    const dividerItem = {
+                      title: 'Divider',
+                      group: 'Basic blocks',
+                      subtext: 'Insert a horizontal divider',
+                      aliases: ['hr', '---', 'divider'] as const,
+                      onItemClick: async () => {
+                        const currentBlock = mainEditor.getTextCursorPosition()
+                          .block;
+                        const blocks = await mainEditor.tryParseMarkdownToBlocks(
+                          '---'
+                        );
+                        if (
+                          Array.isArray(currentBlock.content) &&
+                          currentBlock.content.length === 0
+                        ) {
+                          mainEditor.updateBlock(currentBlock, blocks[0]);
+                        } else {
+                          mainEditor.insertBlocks(blocks, currentBlock, 'after');
+                        }
+                      },
+                    };
+                    return filterSuggestionItems(
+                      [...defaults, dividerItem],
+                      query
+                    ) as any;
+                  }}
+                />
                 </BlockNoteView>
               </div>
             </div>
