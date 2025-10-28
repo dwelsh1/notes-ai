@@ -8,7 +8,10 @@ export default async function handler(
   // Enable CORS
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+  res.setHeader(
+    'Access-Control-Allow-Methods',
+    'GET,OPTIONS,PATCH,DELETE,POST,PUT'
+  );
   res.setHeader(
     'Access-Control-Allow-Headers',
     'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
@@ -36,7 +39,15 @@ export default async function handler(
     }
   } else if (req.method === 'POST') {
     try {
-      const { title, content, parentId, order, isFavorite, tags, searchableText } = req.body;
+      const {
+        title,
+        content,
+        parentId,
+        order,
+        isFavorite,
+        tags,
+        searchableText,
+      } = req.body;
       const page = await prisma.page.create({
         data: {
           title,
@@ -58,4 +69,3 @@ export default async function handler(
     res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }
-

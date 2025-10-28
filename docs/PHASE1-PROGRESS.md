@@ -5,6 +5,7 @@
 ### Status: 🟢 In Progress (Hybrid: Vite UI + Next.js API)
 
 ### Current State
+
 - ✅ Hybrid architecture: Vite frontend + Next.js backend
 - ✅ All tests passing with enforced coverage thresholds (Statements ≥85%, Branches ≥80%)
 - ✅ Multi-page sidebar with drag-and-drop reordering
@@ -21,6 +22,7 @@
 - ✅ UI terminology documentation
 
 ### Tasks Completed
+
 - [x] Set up Next.js backend with API routes
 - [x] Configure Prisma with SQLite database
 - [x] Implement pages CRUD API
@@ -46,13 +48,14 @@
 - [x] Move new page button to Pages Header
 
 ### Pending Tasks
+
 - [ ] Image upload/preview UI and page attachment workflow (server API is ready)
 - [ ] Page export functionality (JSON, Markdown with images)
 - [ ] Full backup/restore (database + images)
 
 ### Architecture
+
 - **Frontend**: Vite + React on `http://localhost:5173`
 - **Backend**: Next.js API on `http://localhost:4000`
 - **Database**: SQLite at `./prisma/notesai.db`
 - **Images**: `./public/uploads/` (UI pending)
-

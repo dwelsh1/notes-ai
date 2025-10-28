@@ -2,7 +2,7 @@
 const nextConfig = {
   // Enable standalone for API routes support
   output: 'standalone',
-  
+
   // External packages for server components
   serverExternalPackages: ['@mlc-ai/web-llm'],
 
@@ -22,7 +22,8 @@ const nextConfig = {
   // Environment variables
   env: {
     // WebLLM configuration
-    WEBLLM_MODEL: process.env.WEBLLM_MODEL || 'Llama-3.2-1B-Instruct-q4f16_1-MLC',
+    WEBLLM_MODEL:
+      process.env.WEBLLM_MODEL || 'Llama-3.2-1B-Instruct-q4f16_1-MLC',
   },
 };
 

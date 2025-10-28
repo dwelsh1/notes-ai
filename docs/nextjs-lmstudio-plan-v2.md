@@ -9,6 +9,7 @@ This plan outlines the implementation of a multi-page note-taking system in **tw
 ## 🎯 **Core Features Overview**
 
 ### **Phase 1: Multi-Page System with Export/Backup**
+
 - **Modern Sidebar**: Collapsible/resizable with hierarchical page listing
 - **Page Management**: Create, edit, delete pages with parent/child relationships
 - **Drag & Drop**: Reorder pages and create subpages by dragging
@@ -20,6 +21,7 @@ This plan outlines the implementation of a multi-page note-taking system in **tw
 - **WebLLM Only**: Browser-based AI (existing functionality)
 
 ### **Phase 2: LM Studio Integration**
+
 - **Dual AI Support**: Toggle between WebLLM and LM Studio
 - **Settings Page**: AI engine selection and configuration
 - **LM Studio Connection**: Local AI server integration
@@ -35,7 +37,9 @@ This plan outlines the implementation of a multi-page note-taking system in **tw
 #### **Goal**: Migrate from Vite to Next.js while preserving all existing functionality
 
 #### **Tasks**
+
 1. **Install Dependencies**
+
    ```bash
    npm install next@latest react@18.2.0 react-dom@18.2.0 prisma @prisma/client zod
    npm install better-sqlite3 @types/better-sqlite3
@@ -67,12 +71,14 @@ This plan outlines the implementation of a multi-page note-taking system in **tw
    - Add Next.js specific tests
 
 #### **Deliverables**
+
 - ✅ Working Next.js application
 - ✅ All existing features preserved
 - ✅ Updated build system
 - ✅ Migrated tests
 
 #### **Manual Testing**
+
 - Verify all AI features work
 - Test responsive design
 - Check performance
@@ -85,6 +91,7 @@ This plan outlines the implementation of a multi-page note-taking system in **tw
 #### **Goal**: Set up Prisma with SQLite, image storage, and basic page CRUD operations
 
 #### **Tasks**
+
 1. **Database Setup**
    - Initialize Prisma with SQLite
    - Create database schema with image support
@@ -98,6 +105,7 @@ This plan outlines the implementation of a multi-page note-taking system in **tw
    - Store image references in database
 
 3. **Prisma Schema** (Enhanced)
+
    ```prisma
    model Page {
      id          String   @id @default(cuid())
@@ -110,15 +118,15 @@ This plan outlines the implementation of a multi-page note-taking system in **tw
      updatedAt   DateTime @updatedAt
      tags        String[]
      images      Image[]  // Relation to images
-     
+
      parent      Page?    @relation("PageHierarchy", fields: [parentId], references: [id])
      children    Page[]   @relation("PageHierarchy")
-     
+
      @@index([parentId])
      @@index([isFavorite])
      @@index([order])
    }
-   
+
    model Image {
      id          String   @id @default(cuid())
      filename    String   // Unique filename
@@ -128,7 +136,7 @@ This plan outlines the implementation of a multi-page note-taking system in **tw
      pageId      String
      page        Page     @relation(fields: [pageId], references: [id])
      createdAt   DateTime @default(now())
-     
+
      @@index([pageId])
    }
    ```
@@ -151,12 +159,14 @@ This plan outlines the implementation of a multi-page note-taking system in **tw
    - Validation tests
 
 #### **Deliverables**
+
 - ✅ Working SQLite database
 - ✅ Image storage system
 - ✅ CRUD API endpoints
 - ✅ Database tests
 
 #### **Manual Testing**
+
 - Test API endpoints
 - Upload and manage images
 - Verify image storage
@@ -169,6 +179,7 @@ This plan outlines the implementation of a multi-page note-taking system in **tw
 #### **Goal**: Create the collapsible sidebar with server-side page loading
 
 #### **Tasks**
+
 1. **Create Sidebar Components**
    - `app/components/Sidebar.tsx` - Main sidebar container
    - `app/components/SidebarToggle.tsx` - Collapse/expand button
@@ -195,12 +206,14 @@ This plan outlines the implementation of a multi-page note-taking system in **tw
    - Integration tests
 
 #### **Deliverables**
+
 - ✅ Collapsible sidebar
 - ✅ Server-side page loading
 - ✅ Page selection
 - ✅ Responsive design
 
 #### **Manual Testing**
+
 - Test sidebar functionality
 - Verify page loading
 - Check responsive behavior
@@ -213,6 +226,7 @@ This plan outlines the implementation of a multi-page note-taking system in **tw
 #### **Goal**: Implement drag-and-drop with server-side updates
 
 #### **Tasks**
+
 1. **Create Drag & Drop Components**
    - `app/components/DragDropProvider.tsx` - DnD context
    - `app/components/DraggablePage.tsx` - Draggable page item
@@ -234,12 +248,14 @@ This plan outlines the implementation of a multi-page note-taking system in **tw
    - Error handling tests
 
 #### **Deliverables**
+
 - ✅ Drag & drop page reordering
 - ✅ Server-side hierarchy updates
 - ✅ Optimistic UI updates
 - ✅ Error handling
 
 #### **Manual Testing**
+
 - Test drag & drop functionality
 - Verify server updates
 - Test error scenarios
@@ -252,6 +268,7 @@ This plan outlines the implementation of a multi-page note-taking system in **tw
 #### **Goal**: Implement favorites with server-side persistence
 
 #### **Tasks**
+
 1. **Create Favorites Components**
    - `app/components/FavoritesSection.tsx` - Favorites container
    - `app/components/FavoriteItem.tsx` - Individual favorite item
@@ -277,12 +294,14 @@ This plan outlines the implementation of a multi-page note-taking system in **tw
    - Integration tests
 
 #### **Deliverables**
+
 - ✅ Favorites API endpoints
 - ✅ Drag & drop to favorites
 - ✅ Server-side persistence
 - ✅ Subpage relationship handling
 
 #### **Manual Testing**
+
 - Test favorites functionality
 - Verify server persistence
 - Test subpage relationships
@@ -295,6 +314,7 @@ This plan outlines the implementation of a multi-page note-taking system in **tw
 #### **Goal**: Implement full-text search and comprehensive export/backup
 
 #### **Tasks**
+
 1. **Create Search Components**
    - `app/components/SearchBar.tsx` - Search input
    - `app/components/SearchResults.tsx` - Results display
@@ -310,12 +330,10 @@ This plan outlines the implementation of a multi-page note-taking system in **tw
      - `app/api/export/page/[id]/json/route.ts` - Export as JSON
      - `app/api/export/page/[id]/markdown/route.ts` - Export as Markdown
      - Include images in export (embedded or zipped)
-   
    - **Full Backup**:
      - `app/api/backup/export/route.ts` - Export all data
      - `app/api/backup/import/route.ts` - Import backup
      - `app/api/backup/validate/route.ts` - Validate backup file
-   
    - **Export Features**:
      - Export page as JSON with BlockNote content
      - Export page as Markdown with text content
@@ -328,7 +346,6 @@ This plan outlines the implementation of a multi-page note-taking system in **tw
      - `lib/exportUtils.ts` - JSON and Markdown export logic
      - `lib/backupUtils.ts` - Full backup logic
      - `lib/imageExport.ts` - Image handling in exports
-   
    - **Import Utilities**:
      - `lib/importUtils.ts` - Backup import logic
      - `lib/backupValidator.ts` - Validate backup files
@@ -346,6 +363,7 @@ This plan outlines the implementation of a multi-page note-taking system in **tw
    - Image export tests
 
 #### **Deliverables**
+
 - ✅ Full-text search
 - ✅ Individual page export (JSON/Markdown)
 - ✅ Full backup/restore
@@ -353,6 +371,7 @@ This plan outlines the implementation of a multi-page note-taking system in **tw
 - ✅ Timestamped exports
 
 #### **Manual Testing**
+
 - Search functionality
 - Export single page as JSON
 - Export single page as Markdown
@@ -367,6 +386,7 @@ This plan outlines the implementation of a multi-page note-taking system in **tw
 #### **Goal**: Final integration, polish, and Phase 1 release
 
 #### **Tasks**
+
 1. **AI Features Integration**
    - Ensure AI features work on all pages
    - Update AI context for current page
@@ -412,6 +432,7 @@ This plan outlines the implementation of a multi-page note-taking system in **tw
    - User acceptance testing
 
 #### **Deliverables**
+
 - ✅ Fully integrated multi-page system
 - ✅ All AI features working
 - ✅ Export/backup system complete
@@ -421,6 +442,7 @@ This plan outlines the implementation of a multi-page note-taking system in **tw
 - ✅ **PHASE 1 RELEASE**
 
 #### **Manual Testing**
+
 - All AI features on different pages
 - Performance with many pages
 - Accessibility features
@@ -437,7 +459,9 @@ This plan outlines the implementation of a multi-page note-taking system in **tw
 #### **Goal**: Extend database for settings and create AI engine abstraction layer
 
 #### **Tasks**
+
 1. **Extend Database Schema**
+
    ```prisma
    model Settings {
      id              String   @id @default("settings")
@@ -468,6 +492,7 @@ This plan outlines the implementation of a multi-page note-taking system in **tw
    - Existing AI feature tests
 
 #### **Deliverables**
+
 - ✅ Extended database schema
 - ✅ AI engine abstraction layer
 - ✅ WebLLM engine implementation
@@ -475,6 +500,7 @@ This plan outlines the implementation of a multi-page note-taking system in **tw
 - ✅ Unit tests (95%+ coverage)
 
 #### **Manual Testing**
+
 - Verify all AI features still work
 - Test WebLLM engine wrapper
 - Test settings persistence
@@ -487,7 +513,9 @@ This plan outlines the implementation of a multi-page note-taking system in **tw
 #### **Goal**: Integrate LM Studio and create settings page
 
 #### **Tasks**
+
 1. **Install LM Studio Dependencies**
+
    ```bash
    npm install @lmstudio/sdk
    ```
@@ -524,6 +552,7 @@ This plan outlines the implementation of a multi-page note-taking system in **tw
    - Error handling tests
 
 #### **Deliverables**
+
 - ✅ LM Studio engine fully integrated
 - ✅ Settings page with AI engine toggle
 - ✅ Engine switching functionality
@@ -531,6 +560,7 @@ This plan outlines the implementation of a multi-page note-taking system in **tw
 - ✅ All tests passing
 
 #### **Manual Testing**
+
 - Toggle AI engines in settings
 - Test LM Studio connection
 - Verify fallback to WebLLM
@@ -544,6 +574,7 @@ This plan outlines the implementation of a multi-page note-taking system in **tw
 #### **Goal**: Final integration, comprehensive testing, and Phase 2 release
 
 #### **Tasks**
+
 1. **AI Features Integration**
    - Ensure all AI features work with both engines
    - Test engine switching per page
@@ -590,15 +621,17 @@ This plan outlines the implementation of a multi-page note-taking system in **tw
    - User testing
 
 #### **Deliverables**
+
 - ✅ Fully functional dual AI engine support
 - ✅ All features working with both engines
 - ✅ Optimized performance
-   - ✅ Comprehensive export/backup
+  - ✅ Comprehensive export/backup
 - ✅ Image handling complete
 - ✅ Comprehensive documentation
 - ✅ **PHASE 2 RELEASE**
 
 #### **Manual Testing**
+
 - All AI features with WebLLM
 - All AI features with LM Studio
 - Engine switching during workflows
@@ -612,6 +645,7 @@ This plan outlines the implementation of a multi-page note-taking system in **tw
 ## 📊 **Enhanced Database Schema**
 
 ### **Pages Table**
+
 ```prisma
 model Page {
   id          String   @id @default(cuid())
@@ -624,10 +658,10 @@ model Page {
   updatedAt   DateTime @updatedAt
   tags        String[]
   images      Image[]  // Relation to images
-  
+
   parent      Page?    @relation("PageHierarchy", fields: [parentId], references: [id])
   children    Page[]   @relation("PageHierarchy")
-  
+
   @@index([parentId])
   @@index([isFavorite])
   @@index([order])
@@ -635,6 +669,7 @@ model Page {
 ```
 
 ### **Images Table** 🖼️
+
 ```prisma
 model Image {
   id          String   @id @default(cuid())
@@ -645,12 +680,13 @@ model Image {
   pageId      String
   page        Page     @relation(fields: [pageId], references: [id])
   createdAt   DateTime @default(now())
-  
+
   @@index([pageId])
 }
 ```
 
 ### **Settings Table** (Phase 2)
+
 ```prisma
 model Settings {
   id              String   @id @default("settings")
@@ -668,6 +704,7 @@ model Settings {
 ## 🛠️ **Technical Architecture**
 
 ### **Full-Stack Stack**
+
 - **Frontend**: Next.js 15 + React 18.2.0 + TypeScript 5.2.2
 - **Backend**: Next.js API Routes + Node.js 22 LTS
 - **Database**: Prisma 6.16.2 + SQLite + better-sqlite3
@@ -719,12 +756,14 @@ notes-ai/
 ## ✅ **Pros of Next.js 2-Phase Approach**
 
 ### **Storage & Scalability**
+
 - ✅ **No Browser Limits**: SQLite can handle GBs of data
 - ✅ **Image Storage**: Files stored in public/uploads/
 - ✅ **Scalable**: Can handle thousands of pages with images
 - ✅ **Full Backup**: Complete database and images export
 
 ### **Export/Backup Benefits**
+
 - ✅ **Individual Page Export**: JSON and Markdown formats
 - ✅ **Image Export**: Images included in exports
 - ✅ **Full Backup**: All pages, images, and settings
@@ -732,12 +771,14 @@ notes-ai/
 - ✅ **Format Support**: JSON, Markdown, zip archives
 
 ### **Phase Benefits**
+
 - ✅ **Phase 1 Delivery**: Core features in 8 weeks
 - ✅ **Phase 2 Enhancement**: Dual AI in 11 weeks total
 - ✅ **Incremental Value**: Users get features gradually
 - ✅ **Rollback Safety**: Each phase independently functional
 
 ### **Technical Benefits**
+
 - ✅ **Full-Stack**: Server-side rendering and API routes
 - ✅ **SQLite FTS5**: Powerful full-text search
 - ✅ **Image Management**: Proper file handling
@@ -749,18 +790,21 @@ notes-ai/
 ## ❌ **Cons of Next.js 2-Phase Approach**
 
 ### **Complexity**
+
 - ❌ **Major Refactoring**: Vite → Next.js migration
 - ❌ **Longer Development**: 11 weeks total timeline
 - ❌ **Server Deployment**: Need server-side hosting
 - ❌ **Database Management**: SQLite file management
 
 ### **Deployment**
+
 - ❌ **Server Required**: Can't use static hosting
 - ❌ **More Complex**: Environment setup needed
 - ❌ **Higher Cost**: Server hosting costs
 - ❌ **Backup Location**: Need to manage SQLite file location
 
 ### **Development Overhead**
+
 - ❌ **Learning Curve**: Next.js concepts to learn
 - ❌ **Testing Complexity**: Server-side testing
 - ❌ **Debugging**: More complex debugging
@@ -771,6 +815,7 @@ notes-ai/
 ## ✅ **Confirmed Requirements**
 
 ### **Storage & Backup** ✅
+
 1. **Database Location**: `./prisma/notesai.db` (default) ✅
 2. **Image Storage**: `./public/uploads/` (default) ✅
 3. **Backup Strategy**: Both manual exports in-app AND database/uploads folder zip ✅
@@ -779,6 +824,7 @@ notes-ai/
 6. **Auto-Start**: Settings toggle for "Start with Windows" ✅
 
 ### **Export Features** ✅
+
 1. **Markdown Images**: Embed in ZIP file ✅
 2. **JSON Images**: References only (not base64) ✅
 3. **Export Scope**: Three options:
@@ -788,12 +834,14 @@ notes-ai/
 4. **Export Location**: Download to user's device ✅
 
 ### **Deployment** ✅
+
 1. **Environment**: Local-first desktop app ✅
 2. **Server**: Runs locally on localhost:4000 ✅
 3. **Database Backup**: Manual via in-app export + optional local backup scripts ✅
 4. **Image Cleanup**: Orphan cleanup as future Phase 7 enhancement ✅
 
 ### **LM Studio (Phase 2)** ✅
+
 1. **Setup**: Users expected to install LM Studio separately ✅
 2. **Auto-Detection**: Auto-detect with manual URL override option ✅
 3. **Model Selection**: Yes, show available models in dropdown ✅
@@ -804,6 +852,7 @@ notes-ai/
 ## 📋 **Success Metrics**
 
 ### **Phase 1 Metrics**
+
 - **Test Coverage**: 95%+ unit test coverage
 - **Performance**: <200ms page load time
 - **Search Speed**: <100ms search results
@@ -812,11 +861,13 @@ notes-ai/
 - **Backup Size**: Reasonable file sizes
 
 ### **Phase 2 Metrics**
+
 - **AI Response Time**: <2s for LM Studio, <5s for WebLLM
 - **Engine Switching**: <1 second to switch
 - **No Regression**: All Phase 1 features still work
 
 ### **Overall Quality**
+
 - **Error Rate**: <1% in production
 - **User Satisfaction**: Positive feedback
 - **Performance**: No regression
@@ -827,6 +878,7 @@ notes-ai/
 ## 📅 **Timeline Summary**
 
 ### **Phase 1 (8 Weeks)**
+
 - Week 1-2: Next.js migration
 - Week 3: Database + Image storage
 - Week 4: Sidebar UI
@@ -836,6 +888,7 @@ notes-ai/
 - Week 8: Integration, polish, and **Phase 1 Release**
 
 ### **Phase 2 (3 Weeks)**
+
 - Week 9: AI engine abstraction
 - Week 10: LM Studio integration
 - Week 11: Testing, polish, and **Phase 2 Release**
@@ -851,6 +904,7 @@ This plan provides a comprehensive roadmap for implementing the multi-page featu
 ## 📝 **Implementation Summary**
 
 ### **Environment**
+
 - **Local-First Desktop App**: Runs on localhost:4000
 - **Database**: SQLite at `./prisma/notesai.db`
 - **Images**: Stored at `./public/uploads/`
@@ -858,6 +912,7 @@ This plan provides a comprehensive roadmap for implementing the multi-page featu
 - **No External Hosting Required**: Fully self-contained
 
 ### **Key Features Confirmed**
+
 - ✅ Collapsible/resizable sidebar with drag & drop
 - ✅ Hierarchical pages (parent/child relationships)
 - ✅ Favorites system
@@ -870,11 +925,11 @@ This plan provides a comprehensive roadmap for implementing the multi-page featu
 - ✅ Auto-start toggle in Settings
 
 ### **Export/Backup Implementation**
-- **Export Options**: 
+
+- **Export Options**:
   - Current page only
   - Current page + subpages
   - All pages
-  
 - **Export Formats**:
   - JSON: Page data with image references
   - Markdown: Text content with images in ZIP
@@ -883,11 +938,13 @@ This plan provides a comprehensive roadmap for implementing the multi-page featu
 - **Export Location**: Downloads to user's device
 
 ### **LM Studio Integration (Phase 2)**
+
 - Auto-detect LM Studio on localhost:1234
 - Manual URL override option
 - Model selection dropdown
 - Auto-fallback to WebLLM if unavailable
 
 ### **Development Port**
+
 - Development: localhost:4000
 - Next.js configured for port 4000

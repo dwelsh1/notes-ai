@@ -1,5 +1,11 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  act,
+} from '@testing-library/react';
 import { createRef } from 'react';
 import { Sidebar } from '../Sidebar';
 
@@ -7,9 +13,30 @@ import { Sidebar } from '../Sidebar';
 global.fetch = jest.fn();
 
 const mockPages = [
-  { id: '1', title: 'Page 1', parentId: null, order: 0, isFavorite: false, children: [] },
-  { id: '2', title: 'Page 2', parentId: null, order: 1, isFavorite: false, children: [] },
-  { id: '3', title: 'Page 3', parentId: '2', order: 0, isFavorite: false, children: [] },
+  {
+    id: '1',
+    title: 'Page 1',
+    parentId: null,
+    order: 0,
+    isFavorite: false,
+    children: [],
+  },
+  {
+    id: '2',
+    title: 'Page 2',
+    parentId: null,
+    order: 1,
+    isFavorite: false,
+    children: [],
+  },
+  {
+    id: '3',
+    title: 'Page 3',
+    parentId: '2',
+    order: 0,
+    isFavorite: false,
+    children: [],
+  },
 ];
 
 describe('Sidebar', () => {
@@ -102,7 +129,13 @@ describe('Sidebar', () => {
   });
 
   it('should show hover buttons on page hover', async () => {
-    render(<Sidebar {...defaultProps} onNewSubpage={jest.fn()} onDeletePage={jest.fn()} />);
+    render(
+      <Sidebar
+        {...defaultProps}
+        onNewSubpage={jest.fn()}
+        onDeletePage={jest.fn()}
+      />
+    );
 
     await waitFor(() => {
       expect(screen.getByText('Page 1')).toBeInTheDocument();
@@ -184,7 +217,7 @@ describe('Sidebar', () => {
     const targetPage = screen.getByText('Page 1');
 
     fireEvent.dragStart(draggedPage);
-    
+
     // Simulate dragging over the middle of target page
     const mockEvent = {
       preventDefault: jest.fn(),
@@ -224,11 +257,12 @@ describe('Sidebar', () => {
       await act(async () => {
         ref.current.refreshPages();
       });
-      
+
       await waitFor(() => {
-        expect(global.fetch).toHaveBeenCalledWith('http://localhost:4000/api/pages');
+        expect(global.fetch).toHaveBeenCalledWith(
+          'http://localhost:4000/api/pages'
+        );
       });
     }
   });
 });
-

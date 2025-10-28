@@ -1,5 +1,11 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  act,
+} from '@testing-library/react';
 import { Dashboard } from '../Dashboard';
 
 // Mock fetch globally
@@ -7,8 +13,18 @@ global.fetch = jest.fn();
 
 const mockDashboardData = {
   pages: [
-    { id: '2', title: 'Recent Page 2', updatedAt: new Date().toISOString(), createdAt: new Date().toISOString() },
-    { id: '1', title: 'Recent Page 1', updatedAt: new Date().toISOString(), createdAt: new Date().toISOString() },
+    {
+      id: '2',
+      title: 'Recent Page 2',
+      updatedAt: new Date().toISOString(),
+      createdAt: new Date().toISOString(),
+    },
+    {
+      id: '1',
+      title: 'Recent Page 1',
+      updatedAt: new Date().toISOString(),
+      createdAt: new Date().toISOString(),
+    },
   ],
 };
 
@@ -79,13 +95,20 @@ describe('Dashboard', () => {
 
   it('should handle fetch error gracefully', async () => {
     (global.fetch as jest.Mock).mockRejectedValue(new Error('API error'));
-    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const consoleSpy = jest
+      .spyOn(console, 'error')
+      .mockImplementation(() => {});
 
     render(<Dashboard {...defaultProps} />);
 
     await waitFor(() => {
-      expect(screen.queryByText('Loading dashboard...')).not.toBeInTheDocument();
-      expect(consoleSpy).toHaveBeenCalledWith('Error fetching dashboard data:', expect.any(Error));
+      expect(
+        screen.queryByText('Loading dashboard...')
+      ).not.toBeInTheDocument();
+      expect(consoleSpy).toHaveBeenCalledWith(
+        'Error fetching dashboard data:',
+        expect.any(Error)
+      );
     });
 
     consoleSpy.mockRestore();

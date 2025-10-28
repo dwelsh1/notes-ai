@@ -18,7 +18,7 @@ jest.mock('@blocknote/react', () => ({
     insertBlocks: jest.fn(),
     getTextCursorPosition: jest.fn(),
   })),
-  useEditorContentOrSelectionChange: jest.fn((callback) => callback()),
+  useEditorContentOrSelectionChange: jest.fn(callback => callback()),
 }));
 
 // Mock blockManipulation
@@ -30,7 +30,7 @@ jest.mock('../../utils/blockManipulation', () => ({
 
 // Mock ParserBlockToString
 jest.mock('../../utils/ParserBlockToString', () => ({
-  convertBlockToString: jest.fn((block) => block.content?.[0]?.text || ''),
+  convertBlockToString: jest.fn(block => block.content?.[0]?.text || ''),
 }));
 
 // Import after mocks

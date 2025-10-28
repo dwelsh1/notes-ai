@@ -30,7 +30,7 @@ export default async function handler(
   } else if (req.method === 'PUT') {
     try {
       const { filename, originalName, mimeType, size, pageId } = req.body;
-      
+
       const image = await prisma.image.update({
         where: {
           id: id as string,
@@ -73,4 +73,3 @@ export default async function handler(
     res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }
-

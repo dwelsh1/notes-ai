@@ -75,7 +75,7 @@ export default function NotesAI() {
     if (!engine && compatibleBrowser) {
       loadEngine();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [engine]);
 
   const mainEditor = useCreateBlockNote();
@@ -580,4 +580,3 @@ export default function NotesAI() {
     </div>
   );
 }
-

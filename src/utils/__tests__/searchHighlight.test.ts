@@ -14,7 +14,9 @@ describe('searchHighlight', () => {
 
     it('should highlight multiple occurrences', () => {
       const result = highlightSearchTerm('test test test', 'test');
-      expect(result).toBe('<mark>test</mark> <mark>test</mark> <mark>test</mark>');
+      expect(result).toBe(
+        '<mark>test</mark> <mark>test</mark> <mark>test</mark>'
+      );
     });
 
     it('should handle partial matches', () => {
@@ -48,4 +50,3 @@ describe('searchHighlight', () => {
     });
   });
 });
-

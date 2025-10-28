@@ -7,8 +7,6 @@
 [![Code Quality](https://img.shields.io/badge/code%20style-prettier-ff69b4.svg)](https://prettier.io/)
 [![ESLint](https://img.shields.io/badge/linted%20by-eslint-blue.svg)](https://eslint.org/)
 
-[Demo App](https://numerique-gouv.github.io/NotesAI/)
-
 </div>
 
 ## 🚀 Tech Stack

@@ -6,7 +6,8 @@ import '../src/styles/index.css';
 
 export const metadata: Metadata = {
   title: 'NotesAI - AI-Powered Note Taking',
-  description: 'A modern AI-powered note-taking application with BlockNote editor',
+  description:
+    'A modern AI-powered note-taking application with BlockNote editor',
 };
 
 export default function RootLayout({

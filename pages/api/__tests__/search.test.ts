@@ -102,7 +102,9 @@ describe('/api/search', () => {
   });
 
   it('should handle database errors', async () => {
-    (prisma.$queryRawUnsafe as jest.Mock).mockRejectedValue(new Error('Database error'));
+    (prisma.$queryRawUnsafe as jest.Mock).mockRejectedValue(
+      new Error('Database error')
+    );
 
     const req = {
       method: 'GET',
@@ -117,4 +119,3 @@ describe('/api/search', () => {
     expect(res.json).toHaveBeenCalledWith({ error: 'Failed to search pages' });
   });
 });
-

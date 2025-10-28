@@ -21,10 +21,10 @@ for (const page of pages) {
     // Extract text from content
     const blocks = JSON.parse(page.content);
     const textParts = [];
-    
+
     function traverseBlock(block) {
       if (Array.isArray(block.content)) {
-        block.content.forEach((item) => {
+        block.content.forEach(item => {
           if (typeof item === 'string') {
             textParts.push(item);
           } else if (typeof item === 'object' && item !== null) {
@@ -38,20 +38,23 @@ for (const page of pages) {
         });
       }
       if (Array.isArray(block.children)) {
-        block.children.forEach((child) => {
+        block.children.forEach(child => {
           if (typeof child === 'object' && child !== null) {
             traverseBlock(child);
           }
         });
       }
     }
-    
+
     blocks.forEach(traverseBlock);
     const extractedText = textParts.join(' ').trim();
     const searchableText = `${page.title} ${extractedText}`.trim();
-    
+
     // Update the page
-    db.prepare('UPDATE page SET searchableText = ? WHERE id = ?').run(searchableText, page.id);
+    db.prepare('UPDATE page SET searchableText = ? WHERE id = ?').run(
+      searchableText,
+      page.id
+    );
     console.log(`Updated page: ${page.title}`);
   } catch (error) {
     console.error(`Error processing page ${page.id}:`, error);
@@ -61,4 +64,3 @@ for (const page of pages) {
 console.log('Backfilling complete!');
 
 db.close();
-

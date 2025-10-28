@@ -25,7 +25,7 @@ export function extractSearchableText(content: string): string {
     function traverseBlock(block: BlockContent): void {
       // Extract text from content array
       if (Array.isArray(block.content)) {
-        block.content.forEach((item) => {
+        block.content.forEach(item => {
           if (typeof item === 'string') {
             textParts.push(item);
           } else if (typeof item === 'object' && item !== null) {
@@ -38,7 +38,7 @@ export function extractSearchableText(content: string): string {
               textParts.push(item.url);
             }
             // Handle any other string properties
-            Object.values(item).forEach((val) => {
+            Object.values(item).forEach(val => {
               if (typeof val === 'string') {
                 textParts.push(val);
               }
@@ -49,7 +49,7 @@ export function extractSearchableText(content: string): string {
 
       // Recurse into children
       if (Array.isArray(block.children)) {
-        block.children.forEach((child) => {
+        block.children.forEach(child => {
           if (typeof child === 'object' && child !== null) {
             traverseBlock(child);
           }
@@ -67,7 +67,11 @@ export function extractSearchableText(content: string): string {
 /**
  * Updates the searchableText field for a page when content changes
  */
-export async function updateSearchableText(pageId: string, title: string, content: string): Promise<void> {
+export async function updateSearchableText(
+  pageId: string,
+  title: string,
+  content: string
+): Promise<void> {
   const extractedText = extractSearchableText(content);
   const searchableText = `${title} ${extractedText}`.trim();
 
@@ -81,4 +85,3 @@ export async function updateSearchableText(pageId: string, title: string, conten
     console.error('Failed to update searchable text:', error);
   }
 }
-

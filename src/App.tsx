@@ -65,7 +65,9 @@ const App = () => {
 
   const [output, setOutput] = useState<string>('');
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [currentPageId, setCurrentPageId] = useState<string | undefined>(undefined);
+  const [currentPageId, setCurrentPageId] = useState<string | undefined>(
+    undefined
+  );
   const [pageTitle, setPageTitle] = useState('Untitled Page');
   const sidebarRef = useRef<SidebarRef>(null);
   const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -83,7 +85,7 @@ const App = () => {
     if (!engine && compatibleBrowser) {
       loadEngine();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [engine]);
 
   const mainEditor = useCreateBlockNote();
@@ -113,7 +115,7 @@ const App = () => {
       }
       unsubscribe();
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mainEditor, currentPageId]);
 
   // Test function for debugging - currently unused
@@ -607,7 +609,9 @@ const App = () => {
         sidebarRef.current?.refreshPages();
         // Auto-select the title field
         setTimeout(() => {
-          const titleInput = document.querySelector('input[placeholder="Page title..."]') as HTMLInputElement;
+          const titleInput = document.querySelector(
+            'input[placeholder="Page title..."]'
+          ) as HTMLInputElement;
           if (titleInput) {
             titleInput.focus();
             titleInput.select();
@@ -635,14 +639,14 @@ const App = () => {
         setPageTitle(page.title || 'Untitled Page');
         // Parse content and load into editor
         const blocks = JSON.parse(page.content);
-        
+
         // Replace all blocks with loaded content
         if (mainEditor.document.length > 0) {
           mainEditor.replaceBlocks(mainEditor.document, blocks);
         } else {
           mainEditor.insertBlocks(blocks, undefined, 'before');
         }
-        
+
         setCurrentPageId(pageId);
       } else {
         console.error('Failed to load page');
@@ -699,9 +703,12 @@ const App = () => {
 
   const handleDeletePage = async (pageId: string) => {
     try {
-      const response = await fetch(`http://localhost:4000/api/pages/${pageId}`, {
-        method: 'DELETE',
-      });
+      const response = await fetch(
+        `http://localhost:4000/api/pages/${pageId}`,
+        {
+          method: 'DELETE',
+        }
+      );
 
       if (response.ok) {
         // If we deleted the current page, clear it
@@ -732,7 +739,9 @@ const App = () => {
       setPageTitle('Untitled Page');
 
       // Fetch parent page to get its order and determine next order
-      const parentResponse = await fetch(`http://localhost:4000/api/pages/${parentId}`);
+      const parentResponse = await fetch(
+        `http://localhost:4000/api/pages/${parentId}`
+      );
       const parentPage = await parentResponse.json();
 
       const content = JSON.stringify(mainEditor.document);
@@ -762,7 +771,9 @@ const App = () => {
         sidebarRef.current?.refreshPages();
         // Auto-select the title field
         setTimeout(() => {
-          const titleInput = document.querySelector('input[placeholder="Page title..."]') as HTMLInputElement;
+          const titleInput = document.querySelector(
+            'input[placeholder="Page title..."]'
+          ) as HTMLInputElement;
           if (titleInput) {
             titleInput.focus();
             titleInput.select();
@@ -776,10 +787,16 @@ const App = () => {
     }
   };
 
-  const handleReorderPages = async (pageId: string, newOrder: number, newParentId: string | null) => {
+  const handleReorderPages = async (
+    pageId: string,
+    newOrder: number,
+    newParentId: string | null
+  ) => {
     try {
       // Get the dragged page to check its current parent and order
-      const draggedPageResponse = await fetch(`http://localhost:4000/api/pages/${pageId}`);
+      const draggedPageResponse = await fetch(
+        `http://localhost:4000/api/pages/${pageId}`
+      );
       if (!draggedPageResponse.ok) {
         console.error('Failed to get dragged page');
         return;
@@ -794,15 +811,17 @@ const App = () => {
         return;
       }
       const allPages = await allPagesResponse.json();
-      
+
       // Get siblings at the OLD level
-      const oldSiblings = allPages.filter((p: any) => 
-        p.parentId === oldParentId && p.id !== pageId && p.order > oldOrder
+      const oldSiblings = allPages.filter(
+        (p: any) =>
+          p.parentId === oldParentId && p.id !== pageId && p.order > oldOrder
       );
 
-      // Get siblings at the NEW level  
-      const newSiblings = allPages.filter((p: any) => 
-        p.parentId === newParentId && p.id !== pageId && p.order >= newOrder
+      // Get siblings at the NEW level
+      const newSiblings = allPages.filter(
+        (p: any) =>
+          p.parentId === newParentId && p.id !== pageId && p.order >= newOrder
       );
 
       // Step 1: Close the gap at old position (shift old siblings down by 1)
@@ -824,14 +843,17 @@ const App = () => {
       }
 
       // Step 3: Update the dragged page to its new position
-      const response = await fetch(`http://localhost:4000/api/pages/${pageId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          order: newOrder,
-          parentId: newParentId,
-        }),
-      });
+      const response = await fetch(
+        `http://localhost:4000/api/pages/${pageId}`,
+        {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            order: newOrder,
+            parentId: newParentId,
+          }),
+        }
+      );
 
       if (!response.ok) {
         console.error('Failed to reorder page');
@@ -874,7 +896,7 @@ const App = () => {
               <input
                 type="text"
                 value={pageTitle}
-                onChange={(e) => {
+                onChange={e => {
                   setPageTitle(e.target.value);
                 }}
                 onBlur={() => {
@@ -917,7 +939,10 @@ const App = () => {
 
             {showSecondEditor && (
               <div className="flex-1 bg-white border-l border-gray-200 min-w-0 overflow-auto">
-                <BlockNoteView editor={secondEditor} className="h-full w-full" />
+                <BlockNoteView
+                  editor={secondEditor}
+                  className="h-full w-full"
+                />
               </div>
             )}
           </div>

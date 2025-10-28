@@ -25,11 +25,11 @@ function extractTextFromBlocks(content: string): string {
 
       // Extract from content array
       if (Array.isArray(block.content)) {
-        block.content.forEach((item) => {
+        block.content.forEach(item => {
           if (typeof item === 'string') {
             textParts.push(item);
           } else if (typeof item === 'object' && item !== null) {
-            Object.values(item).forEach((val) => {
+            Object.values(item).forEach(val => {
               if (typeof val === 'string') {
                 textParts.push(val);
               }
@@ -40,7 +40,7 @@ function extractTextFromBlocks(content: string): string {
 
       // Recurse into children
       if (Array.isArray(block.children)) {
-        block.children.forEach((child) => {
+        block.children.forEach(child => {
           if (typeof child === 'object' && child !== null) {
             traverseBlock(child);
           }
@@ -48,11 +48,11 @@ function extractTextFromBlocks(content: string): string {
       }
 
       // Extract any string values from the block object
-      Object.values(block).forEach((val) => {
+      Object.values(block).forEach(val => {
         if (typeof val === 'string') {
           textParts.push(val);
         } else if (Array.isArray(val)) {
-          val.forEach((item) => {
+          val.forEach(item => {
             if (typeof item === 'string') {
               textParts.push(item);
             }
@@ -101,7 +101,9 @@ async function GET(req: NextApiRequest, res: NextApiResponse) {
 
     // Escape special FTS5 characters and prepare query
     const escapedTerm = searchTerm.replace(/["'\u2019]/g, '');
-    const ftsQuery = searchTerm.includes(' ') ? `"${escapedTerm}"` : escapedTerm;
+    const ftsQuery = searchTerm.includes(' ')
+      ? `"${escapedTerm}"`
+      : escapedTerm;
 
     // Use FTS5 for fast, ranked search with highlighting
     const results = await prisma.$queryRawUnsafe(`
@@ -132,7 +134,9 @@ async function GET(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   return GET(req, res);
 }
-

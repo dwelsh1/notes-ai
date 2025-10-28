@@ -9,6 +9,7 @@ Implemented advanced full-text search using SQLite FTS5 virtual tables for fast,
 ### 1. Database Schema Changes
 
 Added `searchableText` field to `Page` model:
+
 - Stores denormalized text from BlockNote content for searching
 - Automatically indexed for fast queries
 - Updated via Prisma migration
@@ -16,6 +17,7 @@ Added `searchableText` field to `Page` model:
 ### 2. FTS5 Virtual Table
 
 Created `pages_fts` virtual table:
+
 - Uses SQLite FTS5 extension for full-text search
 - Syncs with `page` table via triggers
 - Stores id, title, and searchableText for indexing
@@ -28,6 +30,7 @@ Created `pages_fts` virtual table:
 **Endpoint:** `GET /api/search?q={query}`
 
 Features:
+
 - Uses FTS5 `MATCH` for fast searching
 - Searches across title and searchableText
 - Results ranked by title match priority (pages with search term in title appear first)
@@ -37,19 +40,22 @@ Features:
 **Implementation:** `pages/api/search.ts`
 
 **How Ranking Works:**
+
 ```sql
-ORDER BY 
+ORDER BY
   CASE WHEN LOWER(p.title) LIKE LOWER('%${searchTerm}%') THEN 0 ELSE 1 END,
   p."updatedAt" DESC
 ```
 
 This ensures:
+
 1. **Primary sort**: Pages with the search term in the title appear first (relevance)
 2. **Secondary sort**: Most recently updated pages appear first (recency)
 
 ### 4. Text Extraction
 
 Created `extractSearchableText()` utility:
+
 - Parses BlockNote JSON content
 - Extracts plain text from all blocks
 - Recursively processes nested content
@@ -61,12 +67,14 @@ Created `extractSearchableText()` utility:
 ### 5. Search Highlighting
 
 Added `highlightSearchTerm()` utility:
+
 - Highlights matching search terms in results
 - Case-insensitive matching
 - Escapes special regex characters
 - Returns HTML with `<mark>` tags (displayed as yellow background)
 
 **How Highlighting Works:**
+
 ```typescript
 // Client-side highlighting in Sidebar
 const highlighted = highlightSearchTerm(page.title, searchQuery);
@@ -90,11 +98,13 @@ const highlighted = highlightSearchTerm(page.title, searchQuery);
 ## Performance Benefits
 
 ### Before (LIKE queries):
+
 - Sequential scanning of all pages
 - No indexing optimization
 - Slower on large datasets
 
 ### After (FTS5):
+
 - Inverted index for instant lookups
 - Automatic relevance ranking
 - Fast even with thousands of pages
@@ -117,6 +127,7 @@ const results = await response.json();
 ## Files Changed
 
 ### New Files
+
 - `pages/api/search.ts` - Search API endpoint
 - `pages/api/__tests__/search.test.ts` - Search API tests
 - `prisma/migrations/setup_fts5.sql` - FTS5 setup SQL
@@ -126,6 +137,7 @@ const results = await response.json();
 - `src/utils/__tests__/searchHighlight.test.ts` - Highlighting tests
 
 ### Modified Files
+
 - `prisma/schema.prisma` - Added searchableText field
 - `src/App.tsx` - Auto-update searchableText on save
 - `src/components/Sidebar.tsx` - API-based search with highlighting
@@ -137,6 +149,7 @@ const results = await response.json();
 ## Status
 
 ✅ **Completed:**
+
 - FTS5 virtual table implementation
 - Search API with ranking
 - Search term highlighting
@@ -152,4 +165,3 @@ const results = await response.json();
 2. Test search functionality manually in browser
 3. Consider adding search snippets in results
 4. Add search result preview on hover
-

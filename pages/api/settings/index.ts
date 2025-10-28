@@ -31,8 +31,14 @@ export default async function handler(
     }
   } else if (req.method === 'PUT') {
     try {
-      const { aiEngine, lmStudioUrl, lmStudioModel, preferredModel, fallbackEnabled } = req.body;
-      
+      const {
+        aiEngine,
+        lmStudioUrl,
+        lmStudioModel,
+        preferredModel,
+        fallbackEnabled,
+      } = req.body;
+
       const settings = await prisma.settings.upsert({
         where: {
           id: 'settings',
@@ -48,7 +54,8 @@ export default async function handler(
           id: 'settings',
           aiEngine: aiEngine || 'webllm',
           lmStudioUrl: lmStudioUrl || 'http://localhost:1234/v1',
-          fallbackEnabled: fallbackEnabled !== undefined ? fallbackEnabled : true,
+          fallbackEnabled:
+            fallbackEnabled !== undefined ? fallbackEnabled : true,
           lmStudioModel,
           preferredModel,
         },
@@ -63,4 +70,3 @@ export default async function handler(
     res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }
-

@@ -1,4 +1,7 @@
-import { extractSearchableText, updateSearchableText } from '../extractSearchableText';
+import {
+  extractSearchableText,
+  updateSearchableText,
+} from '../extractSearchableText';
 
 describe('extractSearchableText', () => {
   it('should extract text from simple paragraph content', () => {
@@ -61,7 +64,7 @@ describe('extractSearchableText', () => {
     const result = extractSearchableText(content);
     expect(result).toContain('Parent item');
     expect(result).toContain('Child item');
-      });
+  });
 
   it('should extract text from string content', () => {
     const content = JSON.stringify([

@@ -70,7 +70,6 @@ describe('Header', () => {
     expect(defaultProps.onDevelop).toHaveBeenCalledTimes(1);
   });
 
-
   it('should call onStop when Stop button is clicked', () => {
     render(<Header {...defaultProps} isGenerating={true} />);
 

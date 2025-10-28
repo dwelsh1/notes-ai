@@ -1,10 +1,13 @@
 # Title Field Implementation Plan
 
 ## Problem
+
 Currently, pages have a generic "Untitled Page" or "Current Page" title with no way to set a proper title. Users expect a Notion-style title field at the top of the editor.
 
 ## Solution
+
 Implement a title field that:
+
 1. Appears at the top of the editor
 2. Stores the title in the page's `title` field in the database
 3. Syncs with the first heading or becomes the first heading in the editor
@@ -13,29 +16,35 @@ Implement a title field that:
 ## Implementation Options
 
 ### Option 1: Title Above BlockNote Editor (Recommended)
+
 - Add a separate input field above the BlockNote editor
 - Store title separately in database
 - Sync with first heading in editor content
 
 **Pros:**
+
 - Simple to implement
 - Clear separation between title and content
 - Notion-like user experience
 
 **Cons:**
+
 - Requires a separate input field
 - Needs to sync with first heading
 
 ### Option 2: Custom BlockNote Block
+
 - Create a custom "Title" block type in BlockNote
 - Always stays as first block
 - Can't be deleted or moved
 
 **Pros:**
+
 - Integrated with BlockNote
 - More complex to implement
 
 **Cons:**
+
 - Requires BlockNote customization
 - Limited by BlockNote's architecture
 
@@ -64,7 +73,7 @@ Implement a title field that:
   type="text"
   placeholder="Untitled Page"
   value={pageTitle}
-  onChange={(e) => setPageTitle(e.target.value)}
+  onChange={e => setPageTitle(e.target.value)}
   onBlur={handleTitleBlur}
   style={{
     fontSize: '40px',
@@ -78,8 +87,8 @@ Implement a title field that:
 ```
 
 ## Next Steps
+
 1. Add title input field to App.tsx
 2. Update save function to include title
 3. Update load function to display title
 4. Test with Notion-style workflow
-

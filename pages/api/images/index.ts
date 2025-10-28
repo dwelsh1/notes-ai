@@ -19,7 +19,7 @@ export default async function handler(
   } else if (req.method === 'POST') {
     try {
       const { filename, originalName, mimeType, size, pageId } = req.body;
-      
+
       if (!filename || !originalName || !mimeType || !size || !pageId) {
         res.status(400).json({ error: 'Missing required fields' });
         return;
@@ -43,4 +43,3 @@ export default async function handler(
     res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }
-

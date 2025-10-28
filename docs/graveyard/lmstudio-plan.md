@@ -9,31 +9,34 @@ This plan outlines the implementation of a multi-page note-taking system using *
 ## 🎯 **Core Features**
 
 ### **1. Modern Sidebar**
+
 - **Collapsible/Expandable**: Toggle between collapsed and expanded states
 - **Resizable**: Drag to adjust width
 - **Three Sections**:
   - **Favorites** (top)
-  - **Pages** (middle) 
+  - **Pages** (middle)
   - **Search** (bottom)
 
 ### **2. Page Management**
+
 - **Hierarchical Structure**: Parent pages with unlimited subpages
 - **Drag & Drop**: Reorder pages, create subpages by dropping
 - **Favorites System**: Drag pages to favorites, remove from main list
 - **Page Creation**: Add new pages with custom names
 
 ### **3. Search Functionality**
+
 - **Full-Text Search**: Search page names and content using Dexie.js full-text search
 - **Real-time Results**: Instant search as you type
 - **Highlighted Results**: Show matching text with highlighting
 
 ### **4. Dual AI Engine Support** ⭐ **NEW**
-- **WebLLM Mode**: Browser-based AI** (default)
+
+- **WebLLM Mode**: Browser-based AI\*\* (default)
   - Runs entirely in browser using WebGPU
   - No server required
   - Fully private and secure
-  
-- **LM Studio Mode**: Local AI server** (new option)
+- **LM Studio Mode**: Local AI server\*\* (new option)
   - Connect to local LM Studio server running on localhost
   - OpenAI-compatible API at `http://localhost:1234/v1`
   - Use OpenAI-compatible SDK (`@lmstudio/sdk`)
@@ -52,6 +55,7 @@ This plan outlines the implementation of a multi-page note-taking system using *
 ## 🛠️ **Technical Architecture**
 
 ### **Current Stack (Maintained)**
+
 - **Frontend**: Vite + React 18.2.0 + TypeScript 5.2.2
 - **Editor**: BlockNote 0.12.4
 - **AI Engine (WebLLM)**: WebLLM 0.2.35 (existing)
@@ -60,6 +64,7 @@ This plan outlines the implementation of a multi-page note-taking system using *
 - **Styling**: Inline styles (no CSS framework conflicts)
 
 ### **New Additions**
+
 - **Database**: Dexie.js 4.0.0+ (IndexedDB wrapper)
 - **Drag & Drop**: @dnd-kit/core, @dnd-kit/sortable, @dnd-kit/utilities
 - **Search**: Dexie.js full-text search capabilities
@@ -71,33 +76,36 @@ This plan outlines the implementation of a multi-page note-taking system using *
 ## 📊 **Database Schema**
 
 ### **Pages Table**
+
 ```typescript
 interface Page {
-  id: string;                    // UUID
-  title: string;                 // Page title
-  content: BlockNoteBlock[];     // BlockNote editor content
-  parentId?: string;             // Parent page ID (for subpages)
-  order: number;                 // Display order
-  isFavorite: boolean;           // Is in favorites
-  createdAt: Date;               // Creation timestamp
-  updatedAt: Date;               // Last modified timestamp
-  tags?: string[];               // Optional tags for categorization
+  id: string; // UUID
+  title: string; // Page title
+  content: BlockNoteBlock[]; // BlockNote editor content
+  parentId?: string; // Parent page ID (for subpages)
+  order: number; // Display order
+  isFavorite: boolean; // Is in favorites
+  createdAt: Date; // Creation timestamp
+  updatedAt: Date; // Last modified timestamp
+  tags?: string[]; // Optional tags for categorization
 }
 ```
 
 ### **Settings Table** ⭐ **NEW**
+
 ```typescript
 interface Settings {
-  id: string;                     // UUID (always "settings")
+  id: string; // UUID (always "settings")
   aiEngine: 'webllm' | 'lmstudio'; // AI engine selection
-  lmStudioUrl: string;           // LM Studio server URL
-  lmStudioModel?: string;        // Selected LM Studio model
-  preferredModel?: string;       // Preferred WebLLM model
-  fallbackEnabled: boolean;      // Fallback to WebLLM if LM Studio fails
+  lmStudioUrl: string; // LM Studio server URL
+  lmStudioModel?: string; // Selected LM Studio model
+  preferredModel?: string; // Preferred WebLLM model
+  fallbackEnabled: boolean; // Fallback to WebLLM if LM Studio fails
 }
 ```
 
 ### **Database Indexes**
+
 - **Primary**: `id`
 - **Hierarchy**: `parentId`
 - **Ordering**: `order`
@@ -110,10 +118,13 @@ interface Settings {
 ## 🚀 **Implementation Phases**
 
 ### **Phase 1: Database Foundation + AI Engine Abstraction** (Week 1)
+
 **Goal**: Set up Dexie.js database, AI engine abstraction layer, and basic page CRUD operations
 
 #### **Tasks**
+
 1. **Install Dependencies**
+
    ```bash
    npm install dexie @types/dexie @lmstudio/sdk
    npm install @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities
@@ -147,6 +158,7 @@ interface Settings {
    - AI engine abstraction tests
 
 #### **Deliverables**
+
 - ✅ Working database with page storage
 - ✅ AI engine abstraction layer
 - ✅ Settings storage
@@ -154,6 +166,7 @@ interface Settings {
 - ✅ Unit tests (95%+ coverage)
 
 #### **Manual Testing**
+
 - Create, edit, delete pages
 - Test AI engine switching
 - Verify settings persistence
@@ -162,9 +175,11 @@ interface Settings {
 ---
 
 ### **Phase 2: Settings UI + LM Studio Integration** (Week 2)
+
 **Goal**: Create settings page with AI engine toggle and integrate LM Studio
 
 #### **Tasks**
+
 1. **Create Settings Components**
    - `src/components/Settings.tsx` - Main settings page
    - `src/components/AIEngineSelector.tsx` - Engine selection dropdown
@@ -198,6 +213,7 @@ interface Settings {
    - Error handling tests
 
 #### **Deliverables**
+
 - ✅ Settings page with AI toggle
 - ✅ LM Studio connection functionality
 - ✅ AI engine switching
@@ -205,6 +221,7 @@ interface Settings {
 - ✅ Fallback handling
 
 #### **Manual Testing**
+
 - Toggle AI engines in settings
 - Test LM Studio connection
 - Verify fallback to WebLLM
@@ -213,9 +230,11 @@ interface Settings {
 ---
 
 ### **Phase 3: Sidebar UI Foundation** (Week 3)
+
 **Goal**: Create the collapsible sidebar with basic page listing
 
 #### **Tasks**
+
 1. **Create Sidebar Components**
    - `src/components/Sidebar.tsx` - Main sidebar container
    - `src/components/SidebarToggle.tsx` - Collapse/expand button
@@ -237,12 +256,14 @@ interface Settings {
    - Page listing tests
 
 #### **Deliverables**
+
 - ✅ Collapsible sidebar
 - ✅ Page listing with hierarchy
 - ✅ Page selection
 - ✅ Responsive design
 
 #### **Manual Testing**
+
 - Toggle sidebar collapse/expand
 - Select different pages
 - Verify responsive behavior
@@ -251,9 +272,11 @@ interface Settings {
 ---
 
 ### **Phase 4: Drag & Drop System** (Week 4)
+
 **Goal**: Implement drag-and-drop for page reordering and hierarchy
 
 #### **Tasks**
+
 1. **Create Drag & Drop Components**
    - `src/components/DragDropProvider.tsx` - DnD context
    - `src/components/DraggablePage.tsx` - Draggable page item
@@ -275,12 +298,14 @@ interface Settings {
    - Visual feedback tests
 
 #### **Deliverables**
+
 - ✅ Drag & drop page reordering
 - ✅ Subpage creation via drag & drop
 - ✅ Visual drag feedback
 - ✅ Database consistency
 
 #### **Manual Testing**
+
 - Drag pages to reorder
 - Drop pages on other pages to create subpages
 - Verify hierarchy updates
@@ -289,9 +314,11 @@ interface Settings {
 ---
 
 ### **Phase 5: Favorites System** (Week 5)
+
 **Goal**: Implement favorites section with drag-and-drop functionality
 
 #### **Tasks**
+
 1. **Create Favorites Components**
    - `src/components/FavoritesSection.tsx` - Favorites container
    - `src/components/FavoriteItem.tsx` - Individual favorite item
@@ -317,12 +344,14 @@ interface Settings {
    - Subpage relationship tests
 
 #### **Deliverables**
+
 - ✅ Favorites section in sidebar
 - ✅ Drag & drop to favorites
 - ✅ Subpage relationship handling
 - ✅ Visual favorites indicators
 
 #### **Manual Testing**
+
 - Drag pages to favorites
 - Verify subpages move with parent
 - Remove from favorites
@@ -331,9 +360,11 @@ interface Settings {
 ---
 
 ### **Phase 6: Search Functionality + AI Integration** (Week 6)
+
 **Goal**: Implement full-text search and ensure AI features work on all pages
 
 #### **Tasks**
+
 1. **Create Search Components**
    - `src/components/SearchBar.tsx` - Search input
    - `src/components/SearchResults.tsx` - Results display
@@ -362,12 +393,14 @@ interface Settings {
    - Performance tests
 
 #### **Deliverables**
+
 - ✅ Full-text search
 - ✅ AI features on all pages
 - ✅ Real-time results
 - ✅ Text highlighting
 
 #### **Manual Testing**
+
 - Search page titles and content
 - Test AI features on different pages
 - Verify search performance
@@ -376,9 +409,11 @@ interface Settings {
 ---
 
 ### **Phase 7: Integration & Polish** (Week 7)
+
 **Goal**: Final integration, polish, and comprehensive testing
 
 #### **Tasks**
+
 1. **AI Feature Refinement** ⭐ **NEW**
    - Ensure all AI features work with both engines
    - Optimize AI context for current page
@@ -409,12 +444,14 @@ interface Settings {
    - Accessibility tests
 
 #### **Deliverables**
+
 - ✅ Fully integrated multi-page system
 - ✅ All AI features working on all pages
 - ✅ Optimized performance
 - ✅ Polished UI/UX
 
 #### **Manual Testing**
+
 - Test all AI features on different pages
 - Verify performance with many pages
 - Test AI engine switching
@@ -425,6 +462,7 @@ interface Settings {
 ## 📈 **Additional Features (Future Enhancements)**
 
 ### **Phase 8: Advanced Features** (Future)
+
 - **Page Templates**: Pre-defined page layouts
 - **Page Tags**: Categorization system
 - **Page Export/Import**: Backup and restore
@@ -441,6 +479,7 @@ interface Settings {
 ## ✅ **Pros of Dexie.js + LM Studio Approach**
 
 ### **Architecture Benefits**
+
 - **Maintains Current Stack**: No major refactoring needed
 - **Dual AI Support**: WebLLM (browser) + LM Studio (local server)
 - **Client-Side Storage**: No backend complexity for data storage
@@ -448,6 +487,7 @@ interface Settings {
 - **Fast Development**: Leverages existing codebase
 
 ### **Technical Benefits**
+
 - **TypeScript Integration**: Full type safety across all components
 - **Promise-Based API**: Modern async/await patterns
 - **Schema Versioning**: Easy database migrations
@@ -455,6 +495,7 @@ interface Settings {
 - **AI Abstraction**: Clean separation between AI engines
 
 ### **User Experience**
+
 - **Offline First**: Works without internet (WebLLM)
 - **Local AI Option**: Use powerful local models via LM Studio
 - **Fast Performance**: Local database access
@@ -462,19 +503,20 @@ interface Settings {
 - **Flexible**: User chooses AI engine based on needs
 
 ### **Development Experience**
+
 - **Familiar Tools**: Same Vite + React setup
 - **Easy Testing**: Can mock IndexedDB and AI engines
 - **Debugging**: Browser dev tools integration
 - **Maintenance**: Simple, single codebase
 
 ### **AI Engine Advantages** ⭐ **NEW**
-- **WebLLM Benefits**: 
+
+- **WebLLM Benefits**:
   - Browser-based, no external dependencies
   - Works offline
   - Fully private (no data leaves device)
   - Fast for smaller models
-  
-- **LM Studio Benefits**: 
+- **LM Studio Benefits**:
   - Access to larger, more powerful models
   - Better performance with GPU acceleration
   - More context window for longer conversations
@@ -486,6 +528,7 @@ interface Settings {
 ## ❌ **Cons of Dexie.js + LM Studio Approach**
 
 ### **Limitations**
+
 - **Storage Quotas**: Browser limits (usually 50MB-1GB)
 - **LM Studio Dependency**: Requires LM Studio server running
 - **No Cross-Device Sync**: Data stays on one device
@@ -493,17 +536,20 @@ interface Settings {
 - **Browser Dependency**: Only works in modern browsers
 
 ### **AI-Specific Limitations**
+
 - **LM Studio Setup**: Requires users to install and run LM Studio
 - **Server Management**: Users must manage local server
 - **Model Download**: Users must download models separately
 - **Resource Usage**: LM Studio requires more RAM/GPU resources
 
 ### **Search Limitations**
+
 - **Client-Side Only**: Search performance depends on data size
 - **Memory Usage**: Large datasets loaded into memory
 - **No Advanced Search**: Limited compared to server-side solutions
 
 ### **Complexity**
+
 - **AI Engine Switching**: More complex logic to handle two engines
 - **Error Handling**: More scenarios to handle
 - **Testing**: More test cases with dual AI support
@@ -514,18 +560,21 @@ interface Settings {
 ## 🤔 **Clarifying Questions**
 
 ### **Data & Storage**
+
 1. **Storage Limits**: Are you comfortable with browser storage quotas (50MB-1GB)?
 2. **Data Backup**: Do you need built-in backup/restore functionality?
 3. **Cross-Device**: Do you need access to pages on multiple devices?
 4. **Data Sharing**: Any plans to share pages between users?
 
 ### **User Experience**
+
 1. **Page Limits**: Any maximum number of pages/subpages?
 2. **Search Scope**: Should search include page metadata (tags, dates)?
 3. **Favorites Limit**: Any limit on number of favorites?
 4. **Offline Usage**: Is offline-first approach acceptable?
 
 ### **LM Studio Specific** ⭐ **NEW**
+
 1. **LM Studio Installation**: Will users be expected to have LM Studio installed?
 2. **Server Configuration**: Should we detect LM Studio automatically or require manual URL entry?
 3. **Model Selection**: Should we show available models in LM Studio?
@@ -534,18 +583,21 @@ interface Settings {
 6. **Performance**: What minimum system requirements for LM Studio models?
 
 ### **AI Features**
+
 1. **AI Engine Default**: Which should be default (WebLLM or LM Studio)?
 2. **Context Per Page**: Should each page have its own AI context/conversation?
 3. **AI Features**: Should all AI features (translate, correct, etc.) work with both engines?
 4. **Model Selection**: Should users be able to select specific models within each engine?
 
 ### **Technical Requirements**
+
 1. **Performance**: What's the expected maximum number of pages?
 2. **Search Performance**: Acceptable search delay for large datasets?
 3. **Browser Support**: Which browsers need to be supported?
 4. **Mobile Support**: Do you need mobile/touch drag & drop?
 
 ### **Integration**
+
 1. **Existing Content**: What happens to current single page content?
 2. **Migration**: Should existing content become the first page?
 3. **Settings Migration**: How should we handle existing AI settings?
@@ -556,6 +608,7 @@ interface Settings {
 ## 📋 **Success Metrics**
 
 ### **Technical Metrics**
+
 - **Test Coverage**: 95%+ unit test coverage
 - **Performance**: <100ms page load time
 - **Search Speed**: <200ms search results
@@ -563,6 +616,7 @@ interface Settings {
 - **AI Response**: <2s for LM Studio, <5s for WebLLM
 
 ### **User Experience Metrics**
+
 - **Page Creation**: <2 seconds to create new page
 - **Drag & Drop**: Smooth 60fps animations
 - **Search**: Real-time results as you type
@@ -570,6 +624,7 @@ interface Settings {
 - **Accessibility**: WCAG 2.1 AA compliance
 
 ### **Quality Metrics**
+
 - **Zero Breaking Changes**: Existing functionality preserved
 - **Error Rate**: <1% error rate in production
 - **AI Availability**: 99%+ uptime for WebLLM, graceful LM Studio fallback
@@ -581,11 +636,11 @@ interface Settings {
 ## 🎯 **LM Studio Integration Details**
 
 ### **LM Studio Setup Requirements**
-- **User Prerequisites**: 
+
+- **User Prerequisites**:
   - Install LM Studio from https://lmstudio.ai/
   - Download desired AI models
   - Start local inference server
-  
 - **Application Requirements**:
   - Detect LM Studio server at `http://localhost:1234/v1`
   - Test connection on settings page load
@@ -593,6 +648,7 @@ interface Settings {
   - Fallback to WebLLM if connection fails
 
 ### **LM Studio API Integration**
+
 ```typescript
 // Using @lmstudio/sdk
 import LMStudio from '@lmstudio/sdk';
@@ -610,6 +666,7 @@ const response = await client.chat.completions.create({
 ```
 
 ### **LM Studio Settings Page**
+
 - **Connection Status**: Green/red indicator
 - **Server URL**: Editable (default: localhost:1234)
 - **Model Selection**: Dropdown of available models

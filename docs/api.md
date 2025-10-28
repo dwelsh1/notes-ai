@@ -25,11 +25,13 @@ Access-Control-Allow-Methods: GET,OPTIONS,PATCH,DELETE,POST,PUT
 Retrieve all pages with their relationships.
 
 **Request:**
+
 ```
 GET /api/pages
 ```
 
 **Response:**
+
 ```json
 [
   {
@@ -55,7 +57,7 @@ GET /api/pages
     "children": [
       {
         "id": "string",
-        "title": "string",
+        "title": "string"
         // ... nested children
       }
     ]
@@ -64,6 +66,7 @@ GET /api/pages
 ```
 
 **Status Codes:**
+
 - `200` - Success
 - `500` - Internal server error
 
@@ -74,6 +77,7 @@ GET /api/pages
 Create a new page.
 
 **Request:**
+
 ```json
 {
   "title": "string",
@@ -87,6 +91,7 @@ Create a new page.
 ```
 
 **Response:**
+
 ```json
 {
   "id": "string",
@@ -103,6 +108,7 @@ Create a new page.
 ```
 
 **Status Codes:**
+
 - `201` - Created
 - `500` - Internal server error
 
@@ -115,11 +121,13 @@ Create a new page.
 Retrieve all images.
 
 **Request:**
+
 ```
 GET /api/images
 ```
 
 **Response:**
+
 ```json
 [
   {
@@ -135,6 +143,7 @@ GET /api/images
 ```
 
 **Status Codes:**
+
 - `200` - Success
 - `500` - Internal server error
 
@@ -145,6 +154,7 @@ GET /api/images
 Upload a new image.
 
 **Request:**
+
 ```json
 {
   "filename": "string",
@@ -156,6 +166,7 @@ Upload a new image.
 ```
 
 **Response:**
+
 ```json
 {
   "id": "string",
@@ -169,6 +180,7 @@ Upload a new image.
 ```
 
 **Status Codes:**
+
 - `201` - Created
 - `500` - Internal server error
 
@@ -179,11 +191,13 @@ Upload a new image.
 Retrieve a single image by ID.
 
 **Request:**
+
 ```
 GET /api/images/[id]
 ```
 
 **Response:**
+
 ```json
 {
   "id": "string",
@@ -198,6 +212,7 @@ GET /api/images/[id]
 ```
 
 **Status Codes:**
+
 - `200` - Success
 - `404` - Image not found
 - `500` - Internal server error
@@ -209,6 +224,7 @@ GET /api/images/[id]
 Update a single image by ID.
 
 **Request:**
+
 ```json
 {
   "filename": "string",
@@ -220,6 +236,7 @@ Update a single image by ID.
 ```
 
 **Response:**
+
 ```json
 {
   "id": "string",
@@ -233,6 +250,7 @@ Update a single image by ID.
 ```
 
 **Status Codes:**
+
 - `200` - Success
 - `404` - Image not found
 - `500` - Internal server error
@@ -244,16 +262,19 @@ Update a single image by ID.
 Delete a single image by ID.
 
 **Request:**
+
 ```
 DELETE /api/images/[id]
 ```
 
 **Response:**
+
 ```json
 { "message": "Image deleted successfully" }
 ```
 
 **Status Codes:**
+
 - `200` - Success
 - `404` - Image not found
 - `500` - Internal server error
@@ -267,11 +288,13 @@ DELETE /api/images/[id]
 Retrieve application settings.
 
 **Request:**
+
 ```
 GET /api/settings
 ```
 
 **Response:**
+
 ```json
 {
   "id": "string",
@@ -285,6 +308,7 @@ GET /api/settings
 ```
 
 **Status Codes:**
+
 - `200` - Success
 - `404` - Settings not found
 - `500` - Internal server error
@@ -296,6 +320,7 @@ GET /api/settings
 Update application settings.
 
 **Request:**
+
 ```json
 {
   "aiEngine": "string",
@@ -307,6 +332,7 @@ Update application settings.
 ```
 
 **Response:**
+
 ```json
 {
   "id": "string",
@@ -320,6 +346,7 @@ Update application settings.
 ```
 
 **Status Codes:**
+
 - `200` - Success
 - `404` - Settings not found
 - `500` - Internal server error
@@ -333,11 +360,13 @@ Update application settings.
 Retrieve a single page by ID.
 
 **Request:**
+
 ```
 GET /api/pages/[id]
 ```
 
 **Response:**
+
 ```json
 {
   "id": "string",
@@ -355,6 +384,7 @@ GET /api/pages/[id]
 ```
 
 **Status Codes:**
+
 - `200` - Success
 - `404` - Page not found
 - `500` - Internal server error
@@ -366,6 +396,7 @@ GET /api/pages/[id]
 Update a single page by ID.
 
 **Request:**
+
 ```json
 {
   "title": "string",
@@ -378,6 +409,7 @@ Update a single page by ID.
 ```
 
 **Response:**
+
 ```json
 {
   "id": "string",
@@ -393,6 +425,7 @@ Update a single page by ID.
 ```
 
 **Status Codes:**
+
 - `200` - Success
 - `404` - Page not found
 - `500` - Internal server error
@@ -404,16 +437,19 @@ Update a single page by ID.
 Delete a single page by ID.
 
 **Request:**
+
 ```
 DELETE /api/pages/[id]
 ```
 
 **Response:**
+
 ```json
 { "message": "Page deleted successfully" }
 ```
 
 **Status Codes:**
+
 - `204` - Success (No Content)
 - `404` - Page not found
 - `500` - Internal server error
@@ -478,11 +514,13 @@ All error responses follow this format:
 Perform full-text search using SQLite FTS5 on precomputed `searchableText`.
 
 **Request:**
+
 ```
 GET /api/search?q=meeting
 ```
 
 **Response:**
+
 ```json
 [
   {
@@ -501,10 +539,11 @@ GET /api/search?q=meeting
 ```
 
 **Notes:**
+
 - Returns up to 50 results, ordered by title match and `updatedAt`.
 - Special characters are sanitized internally.
 
 **Status Codes:**
+
 - `200` - Success (array, possibly empty)
 - `500` - Internal server error
-

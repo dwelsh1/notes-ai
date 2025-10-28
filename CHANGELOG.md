@@ -41,4 +41,3 @@ This release consolidates all prior work into a single baseline after resetting 
 
 - Current coverage at release time: ~91% statements (meeting thresholds above)
 - Repository history has been reset; older tags/releases will not be carried forward in the new history
-

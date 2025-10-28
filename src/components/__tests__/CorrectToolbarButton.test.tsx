@@ -19,7 +19,7 @@ jest.mock('@blocknote/react', () => ({
     getSelectedText: jest.fn(),
     getTextCursorPosition: jest.fn(),
   })),
-  useEditorContentOrSelectionChange: jest.fn((callback) => callback()),
+  useEditorContentOrSelectionChange: jest.fn(callback => callback()),
 }));
 
 // Mock correctSingleBlock

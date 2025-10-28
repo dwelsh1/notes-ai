@@ -22,7 +22,7 @@ jest.mock('@blocknote/react', () => ({
     tryParseMarkdownToBlocks: jest.fn(),
     updateBlock: jest.fn(),
   })),
-  useEditorContentOrSelectionChange: jest.fn((callback) => callback()),
+  useEditorContentOrSelectionChange: jest.fn(callback => callback()),
 }));
 
 // Import after mocks

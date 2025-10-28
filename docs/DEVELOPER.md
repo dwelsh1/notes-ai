@@ -25,24 +25,28 @@ To ensure clear communication between developers, users, and in documentation, w
 ### Layout Areas
 
 #### **Top Toolbar** (Main Header)
+
 - **Location**: Top of the application, full width
 - **Contains**: NotesAI logo, AI action buttons (Translate, Correct, Summarize, Develop), Clear button, Stop button
 - **Component**: `Header.tsx`
 - **Preferred**: **Top Toolbar**
 
 #### **Left Sidebar** (Pages Panel)
+
 - **Location**: Left side of the application, collapsible
 - **Contains**: Pages Header, Search Field, Page List
 - **Component**: `Sidebar.tsx`
 - **Preferred**: **Left Sidebar**
 
 #### **Main Content Area** (Editor Area)
+
 - **Location**: Center/right of the application
 - **Contains**: Page Title Field, BlockNote Editor, AI Chat UI
 - **Component**: `App.tsx` (orchestrates these), `BlockNoteEditor.tsx`, `ChatUI.tsx`
 - **Preferred**: **Main Content Area**
 
 #### **Footer** (Status Bar)
+
 - **Location**: Bottom of the application, full width
 - **Contains**: Status messages, potentially other global controls
 - **Preferred**: **Footer**
@@ -50,60 +54,70 @@ To ensure clear communication between developers, users, and in documentation, w
 ### Left Sidebar Components
 
 #### **Pages Header**
+
 - **Location**: Top section of the **Left Sidebar**
 - **Contains**: "Pages" label, New Page Button (+ icon), Collapse/Expand Sidebar Button (Chevron icon)
 - **Component**: Part of `Sidebar.tsx`
 - **Preferred**: **Pages Header**
 
 #### **Search Field**
+
 - **Location**: Below the **Pages Header** in the **Left Sidebar**
 - **Contains**: Input field for searching pages, Clear Search Button (X icon)
 - **Component**: Part of `Sidebar.tsx`
 - **Preferred**: **Search Field**
 
 #### **Page List**
+
 - **Location**: Below the **Search Field** in the **Left Sidebar**
 - **Contains**: Hierarchical list of **Page Items**
 - **Component**: Part of `Sidebar.tsx`
 - **Preferred**: **Page List**
 
 #### **Page Item**
+
 - **Location**: Within the **Page List**
 - **Contains**: Page title, Collapse/Expand Page Button (Chevron icon for subpages), New Subpage Button (+ icon on hover), Delete Page Button (Trash icon on hover)
 - **Component**: Part of `Sidebar.tsx` (rendered recursively)
 - **Preferred**: **Page Item**
 
 #### **Collapse/Expand Page Button**
+
 - **Location**: To the left of a **Page Item** title (if it has subpages)
 - **Contains**: `ChevronRight` (collapsed) or `ChevronDown` (expanded) icon
 - **Component**: Part of `Sidebar.tsx`
 - **Preferred**: **Collapse/Expand Page Button**
 
 #### **New Page Button**
+
 - **Location**: In the **Pages Header**
 - **Contains**: `Plus` icon
 - **Component**: Part of `Sidebar.tsx`
 - **Preferred**: **New Page Button**
 
 #### **Delete Page Button**
+
 - **Location**: Appears on hover over a **Page Item**
 - **Contains**: `Trash2` icon
 - **Component**: Part of `Sidebar.tsx`
 - **Preferred**: **Delete Page Button**
 
 #### **New Subpage Button**
+
 - **Location**: Appears on hover over a **Page Item**
 - **Contains**: `Plus` icon
 - **Component**: Part of `Sidebar.tsx`
 - **Preferred**: **New Subpage Button**
 
 #### **Collapse/Expand Sidebar Button**
+
 - **Location**: Right side of the **Pages Header** (when sidebar is open) or fixed on the left edge (when sidebar is closed)
 - **Contains**: `ChevronLeft` (open) or arrow → (closed) icon
 - **Component**: Part of `Sidebar.tsx`
 - **Preferred**: **Collapse/Expand Sidebar Button**
 
 #### **Clear Search Button**
+
 - **Location**: Right side of the **Search Field**
 - **Contains**: `X` icon
 - **Component**: Part of `Sidebar.tsx`
@@ -112,18 +126,21 @@ To ensure clear communication between developers, users, and in documentation, w
 ### Main Content Area Components
 
 #### **Page Title Field**
+
 - **Location**: Top of the **Main Content Area**, above the editor
 - **Contains**: Input field for the current page's title
 - **Component**: Part of `App.tsx`
 - **Preferred**: **Page Title Field**
 
 #### **BlockNote Editor**
+
 - **Location**: Below the **Page Title Field** in the **Main Content Area**
 - **Contains**: Rich text editing interface
 - **Component**: `BlockNoteEditor.tsx`
 - **Preferred**: **BlockNote Editor**
 
 #### **AI Chat UI**
+
 - **Location**: Right side of the **Main Content Area**, collapsible
 - **Contains**: Chat input, AI responses, model selection
 - **Component**: `ChatUI.tsx`
@@ -285,7 +302,7 @@ notes-ai/
    ```bash
    # Generate Prisma client
    npm run prisma:generate
-   
+
    # Run database migrations
    npm run prisma:migrate
    ```
@@ -295,7 +312,7 @@ notes-ai/
    ```bash
    # Terminal 1: Start Vite frontend
    npm run dev:vite
-   
+
    # Terminal 2: Start Next.js backend
    npm run dev
    ```
@@ -442,7 +459,9 @@ const [error, setError] = useState('');
 const [pages, setPages] = useState<Page[]>([]);
 const [sidebarWidth, setSidebarWidth] = useState(280);
 const [draggedPageId, setDraggedPageId] = useState<string | null>(null);
-const [dropPosition, setDropPosition] = useState<'top' | 'middle' | 'bottom' | null>(null);
+const [dropPosition, setDropPosition] = useState<
+  'top' | 'middle' | 'bottom' | null
+>(null);
 ```
 
 **Usage**:
@@ -666,6 +685,7 @@ const [error, setError] = useState(null);
 - ✅ API route handlers
 
 **Test Coverage**:
+
 - 194 tests passing, 1 skipped
 - 25 test suites
 - 60%+ code coverage threshold (current target: 80%+)
@@ -703,6 +723,7 @@ src/config/__tests__/       # Configuration tests
 ### Architecture
 
 NotesAI uses a **hybrid architecture**:
+
 - **Vite** handles the frontend UI (BlockNote editor and AI features)
 - **Next.js** provides the backend API (database operations via Prisma)
 
@@ -713,6 +734,7 @@ All API endpoints are available at `http://localhost:4000/api/`
 #### Pages API
 
 **GET /api/pages** - Get all pages
+
 ```typescript
 interface Page {
   id: string;
@@ -728,11 +750,12 @@ interface Page {
 ```
 
 **POST /api/pages** - Create new page
+
 ```typescript
 const response = await fetch('http://localhost:4000/api/pages', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ title, content, parentId, order, isFavorite })
+  body: JSON.stringify({ title, content, parentId, order, isFavorite }),
 });
 ```
 
@@ -766,6 +789,7 @@ See `prisma/schema.prisma` for complete schema definitions.
 ### Database Operations
 
 **Prisma Client**:
+
 ```typescript
 import { prisma } from '../../../lib/prisma';
 
@@ -774,11 +798,12 @@ const pages = await prisma.page.findMany();
 
 // Create page
 const page = await prisma.page.create({
-  data: { title, content, parentId, order, isFavorite }
+  data: { title, content, parentId, order, isFavorite },
 });
 ```
 
 **Migrations**:
+
 ```bash
 # Create new migration
 npm run prisma:migrate
@@ -977,6 +1002,7 @@ npm run format       # Format code with Prettier
 ### Key Files
 
 **Frontend (Vite)**:
+
 - `src/App.tsx` - Main app component
 - `src/components/Header.tsx` - Header with AI buttons
 - `src/components/Footer.tsx` - Status display
@@ -984,6 +1010,7 @@ npm run format       # Format code with Prettier
 - `src/utils/WebLLMFunctions.ts` - AI helper functions
 
 **Backend (Next.js)**:
+
 - `pages/api/pages/` - Pages API routes
 - `pages/api/images/` - Images API routes
 - `pages/api/settings/` - Settings API routes
