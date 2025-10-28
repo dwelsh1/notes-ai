@@ -1,0 +1,63 @@
+// Prisma Schema for NotesAI
+// SQLite database for local-first desktop app
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./notesai.db"
+}
+
+// Page model with hierarchical support
+model Page {
+  id          String   @id @default(cuid())
+  title       String
+  content     String   // JSON string of BlockNote blocks
+  parentId    String?
+  order       Int      @default(0)
+  isFavorite  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  tags        String   @default("[]") // JSON string of tags array
+  searchableText String?  // Denormalized text for FTS5 (title + parsed content)
+  
+  // Relations
+  parent      Page?    @relation("PageHierarchy", fields: [parentId], references: [id])
+  children    Page[]   @relation("PageHierarchy")
+  images      Image[]  // Related images
+  
+  // Indexes
+  @@index([parentId])
+  @@index([isFavorite])
+  @@index([order])
+  @@index([createdAt])
+  @@index([updatedAt])
+  @@index([searchableText])
+}
+
+// Image model for storing image metadata
+model Image {
+  id          String   @id @default(cuid())
+  filename    String   // Unique filename in public/uploads/
+  originalName String  // Original uploaded filename
+  mimeType    String   // Image MIME type
+  size        Int      // File size in bytes
+  pageId      String
+  page        Page     @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  
+  @@index([pageId])
+}
+
+// Settings model (for Phase 2 - LM Studio support)
+model Settings {
+  id              String   @id @default("settings")
+  aiEngine        String   @default("webllm") // 'webllm' or 'lmstudio'
+  lmStudioUrl     String   @default("http://localhost:1234/v1")
+  lmStudioModel   String?
+  preferredModel  String?
+  fallbackEnabled Boolean  @default(true)
+  updatedAt       DateTime @updatedAt
+}

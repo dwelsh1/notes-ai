@@ -1,0 +1,190 @@
+/* Modern layout styles */
+.blocknote-container {
+  display: flex;
+  height: 100%;
+}
+
+.blocknote-french {
+  width: 50%;
+  height: 100%;
+}
+
+.blocknote-english {
+  width: 50%;
+  height: 100%;
+}
+
+.full-width {
+  width: 100%;
+  height: 100%;
+}
+
+/* Legacy styles - keeping for compatibility */
+.header-container {
+  display: flex;
+  flex-direction: column;
+  margin: 2rem 0;
+}
+
+.button-container {
+  width: 100%;
+  height: 5rem;
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+}
+
+.button-container > button {
+  min-width: 100px;
+}
+
+.reset-button {
+  display: flex;
+  gap: 1rem;
+  position: fixed;
+  top: 10px;
+  left: 10px;
+}
+
+.progress-container {
+  position: relative;
+  font-size: 14px;
+  color: white;
+  background-color: #e9ecef;
+  border: solid 1px;
+  border-radius: 8px;
+  text-align: left;
+  overflow: hidden;
+}
+
+.progress-bar {
+  padding: 0 4px;
+  z-index: 0;
+  top: 0;
+  width: 1%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #007bff;
+  white-space: nowrap;
+  color: transparent;
+}
+
+.progress-text {
+  z-index: 2;
+  text-align: center;
+  padding: 0 1rem;
+}
+
+.progress-bars-container {
+  padding: 8px;
+  width: 80%;
+}
+
+.container {
+  margin: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.translate-button {
+  display: flex;
+  flex-direction: column;
+  margin-top: 0px;
+  margin-bottom: 40px;
+  align-items: center;
+}
+
+.textbox-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.chatui-select-wrapper {
+  display: flex;
+  margin: 20px 0;
+  padding: 10px 0;
+}
+
+.text-error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  padding: 10px 15px;
+  border-radius: 5px;
+  margin: 0.5rem 2.5rem;
+}
+
+.text-info {
+  background-color: #d1ecf1;
+  color: #0c5460;
+  border: 1px solid #bee5eb;
+  padding: 10px 15px;
+  border-radius: 5px;
+  margin: 0.5rem 2.5rem;
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+.performances-text {
+  padding: 0 1rem;
+}
+
+#chatui-select {
+  width: 350px;
+  color: black;
+  border: none;
+}
+
+#chatui-select:focus {
+  outline: none;
+}
+
+#chatui-select::-webkit-scrollbar {
+  display: none;
+}
+
+#chatui-select option {
+  background-color: #1f2027;
+  color: white;
+}
+
+#chatui-select option:hover {
+  background-color: #474747;
+  color: white;
+}
+
+/* Responsive design */
+@media (max-width: 980px) {
+  .button-container {
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .button-container {
+    flex-direction: column;
+    height: 20rem;
+    gap: 3rem;
+  }
+
+  .reset-button {
+    flex-direction: column;
+  }
+
+  .blocknote-container {
+    flex-direction: column;
+  }
+
+  .blocknote-french {
+    width: 100%;
+  }
+
+  .blocknote-english {
+    width: 100%;
+  }
+}

@@ -1,0 +1,458 @@
+# Cursor Project Rules - NotesAI
+
+You are an expert full stack developer in Next.js, React, Vite, TypeScript, Prisma, SQLite, Tailwind CSS, shadcn/ui, Vitest, Jest, and React Testing Library.
+
+This file defines best practices and rules for working with the NotesAI project in Cursor IDE.
+
+## Project Overview
+- **Name**: NotesAI
+- **Type**: Full-stack React + TypeScript application (Vite frontend + Next.js backend)
+- **Architecture**: Hybrid - Vite for UI, Next.js for API routes and database
+- **AI Integration**: WebLLM with Llama-3.2-1B-Instruct model
+- **Styling**: Inline styles (avoiding CSS framework conflicts)
+- **State Management**: Zustand + React hooks
+- **Database**: Prisma ORM with SQLite
+
+## Official Documentation Links
+
+### Core Technologies
+- **BlockNote**: https://www.blocknotejs.org/ - Official documentation for the block-based rich text editor
+- **WebLLM**: https://github.com/mlc-ai/web-llm - Official GitHub repository for in-browser LLM inference engine
+- **LM Studio**: https://lmstudio.ai/ - Official website and documentation for local AI models
+- **Next.js**: https://nextjs.org/docs - Full-stack React framework documentation
+- **Prisma**: https://www.prisma.io/docs - Modern ORM for database management
+- **SQLite**: https://www.sqlite.org/docs.html - Lightweight SQL database
+
+### Quick Reference
+When implementing features or troubleshooting issues, refer to the official documentation above:
+- **BlockNote API**: Use for editor customization, blocks, and plugins
+- **WebLLM**: Use for AI model integration and inference configuration
+- **LM Studio**: Use for local AI server setup and model management
+- **Next.js API Routes**: Use for backend API development
+- **Prisma Schema**: Use for database schema design and migrations
+
+## Code Style & Standards
+
+### TypeScript Rules
+- Use strict TypeScript configuration
+- Define interfaces for all props and state
+- Avoid `any` type - use proper typing
+- Use meaningful variable and function names
+- Prefer `const` over `let`, avoid `var`
+- Use optional chaining (`?.`) for safe property access
+- Use nullish coalescing (`??`) for default values
+
+### React Best Practices
+- Use functional components with hooks
+- Extract reusable components into separate files
+- Use proper prop types and interfaces
+- Implement proper error boundaries
+- Use `useCallback` for event handlers passed to children
+- Use `useMemo` for expensive calculations
+- Avoid inline object/function creation in JSX
+
+### File Organization
+- One component per file
+- Use PascalCase for component files (e.g., `Header.tsx`)
+- Use camelCase for utility files (e.g., `tokenizer.ts`)
+- Group related files in appropriate directories
+- Keep components small and focused (< 200 lines when possible)
+
+### Import/Export Rules
+- Use named exports for components
+- Use default exports sparingly
+- Group imports: React first, then third-party, then local
+- Use absolute imports for config files (`src/config/`)
+- Use relative imports for nearby files
+
+### Code Formatting
+- Use Prettier for consistent code formatting
+- Run `npm run format` to format all files
+- Run `npm run format:check` to check formatting
+- Use ESLint with Prettier integration
+- Configure editor to format on save
+
+## Styling Guidelines
+
+### Inline Styles Approach
+- Use inline styles for all component styling
+- Avoid CSS classes and external stylesheets
+- Use consistent color palette and spacing
+- Implement hover effects with `onMouseEnter`/`onMouseLeave`
+- Use CSS-in-JS objects for complex styles
+
+### Design System
+```typescript
+// Color palette
+const colors = {
+  primary: '#2563eb',
+  gray: '#6b7280',
+  error: '#dc2626',
+  success: '#10b981',
+  background: '#ffffff',
+  border: '#e5e7eb'
+};
+
+// Spacing scale
+const spacing = {
+  xs: '4px',
+  sm: '8px',
+  md: '16px',
+  lg: '24px',
+  xl: '32px'
+};
+```
+
+### Responsive Design
+- Use flexbox for layouts
+- Implement responsive breakpoints
+- Use `minWidth: 0` to prevent flex overflow
+- Use `whiteSpace: 'nowrap'` for text truncation
+- Test on different screen sizes
+
+## AI Integration Rules
+
+### WebLLM Usage
+- Always handle WebLLM errors gracefully
+- Use proper TypeScript types for WebLLM interfaces
+- Implement progress callbacks for model loading
+- Cache models in IndexedDB when possible
+- Use Web Workers for AI processing
+
+### AI Operations
+- Validate input before sending to AI
+- Implement proper loading states
+- Handle AI response errors
+- Provide user feedback for long operations
+- Implement timeout handling
+
+### Model Management
+- Check model cache before downloading
+- Provide clear loading progress
+- Handle model loading failures
+- Support model switching
+- Implement proper cleanup
+
+## State Management Rules
+
+### Zustand Store
+- Keep store simple and focused
+- Use TypeScript interfaces for store state
+- Implement proper action types
+- Use selectors for derived state
+- Avoid storing UI state in global store
+
+### Local State
+- Use `useState` for component-specific state
+- Use `useEffect` for side effects
+- Implement proper cleanup in useEffect
+- Use `useCallback` for stable function references
+- Use `useMemo` for expensive computations
+
+## Backend Rules
+
+### API Route Structure
+- Use Next.js API routes in `pages/api/`
+- Follow RESTful conventions (GET, POST, PUT, DELETE)
+- Use TypeScript for all route handlers
+- Validate request data with Zod
+- Return proper HTTP status codes
+- Handle errors gracefully with try-catch
+
+### Database Operations
+- Use Prisma ORM for all database operations
+- Keep database logic in API routes
+- Use Prisma migrations for schema changes
+- Validate data before database operations
+- Use transactions for complex operations
+- Handle database connection errors
+
+### API Response Format
+```typescript
+// Success response
+res.status(200).json(data);
+
+// Error response
+res.status(500).json({ error: 'Error message' });
+```
+
+### Database Schema
+- Define models in `prisma/schema.prisma`
+- Use relationships for related data
+- Add indexes for frequently queried fields
+- Use FTS5 for full-text search
+- Keep schema migrations clean and atomic
+
+## Error Handling
+
+### Error Boundaries
+- Implement error boundaries for major sections
+- Provide fallback UI for errors
+- Log errors for debugging
+- Don't crash the entire app for component errors
+
+### AI Error Handling
+- Handle WebGPU compatibility errors
+- Handle model loading failures
+- Handle AI processing timeouts
+- Provide user-friendly error messages
+- Implement retry mechanisms
+
+### Validation
+- Validate user inputs
+- Sanitize AI outputs
+- Check for required props
+- Handle edge cases gracefully
+
+## Performance Guidelines
+
+### React Performance
+- Use React.memo for expensive components
+- Implement proper dependency arrays in hooks
+- Avoid unnecessary re-renders
+- Use lazy loading for large components
+- Optimize bundle size
+
+### AI Performance
+- Cache AI models locally
+- Use Web Workers for AI processing
+- Implement progress indicators
+- Handle memory limitations
+- Optimize model loading
+
+### Bundle Optimization
+- Tree-shake unused code
+- Use dynamic imports for large dependencies
+- Optimize images and assets
+- Monitor bundle size
+- Use Vite's built-in optimizations
+
+## Testing Guidelines
+
+### Unit Testing
+- Test component rendering
+- Test user interactions
+- Test state management
+- Test utility functions
+- Test API route handlers
+- Test database operations
+- Use React Testing Library
+- Use Jest + Vitest for testing
+- **Achieve 60%+ test coverage for ALL files (current target)**
+- **Run tests frequently during development to catch issues early**
+- **Never commit code with missing or low-coverage tests**
+- **Before completing a feature, run `npm test` to ensure nothing broke**
+- **Add tests as you develop new features - don't leave them for later**
+
+### E2E Testing (Playwright)
+- Test complete user workflows
+- Test AI functionality
+- Test cross-browser compatibility
+- Test responsive design
+- Test performance
+
+### Test Structure
+```
+tests/
+├── unit/           # Unit tests
+├── integration/    # Integration tests
+├── e2e/           # End-to-end tests
+└── fixtures/      # Test data
+```
+
+## Security Guidelines
+
+### Client-Side Security
+- Never expose sensitive data in client code
+- Validate all user inputs
+- Sanitize AI outputs
+- Use HTTPS in production
+- Implement proper CORS policies
+
+### AI Safety
+- Filter inappropriate content
+- Limit AI response length
+- Implement rate limiting
+- Monitor for abuse
+- Handle edge cases safely
+
+## Git Workflow Rules
+
+### Branch Naming
+- `feature/description` - New features
+- `fix/description` - Bug fixes
+- `docs/description` - Documentation updates
+- `refactor/description` - Code refactoring
+- `test/description` - Testing improvements
+
+### Commit Messages
+- Use semantic commit format
+- `feat:` - New features
+- `fix:` - Bug fixes
+- `docs:` - Documentation changes
+- `style:` - Code style changes
+- `refactor:` - Code refactoring
+- `test:` - Adding or updating tests
+- `chore:` - Maintenance tasks
+
+### Pull Request Process
+1. Create feature branch from main
+2. Make changes with proper tests
+3. Update documentation if needed
+4. Create pull request with description
+5. Request code review
+6. Address feedback
+7. Merge after approval
+
+## Documentation Rules
+
+### Code Documentation
+- Use JSDoc for complex functions
+- Document component props with TypeScript
+- Add comments for complex logic
+- Keep README files updated
+- Document API changes
+
+### File Documentation
+- Include file purpose in header comments
+- Document complex algorithms
+- Explain AI integration points
+- Document configuration options
+- Keep changelog updated
+
+## Development Environment
+
+### Required Extensions
+- TypeScript and JavaScript Language Features
+- ESLint
+- Prettier
+- React snippets
+- GitLens
+- Error Lens
+
+### Recommended Settings
+```json
+{
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "typescript.suggest.autoImports": true
+}
+```
+
+### Debugging Setup
+- Use React DevTools
+- Use browser DevTools
+- Use Vite DevTools
+- Implement proper logging
+- Use error boundaries
+
+## Common Patterns
+
+### Component Structure
+```typescript
+interface ComponentProps {
+  // Define props
+}
+
+export const Component: React.FC<ComponentProps> = ({ prop1, prop2 }) => {
+  // State
+  const [state, setState] = useState();
+  
+  // Effects
+  useEffect(() => {
+    // Side effects
+  }, []);
+  
+  // Handlers
+  const handleClick = useCallback(() => {
+    // Handler logic
+  }, []);
+  
+  // Render
+  return (
+    <div style={{ /* inline styles */ }}>
+      {/* JSX */}
+    </div>
+  );
+};
+```
+
+### AI Operation Pattern
+```typescript
+const performAIOperation = async (input: string) => {
+  try {
+    setIsGenerating(true);
+    setError('');
+    
+    const result = await engine.generate(input);
+    
+    setOutput(result);
+  } catch (error) {
+    setError(error.message);
+  } finally {
+    setIsGenerating(false);
+  }
+};
+```
+
+## Troubleshooting
+
+### Common Issues
+1. **Tailwind CSS conflicts** - Use inline styles
+2. **WebLLM errors** - Check WebGPU support
+3. **Model loading fails** - Check RAM and browser compatibility
+4. **Build errors** - Check TypeScript and ESLint
+
+### Debug Checklist
+- Check browser console for errors
+- Verify WebGPU support
+- Check available RAM
+- Test in different browsers
+- Check network connectivity
+
+---
+
+## Quick Reference
+
+### Essential Commands
+```bash
+# Development
+npm run dev:vite     # Start Vite frontend (port 5173)
+npm run dev          # Start Next.js backend (port 4000)
+npm run dev:vite & npm run dev  # Run both concurrently
+
+# Database
+npm run prisma:generate  # Generate Prisma client
+npm run prisma:migrate   # Run database migrations
+npm run prisma:studio    # Open database GUI
+
+# Testing
+npm test             # Run all tests
+npm run test:watch   # Run tests in watch mode
+npm run test:coverage # Generate coverage report
+
+# Build & Lint
+npm run build        # Build for production
+npm run build:vite    # Build Vite frontend
+npm run lint         # Run ESLint
+npm run format       # Format code with Prettier
+```
+
+### Key Files
+- **Frontend**: `src/App.tsx` - Main Vite app component
+- **Backend**: `pages/api/pages/` - Pages API routes
+- **Components**: `src/components/Header.tsx`, `src/components/Sidebar.tsx`
+- **Config**: `src/config/prompt.ts` - AI prompts
+- **Database**: `prisma/schema.prisma` - Database schema
+- **Utils**: `src/utils/WebLLMFunctions.ts` - AI utilities
+
+### Important URLs
+- **Frontend Dev**: `http://localhost:5173/NotesAI/`
+- **Backend Dev**: `http://localhost:4000/api/`
+- **Prisma Studio**: `http://localhost:5555` (after `npm run prisma:studio`)
+- **Prod**: `https://github.com/dwelsh1/notes-ai`
+
+Follow these rules to maintain code quality and consistency across the NotesAI project.
