@@ -3,7 +3,7 @@ name: CI/CD Pipeline
 on:
   # Run automatically after PR Quality Checks finish
   workflow_run:
-    workflows: ["Pull Request Checks"]
+    workflows: ['Pull Request Checks']
     types:
       - completed
   # Allow manual runs when needed
