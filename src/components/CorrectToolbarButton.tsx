@@ -1,5 +1,6 @@
 import { Block, BlockNoteEditor } from '@blocknote/core';
 import { ToolbarButton, useBlockNoteEditor } from '@blocknote/react';
+import { CheckCircle } from 'lucide-react';
 import correctSingleBlock from '../utils/correctSingleBlock';
 
 // Custom Formatting Toolbar Button to correct the selected text
@@ -69,7 +70,7 @@ export function CorrectToolbarButton({
         correctBlocks(editor.getSelection()?.blocks, editor);
       }}
     >
-      Correct
+      <CheckCircle style={{ width: '16px', height: '16px', color: '#6b7280' }} />
     </ToolbarButton>
   );
 }

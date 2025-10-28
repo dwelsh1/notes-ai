@@ -5,6 +5,7 @@ import {
   useEditorContentOrSelectionChange,
 } from '@blocknote/react';
 import { useState } from 'react';
+import { Languages } from 'lucide-react';
 
 // Custom Formatting Toolbar Button to translate text to English
 export function TranslateToolbarButton({
@@ -114,7 +115,7 @@ export function TranslateToolbarButton({
         translateBlocks(selectedBlocks, editor);
       }}
     >
-      Translate
+      <Languages style={{ width: '16px', height: '16px', color: '#6b7280' }} />
     </ToolbarButton>
   );
 }

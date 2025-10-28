@@ -1,5 +1,6 @@
 import { Block } from '@blocknote/core';
 import { ToolbarButton, useBlockNoteEditor } from '@blocknote/react';
+import { Lightbulb } from 'lucide-react';
 import { updateBlock } from '../utils/blockManipulation';
 import { convertBlockToString } from '../utils/ParserBlockToString';
 
@@ -59,7 +60,7 @@ export function DevelopToolbarButton({
         }
       }}
     >
-      Develop
+      <Lightbulb style={{ width: '16px', height: '16px', color: '#6b7280' }} />
     </ToolbarButton>
   );
 }
