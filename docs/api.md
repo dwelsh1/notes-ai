@@ -81,7 +81,8 @@ Create a new page.
   "parentId": "string | null",
   "order": "number",
   "isFavorite": "boolean",
-  "tags": "string"
+  "tags": "string",
+  "searchableText": "string | null"
 }
 ```
 
@@ -95,6 +96,7 @@ Create a new page.
   "order": "number",
   "isFavorite": "boolean",
   "tags": "string",
+  "searchableText": "string | null",
   "createdAt": "Date",
   "updatedAt": "Date"
 }
@@ -168,6 +170,92 @@ Upload a new image.
 
 **Status Codes:**
 - `201` - Created
+- `500` - Internal server error
+
+---
+
+### GET /api/images/[id]
+
+Retrieve a single image by ID.
+
+**Request:**
+```
+GET /api/images/[id]
+```
+
+**Response:**
+```json
+{
+  "id": "string",
+  "filename": "string",
+  "originalName": "string",
+  "mimeType": "string",
+  "size": "number",
+  "pageId": "string",
+  "createdAt": "Date",
+  "page": { "id": "string", "title": "string" }
+}
+```
+
+**Status Codes:**
+- `200` - Success
+- `404` - Image not found
+- `500` - Internal server error
+
+---
+
+### PUT /api/images/[id]
+
+Update a single image by ID.
+
+**Request:**
+```json
+{
+  "filename": "string",
+  "originalName": "string",
+  "mimeType": "string",
+  "size": "number",
+  "pageId": "string"
+}
+```
+
+**Response:**
+```json
+{
+  "id": "string",
+  "filename": "string",
+  "originalName": "string",
+  "mimeType": "string",
+  "size": "number",
+  "pageId": "string",
+  "createdAt": "Date"
+}
+```
+
+**Status Codes:**
+- `200` - Success
+- `404` - Image not found
+- `500` - Internal server error
+
+---
+
+### DELETE /api/images/[id]
+
+Delete a single image by ID.
+
+**Request:**
+```
+DELETE /api/images/[id]
+```
+
+**Response:**
+```json
+{ "message": "Image deleted successfully" }
+```
+
+**Status Codes:**
+- `200` - Success
+- `404` - Image not found
 - `500` - Internal server error
 
 ---
@@ -322,7 +410,7 @@ DELETE /api/pages/[id]
 
 **Response:**
 ```json
-No content (204)
+{ "message": "Page deleted successfully" }
 ```
 
 **Status Codes:**
@@ -380,4 +468,43 @@ All error responses follow this format:
   "error": "string"
 }
 ```
+
+---
+
+## Search API
+
+### GET /api/search?q=term
+
+Perform full-text search using SQLite FTS5 on precomputed `searchableText`.
+
+**Request:**
+```
+GET /api/search?q=meeting
+```
+
+**Response:**
+```json
+[
+  {
+    "id": "string",
+    "title": "string",
+    "content": "string",
+    "parentId": "string | null",
+    "order": "number",
+    "isFavorite": "boolean",
+    "tags": "string",
+    "createdAt": "Date",
+    "updatedAt": "Date",
+    "searchableText": "string | null"
+  }
+]
+```
+
+**Notes:**
+- Returns up to 50 results, ordered by title match and `updatedAt`.
+- Special characters are sanitized internally.
+
+**Status Codes:**
+- `200` - Success (array, possibly empty)
+- `500` - Internal server error
 

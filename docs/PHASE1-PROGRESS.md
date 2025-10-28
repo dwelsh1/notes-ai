@@ -2,11 +2,11 @@
 
 ## Multi-Page Support with Backend
 
-### Status: 🟢 In Progress
+### Status: 🟢 In Progress (Hybrid: Vite UI + Next.js API)
 
 ### Current State
 - ✅ Hybrid architecture: Vite frontend + Next.js backend
-- ✅ All tests passing (183 passed, 6 skipped)
+- ✅ All tests passing with enforced coverage thresholds (Statements ≥85%, Branches ≥80%)
 - ✅ Multi-page sidebar with drag-and-drop reordering
 - ✅ Resizable sidebar (200px-600px)
 - ✅ Collapsible sidebar with arrow → button when closed
@@ -46,13 +46,13 @@
 - [x] Move new page button to Pages Header
 
 ### Pending Tasks
-- [ ] Image upload and management
-- [ ] Page export functionality
-- [ ] Backup/restore functionality
+- [ ] Image upload/preview UI and page attachment workflow (server API is ready)
+- [ ] Page export functionality (JSON, Markdown with images)
+- [ ] Full backup/restore (database + images)
 
 ### Architecture
 - **Frontend**: Vite + React on `http://localhost:5173`
 - **Backend**: Next.js API on `http://localhost:4000`
 - **Database**: SQLite at `./prisma/notesai.db`
-- **Images**: `./public/uploads/`
+- **Images**: `./public/uploads/` (UI pending)
 
