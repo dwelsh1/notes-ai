@@ -1028,46 +1028,58 @@ const App = () => {
                       title: 'Divider',
                       group: 'Basic blocks',
                       subtext: 'Insert a horizontal divider',
+                      badge: '---',
                       aliases: ['hr', 'divider', '---'] as const,
+                      icon: (
+                        <span
+                          style={{
+                            width: 18,
+                            height: 18,
+                            display: 'inline-block',
+                            borderTop: '2px solid #6b7280',
+                          }}
+                        />
+                      ),
                       onItemClick: async () => {
-                        const cursorPos = mainEditor.getTextCursorPosition();
-                        const currentBlock = cursorPos.block;
-                        const hrBlocks = await mainEditor.tryParseMarkdownToBlocks('---');
-                        // Insert/replace HR
-                        let hrId: string;
-                        if (
-                          Array.isArray(currentBlock.content) &&
-                          currentBlock.content.length === 0
-                        ) {
-                          mainEditor.updateBlock(currentBlock, hrBlocks[0]);
-                          hrId = currentBlock.id;
-                        } else {
-                          const inserted = mainEditor.insertBlocks(
-                            hrBlocks,
-                            currentBlock,
+                        // Run after the menu closes to avoid transient selection issues
+                        setTimeout(async () => {
+                          const cursorPos = mainEditor.getTextCursorPosition();
+                          const currentBlock = cursorPos.block;
+                          const hrBlocks = await mainEditor.tryParseMarkdownToBlocks('---');
+                          let hrId: string;
+                          if (
+                            Array.isArray(currentBlock.content) &&
+                            currentBlock.content.length === 0
+                          ) {
+                            mainEditor.updateBlock(currentBlock, hrBlocks[0]);
+                            hrId = currentBlock.id;
+                          } else {
+                            const inserted = mainEditor.insertBlocks(
+                              hrBlocks,
+                              currentBlock,
+                              'after'
+                            );
+                            hrId = inserted[0].id;
+                          }
+
+                          const afterParagraph = mainEditor.insertBlocks(
+                            [
+                              {
+                                type: 'paragraph',
+                                content: [],
+                              },
+                            ],
+                            hrId,
                             'after'
                           );
-                          hrId = inserted[0].id;
-                        }
-                        // Ensure caret is placed after the divider in a new paragraph
-                        const afterParagraph = mainEditor.insertBlocks(
-                          [
-                            {
-                              type: 'paragraph',
-                              content: [],
-                            },
-                          ],
-                          hrId,
-                          'after'
-                        );
-                        // Defer caret placement to avoid selection into non-inline blocks
-                        setTimeout(() => {
-                          try {
-                            mainEditor.setTextCursorPosition(
-                              afterParagraph[0],
-                              'end'
-                            );
-                          } catch {}
+                          setTimeout(() => {
+                            try {
+                              mainEditor.setTextCursorPosition(
+                                afterParagraph[0],
+                                'end'
+                              );
+                            } catch {}
+                          }, 0);
                         }, 0);
                       },
                     } as const;
