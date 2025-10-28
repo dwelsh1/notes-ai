@@ -88,20 +88,7 @@ export function CorrectToolbarButton({
     setOutput('');
   }
 
-  const [selectedBlocks, setSelectedBlocks] = useState<Block[]>([]);
-
-  // Updates state on content or selection change.
-  useEditorContentOrSelectionChange(() => {
-    const selection = editor.getSelection();
-    if (selection !== undefined) {
-      setSelectedBlocks(selection.blocks);
-    } else {
-      const cursorPosition = editor.getTextCursorPosition();
-      if (cursorPosition?.block) {
-        setSelectedBlocks([cursorPosition.block]);
-      }
-    }
-  }, editor);
+  // (Selection tracking not needed here; we read selection on click.)
 
   return (
     <ToolbarButton
