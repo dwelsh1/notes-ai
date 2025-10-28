@@ -1,22 +1,18 @@
-import { Block, BlockNoteEditor } from '@blocknote/core';
+import { Block } from '@blocknote/core';
 import {
   ToolbarButton,
   useBlockNoteEditor,
   useEditorContentOrSelectionChange,
 } from '@blocknote/react';
 import { useState } from 'react';
-import {
-  addBlock,
-  getEditorBlocks,
-  updateBlock,
-} from '../utils/blockManipulation';
+import { updateBlock } from '../utils/blockManipulation';
 import { convertBlockToString } from '../utils/ParserBlockToString';
 
 export function DevelopToolbarButton({
   onSend,
   isGenerating,
   setIsGenerating,
-  currentProccess,
+  // currentProccess (unused)
   setCurrentProcess,
   isFetching,
   setOutput,

@@ -67,6 +67,7 @@ export const Sidebar = forwardRef<SidebarRef, SidebarProps>(
 
     useEffect(() => {
       fetchPages();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // Search effect

@@ -6,14 +6,13 @@ import {
 } from '@blocknote/react';
 import { useState } from 'react';
 import correctSingleBlock from '../utils/correctSingleBlock';
-import { EngineInterface } from '@mlc-ai/web-llm';
 
 // Custom Formatting Toolbar Button to correct the selected text
 export function CorrectToolbarButton({
   onSend,
   isGenerating,
   setIsGenerating,
-  currentProccess,
+  // currentProccess (unused)
   setCurrentProcess,
   isFetching,
   setOutput,
@@ -53,7 +52,7 @@ export function CorrectToolbarButton({
       for (const block of blocks) {
         const correctProps = block.props;
         correctProps['textColor'] = correctedTextColor;
-        if (block.content !== []) {
+        if (block.content !== undefined) {
           const newBlocks = editor.insertBlocks(
             [
               {
