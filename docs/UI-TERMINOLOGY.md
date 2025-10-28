@@ -122,6 +122,15 @@ This document establishes consistent naming for all UI areas and components in t
 - **Also known as**: Text toolbar, formatting bar
 - **Preferred**: **Formatting Toolbar**
 
+### 14.1 **Slash Menu** (/ Menu)
+
+- **Location**: In the Editor, triggered by typing `/`
+- **Contains**: Block insert commands grouped by section (Headings, Basic blocks, etc.)
+- **Notable Command**: **Divider** (shows under Basic blocks, directly beneath Paragraph)
+  - **Keyboard Shortcut**: type `---` on an empty paragraph to insert
+  - **Aliases**: `hr`, `divider`, `---`
+  - **Behavior**: Inserts a horizontal divider and places the caret in a new paragraph below
+
 ## Top Toolbar Buttons
 
 ### 15. **Translate Button**

@@ -1,3 +1,11 @@
+## [Unreleased]
+
+### Added
+
+- Editor: Slash menu item "Divider" under Basic blocks (beneath Paragraph)
+- Editor: Keyboard shortcut `---` on an empty paragraph inserts a divider and moves the caret below
+- Custom block: `divider` implemented and registered in editor schema
+
 # Changelog
 
 All notable changes to this project will be documented in this file.

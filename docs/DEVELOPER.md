@@ -135,7 +135,7 @@ To ensure clear communication between developers, users, and in documentation, w
 #### **BlockNote Editor**
 
 - **Location**: Below the **Page Title Field** in the **Main Content Area**
-- **Contains**: Rich text editing interface
+- **Contains**: Rich text editing interface, slash menu (`/`) with block commands
 - **Component**: `BlockNoteEditor.tsx`
 - **Preferred**: **BlockNote Editor**
 
@@ -158,6 +158,10 @@ NotesAI is a modern, privacy-first note-taking application that runs entirely in
 - **Offline Capable**: Works without internet connection after initial model download
 - **Modern UI**: Clean, responsive interface with NotesAI branding
 - **AI-Powered**: Translation, grammar correction, summarization, and text development
+- **Editor Enhancements**:
+  - Slash menu item: **Divider** under Basic blocks (beneath Paragraph)
+  - Keyboard shortcut: type `---` on an empty paragraph to insert a divider
+  - Custom block: `divider` implemented in `src/blocks/DividerBlock.tsx`
 
 ### Target Users
 
