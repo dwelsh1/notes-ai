@@ -9,6 +9,12 @@ import {
 } from 'lucide-react';
 import { highlightSearchTerm } from '../utils/searchHighlight';
 
+declare global {
+  interface Window {
+    searchInputRef?: HTMLInputElement | null;
+  }
+}
+
 interface Page {
   id: string;
   title: string;
@@ -323,6 +329,7 @@ export const Sidebar = forwardRef<SidebarRef, SidebarProps>(
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
                 whiteSpace: 'nowrap',
+                fontWeight: 600,
               }}
               dangerouslySetInnerHTML={{
                 __html: highlightSearchTerm(
