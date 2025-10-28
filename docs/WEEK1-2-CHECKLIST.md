@@ -1,16 +1,15 @@
 # Week 1-2: Next.js Migration - Detailed Checklist
 
 ## Goal
-Migrate from Vite to Next.js while preserving all existing functionality.
+Original plan: migrate from Vite to Next.js app directory. Current approach: maintain Vite UI and add a Next.js pages API (hybrid). This checklist is retained for future migration consideration and is not currently in progress.
 
 ## Current Status
-- ✅ All tests passing (148 passed, 5 skipped)
-- ✅ Current Vite app functional
-- 🟡 Starting Next.js migration
+- ✅ Current Vite app functional (hybrid with Next.js API)
+- 🟡 Full Next.js app-dir migration deferred
 
 ---
 
-## Task 1: Install Dependencies
+## Task 1: Install Dependencies (deferred)
 
 ### Steps
 - [ ] Install Next.js and React 18.2.0
@@ -30,7 +29,7 @@ npm install @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities
 
 ---
 
-## Task 2: Project Structure Migration
+## Task 2: Project Structure Migration (deferred)
 
 ### Steps
 - [ ] Create `app/` directory structure
@@ -51,7 +50,7 @@ npm install @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities
 
 ---
 
-## Task 3: Build System Migration
+## Task 3: Build System Migration (deferred)
 
 ### Steps
 - [ ] Create `next.config.js`
@@ -68,7 +67,7 @@ npm install @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities
 
 ---
 
-## Task 4: Update Package.json Scripts
+## Task 4: Update Package.json Scripts (deferred)
 
 ### New Scripts
 - [ ] `dev:next` - Start Next.js dev server (port 4000)
@@ -78,7 +77,7 @@ npm install @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities
 
 ---
 
-## Task 5: Preserve Existing Features
+## Task 5: Preserve Existing Features (for future migration)
 
 ### BlockNote Editor
 - [ ] Import BlockNote components correctly
@@ -98,7 +97,7 @@ npm install @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities
 
 ---
 
-## Task 6: Update Tests for Next.js
+## Task 6: Update Tests for Next.js (deferred)
 
 ### Steps
 - [ ] Update Jest configuration for Next.js
@@ -113,7 +112,7 @@ npm install @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities
 
 ---
 
-## Verification Checklist
+## Verification Checklist (for future migration)
 
 ### Before Starting
 - [x] All tests passing (148 passed, 5 skipped)
@@ -129,7 +128,7 @@ npm install @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities
 
 ---
 
-## Rollback Plan
+## Rollback Plan (if migration resumed later)
 
 If anything breaks:
 1. Keep Vite setup as backup
