@@ -2,25 +2,28 @@
 
 ## Goal
 
-Original plan: migrate from Vite to Next.js app directory. Current approach: maintain Vite UI and add a Next.js pages API (hybrid). This checklist is retained for future migration consideration and is not currently in progress.
+Original plan: migrate from Vite to Next.js app directory.
+
+Decision for Week 1–2: maintain Vite UI and add a Next.js pages API (hybrid). The hybrid setup is complete; the full Next.js app‑dir migration remains deferred for later consideration. This checklist is updated to reflect what was completed for the hybrid approach and what stays deferred.
 
 ## Current Status
 
-- ✅ Current Vite app functional (hybrid with Next.js API)
-- 🟡 Full Next.js app-dir migration deferred
+- ✅ Hybrid architecture in place (Vite frontend + Next.js pages API backend)
+- ✅ Week 1–2 objectives completed for the hybrid setup
+- 🟡 Full Next.js app‑dir migration deferred (not in current scope)
 
 ---
 
-## Task 1: Install Dependencies (deferred)
+## Task 1: Install Dependencies (completed)
 
 ### Steps
 
-- [ ] Install Next.js and React 18.2.0
-- [ ] Install Prisma and related packages
-- [ ] Install SQLite packages
-- [ ] Install Tailwind CSS
-- [ ] Install Drag & Drop packages
-- [ ] Verify installations don't break existing setup
+- [x] Install Next.js and React 18.2.0
+- [x] Install Prisma and related packages
+- [x] Install SQLite packages
+- [x] Install Tailwind CSS
+- [x] Install Drag & Drop packages
+- [x] Verify installations don't break existing setup
 
 ### Commands
 
@@ -34,6 +37,8 @@ npm install @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities
 ---
 
 ## Task 2: Project Structure Migration (deferred)
+
+Note: app‑dir migration is intentionally deferred; minimal `app/` scaffolding exists, but full component moves are not part of Week 1–2.
 
 ### Steps
 
@@ -86,26 +91,26 @@ npm install @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities
 
 ---
 
-## Task 5: Preserve Existing Features (for future migration)
+## Task 5: Preserve Existing Features (completed for hybrid)
 
 ### BlockNote Editor
 
-- [ ] Import BlockNote components correctly
-- [ ] Test editor rendering
-- [ ] Test all block types work
+- [x] Import BlockNote components correctly
+- [x] Test editor rendering
+- [x] Test all block types work
 
 ### WebLLM AI
 
-- [ ] Test AI engine initialization
-- [ ] Test all AI features
-- [ ] Verify WebLLM works in Next.js
+- [x] Test AI engine initialization
+- [x] Test all AI features
+- [x] Verify WebLLM works in hybrid (Web Worker + Vite UI)
 
 ### Components
 
-- [ ] Verify Header component works
-- [ ] Verify Footer component works
-- [ ] Verify all toolbar buttons work
-- [ ] Test responsive design
+- [x] Verify Header component works
+- [x] Verify Footer behavior works (hidden when idle)
+- [x] Verify all toolbar buttons work
+- [x] Test responsive design
 
 ---
 
@@ -122,7 +127,7 @@ npm install @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities
 
 - [ ] Update `jest.config.js` for Next.js
 - [ ] Configure `@testing-library/next` if needed
-- [ ] Verify all 148 tests still pass
+- [ ] Verify all tests still pass after migration (deferred)
 
 ---
 
@@ -130,7 +135,7 @@ npm install @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities
 
 ### Before Starting
 
-- [x] All tests passing (148 passed, 5 skipped)
+- [x] All tests passing (current suite passing; coverage thresholds enforced)
 
 ### After Migration
 
@@ -156,8 +161,8 @@ If anything breaks:
 
 ## Success Criteria
 
-- ✅ Next.js app running on localhost:4000
-- ✅ All existing features work
-- ✅ All tests passing
+- ✅ Hybrid app running (Vite UI on localhost:5173, Next.js API on localhost:4000)
+- ✅ All existing features work (Dashboard, Breadcrumbs, Sidebar, Toolbar, AI)
+- ✅ All tests passing with coverage threshold
 - ✅ No regressions
-- ✅ Ready for Week 3 (Database setup)
+- 🟡 Full Next.js app‑dir migration remains a future task
