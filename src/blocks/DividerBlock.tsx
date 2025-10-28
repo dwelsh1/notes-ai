@@ -4,7 +4,7 @@ import {
   defaultBlockSpecs,
   defaultProps,
 } from '@blocknote/core';
-import { createReactBlockSpec } from '@blocknote/react/src/schema/ReactBlockSpec';
+import { createReactBlockSpec } from '@blocknote/react';
 
 export const DividerBlock = createReactBlockSpec(
   {
