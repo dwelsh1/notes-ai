@@ -28,9 +28,16 @@ function formatTimeAgo(iso?: string): string {
   return `Updated ${diffDays} days ago`;
 }
 
-export const Dashboard: React.FC<DashboardProps> = ({ onNewPage, onSelectPage }) => {
+export const Dashboard: React.FC<DashboardProps> = ({
+  onNewPage,
+  onSelectPage,
+}) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [stats, setStats] = useState<StatsState>({ totalPages: 0, recentActivity: 0, pagesThisWeek: 0 });
+  const [stats, setStats] = useState<StatsState>({
+    totalPages: 0,
+    recentActivity: 0,
+    pagesThisWeek: 0,
+  });
   const [recentPages, setRecentPages] = useState<PageSummary[]>([]);
 
   useEffect(() => {
@@ -64,14 +71,31 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNewPage, onSelectPage })
 
   if (isLoading) {
     return (
-      <div style={{ padding: '24px', color: '#6b7280' }}>Loading dashboard...</div>
+      <div style={{ padding: '24px', color: '#6b7280' }}>
+        Loading dashboard...
+      </div>
     );
   }
 
   return (
     <div style={{ padding: '24px' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <h1 style={{ fontSize: '32px', fontWeight: 700, margin: 0, color: '#111827' }}>Welcome to NotesAI</h1>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+      >
+        <h1
+          style={{
+            fontSize: '32px',
+            fontWeight: 700,
+            margin: 0,
+            color: '#111827',
+          }}
+        >
+          Welcome to NotesAI
+        </h1>
         <button
           onClick={onNewPage}
           style={{
@@ -89,26 +113,86 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNewPage, onSelectPage })
       </div>
 
       {/* Stats */}
-      <div style={{ display: 'flex', gap: '16px', marginTop: '24px', flexWrap: 'wrap' }}>
-        <div style={{ flex: '0 0 240px', border: '1px solid #e5e7eb', borderRadius: '8px', padding: '16px', background: 'white' }}>
+      <div
+        style={{
+          display: 'flex',
+          gap: '16px',
+          marginTop: '24px',
+          flexWrap: 'wrap',
+        }}
+      >
+        <div
+          style={{
+            flex: '0 0 240px',
+            border: '1px solid #e5e7eb',
+            borderRadius: '8px',
+            padding: '16px',
+            background: 'white',
+          }}
+        >
           <div style={{ color: '#6b7280', fontSize: '14px' }}>Total Pages</div>
-          <div style={{ fontSize: '28px', fontWeight: 700 }}>{stats.totalPages}</div>
+          <div style={{ fontSize: '28px', fontWeight: 700 }}>
+            {stats.totalPages}
+          </div>
         </div>
-        <div style={{ flex: '0 0 240px', border: '1px solid #e5e7eb', borderRadius: '8px', padding: '16px', background: 'white' }}>
-          <div style={{ color: '#6b7280', fontSize: '14px' }}>Recent Activity</div>
-          <div style={{ fontSize: '28px', fontWeight: 700 }}>{stats.recentActivity}</div>
+        <div
+          style={{
+            flex: '0 0 240px',
+            border: '1px solid #e5e7eb',
+            borderRadius: '8px',
+            padding: '16px',
+            background: 'white',
+          }}
+        >
+          <div style={{ color: '#6b7280', fontSize: '14px' }}>
+            Recent Activity
+          </div>
+          <div style={{ fontSize: '28px', fontWeight: 700 }}>
+            {stats.recentActivity}
+          </div>
         </div>
-        <div style={{ flex: '0 0 240px', border: '1px solid #e5e7eb', borderRadius: '8px', padding: '16px', background: 'white' }}>
-          <div style={{ color: '#6b7280', fontSize: '14px' }}>Pages This Week</div>
-          <div style={{ fontSize: '28px', fontWeight: 700 }}>{stats.pagesThisWeek}</div>
+        <div
+          style={{
+            flex: '0 0 240px',
+            border: '1px solid #e5e7eb',
+            borderRadius: '8px',
+            padding: '16px',
+            background: 'white',
+          }}
+        >
+          <div style={{ color: '#6b7280', fontSize: '14px' }}>
+            Pages This Week
+          </div>
+          <div style={{ fontSize: '28px', fontWeight: 700 }}>
+            {stats.pagesThisWeek}
+          </div>
         </div>
       </div>
 
       {/* Recent Pages */}
-      <div style={{ marginTop: '24px', border: '1px solid #e5e7eb', borderRadius: '8px', background: 'white', padding: '16px' }}>
-        <h2 style={{ fontSize: '18px', fontWeight: 600, color: '#111827', marginBottom: '4px' }}>Recent Pages</h2>
+      <div
+        style={{
+          marginTop: '24px',
+          border: '1px solid #e5e7eb',
+          borderRadius: '8px',
+          background: 'white',
+          padding: '16px',
+        }}
+      >
+        <h2
+          style={{
+            fontSize: '18px',
+            fontWeight: 600,
+            color: '#111827',
+            marginBottom: '4px',
+          }}
+        >
+          Recent Pages
+        </h2>
         {recentPages.length === 0 ? (
-          <p style={{ color: '#6b7280', fontSize: '14px' }}>No pages yet. Create your first page!</p>
+          <p style={{ color: '#6b7280', fontSize: '14px' }}>
+            No pages yet. Create your first page!
+          </p>
         ) : (
           <div>
             {recentPages.map((page, index) => (
@@ -118,7 +202,10 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNewPage, onSelectPage })
                   display: 'flex',
                   alignItems: 'center',
                   padding: '8px 0',
-                  borderBottom: index < recentPages.length - 1 ? '1px solid #e5e7eb' : 'none',
+                  borderBottom:
+                    index < recentPages.length - 1
+                      ? '1px solid #e5e7eb'
+                      : 'none',
                 }}
               >
                 <div
@@ -157,7 +244,13 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNewPage, onSelectPage })
                   >
                     {page.title}
                   </h3>
-                  <span style={{ fontSize: '14px', color: '#6b7280', whiteSpace: 'nowrap' }}>
+                  <span
+                    style={{
+                      fontSize: '14px',
+                      color: '#6b7280',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
                     {formatTimeAgo(page.updatedAt || page.createdAt)}
                   </span>
                 </div>
@@ -185,5 +278,3 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNewPage, onSelectPage })
 };
 
 export default Dashboard;
-
-
