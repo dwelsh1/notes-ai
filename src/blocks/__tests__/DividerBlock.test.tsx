@@ -13,11 +13,7 @@ jest.mock('@blocknote/react', () => ({
 }));
 
 // Now import subject under test (after mocks)
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const {
-  DividerBlock,
-  createSchemaWithDivider,
-} = require('../../blocks/DividerBlock');
+import { DividerBlock, createSchemaWithDivider } from '../../blocks/DividerBlock';
 
 describe('DividerBlock', () => {
   it('registers a divider block in the schema', () => {
