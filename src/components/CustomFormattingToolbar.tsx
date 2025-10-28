@@ -42,6 +42,23 @@ export function CustomFormattingToolbar({
     }
   };
 
+  const applyList = (kind: 'bullet' | 'numbered') => {
+    try {
+      const selection = editor.getSelection();
+      const targets = selection?.blocks?.length
+        ? selection.blocks
+        : editor.getTextCursorPosition()?.block
+        ? [editor.getTextCursorPosition().block]
+        : [];
+      for (const b of targets) {
+        const type = kind === 'bullet' ? 'bulletListItem' : 'numberedListItem';
+        // @ts-expect-error - BlockNote union accepts list item types
+        editor.updateBlock(b.id, { type });
+      }
+    } catch {
+      /* noop */
+    }
+  };
   const applyParagraph = () => {
     try {
       const selection = editor.getSelection();
@@ -72,6 +89,8 @@ export function CustomFormattingToolbar({
           if (val === 'h4') applyHeadingLevel(4);
           if (val === 'h5') applyHeadingLevel(5);
           if (val === 'h6') applyHeadingLevel(6);
+          if (val === 'bullet') applyList('bullet');
+          if (val === 'numbered') applyList('numbered');
           // reset placeholder
           e.currentTarget.selectedIndex = 0;
         }}
@@ -89,6 +108,12 @@ export function CustomFormattingToolbar({
         <option value="h4">Heading 4</option>
         <option value="h5">Heading 5</option>
         <option value="h6">Heading 6</option>
+        <option value="bullet">
+          Bullet List
+        </option>
+        <option value="numbered">
+          Numbered List
+        </option>
       </select>
 
       <ImageCaptionButton key={'imageCaptionButton'} />
