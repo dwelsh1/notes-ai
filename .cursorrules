@@ -58,6 +58,11 @@ When implementing features or troubleshooting issues, refer to the official docu
 - Group related files in appropriate directories
 - Keep components small and focused (< 200 lines when possible)
 
+### Safety Rules
+- Never delete or rename existing components or key files without explicit user approval.
+- Examples: do not remove or rename `src/components/Dashboard.tsx`, `src/components/Sidebar.tsx`, `src/App.tsx`, or API route files while performing refactors or lint/format fixes.
+- Prefer additive or in-place edits; if a file must be replaced, keep its export API stable and confirm with the user first.
+
 ### Import/Export Rules
 - Use named exports for components
 - Use default exports sparingly
