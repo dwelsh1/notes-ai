@@ -128,6 +128,42 @@ const App = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mainEditor, currentPageId]);
 
+  // Markdown shortcut: replace a paragraph containing exactly '---' with a divider
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key !== '-' && e.key !== 'Enter' && e.key !== ' ') return;
+      const cursor = mainEditor.getTextCursorPosition();
+      const block = cursor?.block as any;
+      if (!block) return;
+      const text = convertBlockToString(block).trim();
+      if (text !== '---') return;
+
+      // Schedule to avoid interfering with menu handling
+      setTimeout(() => {
+        try {
+          mainEditor.updateBlock(block, { type: 'divider' } as any);
+          const after = mainEditor.insertBlocks(
+            [
+              {
+                type: 'paragraph',
+                content: [],
+              },
+            ],
+            block.id,
+            'after'
+          );
+          setTimeout(() => {
+            try {
+              mainEditor.setTextCursorPosition(after[0], 'end');
+            } catch {}
+          }, 0);
+        } catch {}
+      }, 0);
+    };
+    document.addEventListener('keyup', handler);
+    return () => document.removeEventListener('keyup', handler);
+  }, [mainEditor]);
+
   // Note: divider keyboard shortcut handled by editor plugins; no global listener
 
   // Test function for debugging - currently unused
