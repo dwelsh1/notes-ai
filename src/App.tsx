@@ -357,9 +357,8 @@ const App = () => {
         text = convertBlockToString(mainBlock);
       }
       const blocksForMarkdown = mainBlock ? [mainBlock] : [];
-      const markdownText = await mainEditor.blocksToMarkdownLossy(
-        blocksForMarkdown
-      );
+      const markdownText =
+        await mainEditor.blocksToMarkdownLossy(blocksForMarkdown);
       if (text !== '') {
         const prompt =
           'Translate this text to English and keep the markdown formatting : ' +
