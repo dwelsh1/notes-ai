@@ -1135,10 +1135,14 @@ const App = () => {
                         badge: '"',
                         icon: <QuoteIcon style={{ width: 18, height: 18 }} />,
                         onItemClick: async () => {
+                          if (import.meta.env.DEV)
+                            console.log('[SlashMenu/Quote] click');
                           setTimeout(() => {
                             try {
                               const selection =
                                 (mainEditor as any).getSelection?.();
+                              if (import.meta.env.DEV)
+                                console.log('[SlashMenu/Quote] selection', selection);
                               const targets = selection?.blocks?.length
                                 ? selection.blocks
                                 : (mainEditor as any)
@@ -1149,14 +1153,26 @@ const App = () => {
                                       .block,
                                   ]
                                 : [];
-                              if (!targets.length) return;
+                              if (import.meta.env.DEV)
+                                console.log(
+                                  '[SlashMenu/Quote] targets',
+                                  targets.map((t: any) => ({ id: t.id, type: t.type }))
+                                );
+                              if (!targets.length) {
+                                if (import.meta.env.DEV)
+                                  console.warn('[SlashMenu/Quote] no targets, abort');
+                                return;
+                              }
                               for (const b of targets) {
+                                if (import.meta.env.DEV)
+                                  console.log('[SlashMenu/Quote] update', b?.id);
                                 (mainEditor as any).updateBlock(b.id, {
                                   type: 'blockquote',
                                 });
                               }
                             } catch (e) {
-                              // no-op
+                              if (import.meta.env.DEV)
+                                console.error('[SlashMenu/Quote] error', e);
                             }
                           }, 0);
                         },
