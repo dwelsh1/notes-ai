@@ -6,6 +6,7 @@ import {
   CheckCircle,
   FileText,
   Lightbulb,
+  Home,
 } from 'lucide-react';
 
 interface HeaderProps {
@@ -20,6 +21,7 @@ interface HeaderProps {
   currentProcess: 'translation' | 'correction' | 'summary' | 'develop' | null;
   breadcrumbs?: { id: string; label: string }[];
   onBreadcrumbClick?: (id: string) => void;
+  onHome?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -34,6 +36,7 @@ export const Header: React.FC<HeaderProps> = ({
   currentProcess,
   breadcrumbs,
   onBreadcrumbClick,
+  onHome,
 }) => {
   return (
     <header
@@ -103,181 +106,34 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Breadcrumbs */}
           {breadcrumbs && breadcrumbs.length > 0 && (
             <nav style={{ marginLeft: '12px', minWidth: 0, overflow: 'hidden' }}>
-              {breadcrumbs.map((bc, idx) => {
-                const isLast = idx === breadcrumbs.length - 1;
-                return (
-                  <span key={bc.id} style={{ whiteSpace: 'nowrap' }}>
-                    <button
-                      onClick={() => onBreadcrumbClick && onBreadcrumbClick(bc.id)}
-                      disabled={isLast}
-                      style={{
-                        background: 'none',
-                        border: 'none',
-                        color: isLast ? '#111827' : '#2563eb',
-                        fontWeight: isLast ? 600 : 500,
-                        cursor: isLast ? 'default' : 'pointer',
-                        padding: 0,
-                        margin: 0,
-                      }}
-                      title={isLast ? undefined : `Go to ${bc.label}`}
-                    >
-                      {bc.label}
-                    </button>
-                    {!isLast && <span style={{ color: '#9ca3af', padding: '0 6px' }}>/</span>}
-                  </span>
-                );
-              })}
+              {breadcrumbs.map((bc, idx) => (
+                <span key={bc.id} style={{ whiteSpace: 'nowrap' }}>
+                  <button
+                    onClick={() => onBreadcrumbClick && onBreadcrumbClick(bc.id)}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      color: '#2563eb',
+                      fontWeight: 500,
+                      cursor: 'pointer',
+                      padding: 0,
+                      margin: 0,
+                    }}
+                    title={`Go to ${bc.label}`}
+                  >
+                    {bc.label}
+                  </button>
+                  {idx < breadcrumbs.length - 1 && (
+                    <span style={{ color: '#9ca3af', padding: '0 6px' }}>›</span>
+                  )}
+                </span>
+              ))}
             </nav>
           )}
-
-          {/* AI Action Icons */}
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              minWidth: 0,
-            }}
-          >
-            <button
-              onClick={onTranslate}
-              disabled={isGenerating || isFetching}
-              style={{
-                padding: '4px',
-                backgroundColor: 'transparent',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: isGenerating || isFetching ? 'not-allowed' : 'pointer',
-                opacity: isGenerating || isFetching ? 0.5 : 1,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                outline: 'none',
-                boxShadow: 'none',
-                appearance: 'none',
-                WebkitAppearance: 'none',
-                MozAppearance: 'none',
-              }}
-              onMouseEnter={e => {
-                if (!isGenerating && !isFetching) {
-                  e.currentTarget.style.backgroundColor = '#f3f4f6';
-                }
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.backgroundColor = 'transparent';
-              }}
-              title="Translate the entire document in a new block note"
-            >
-              <Languages
-                style={{ width: '18px', height: '18px', color: '#6b7280' }}
-              />
-            </button>
-
-            <button
-              onClick={onCorrect}
-              disabled={isGenerating || isFetching}
-              style={{
-                padding: '4px',
-                backgroundColor: 'transparent',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: isGenerating || isFetching ? 'not-allowed' : 'pointer',
-                opacity: isGenerating || isFetching ? 0.5 : 1,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                outline: 'none',
-                boxShadow: 'none',
-                appearance: 'none',
-                WebkitAppearance: 'none',
-                MozAppearance: 'none',
-              }}
-              onMouseEnter={e => {
-                if (!isGenerating && !isFetching) {
-                  e.currentTarget.style.backgroundColor = '#f3f4f6';
-                }
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.backgroundColor = 'transparent';
-              }}
-              title="Correct the entire document in a new block note"
-            >
-              <CheckCircle
-                style={{ width: '18px', height: '18px', color: '#6b7280' }}
-              />
-            </button>
-
-            <button
-              onClick={onSummarize}
-              disabled={isGenerating || isFetching}
-              style={{
-                padding: '4px',
-                backgroundColor: 'transparent',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: isGenerating || isFetching ? 'not-allowed' : 'pointer',
-                opacity: isGenerating || isFetching ? 0.5 : 1,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                outline: 'none',
-                boxShadow: 'none',
-                appearance: 'none',
-                WebkitAppearance: 'none',
-                MozAppearance: 'none',
-              }}
-              onMouseEnter={e => {
-                if (!isGenerating && !isFetching) {
-                  e.currentTarget.style.backgroundColor = '#f3f4f6';
-                }
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.backgroundColor = 'transparent';
-              }}
-              title="Summarize the entire document"
-            >
-              <FileText
-                style={{ width: '18px', height: '18px', color: '#6b7280' }}
-              />
-            </button>
-
-            <button
-              onClick={onDevelop}
-              disabled={isGenerating || isFetching}
-              style={{
-                padding: '4px',
-                backgroundColor: 'transparent',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: isGenerating || isFetching ? 'not-allowed' : 'pointer',
-                opacity: isGenerating || isFetching ? 0.5 : 1,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                outline: 'none',
-                boxShadow: 'none',
-                appearance: 'none',
-                WebkitAppearance: 'none',
-                MozAppearance: 'none',
-              }}
-              onMouseEnter={e => {
-                if (!isGenerating && !isFetching) {
-                  e.currentTarget.style.backgroundColor = '#f3f4f6';
-                }
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.backgroundColor = 'transparent';
-              }}
-              title="Generate text from bullet points"
-            >
-              <Lightbulb
-                style={{ width: '18px', height: '18px', color: '#6b7280' }}
-              />
-            </button>
-          </div>
+          {/* Left side ends here */}
         </div>
 
-        {/* Right side - Action buttons */}
+        {/* Right side - Home, AI Actions, Stop, Settings */}
         <div
           style={{
             display: 'flex',
@@ -286,6 +142,168 @@ export const Header: React.FC<HeaderProps> = ({
             flexShrink: 0,
           }}
         >
+          {/* Home */}
+          <button
+            onClick={onHome}
+            style={{
+              padding: '4px',
+              backgroundColor: 'transparent',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              outline: 'none',
+              boxShadow: 'none',
+              appearance: 'none',
+              WebkitAppearance: 'none',
+              MozAppearance: 'none',
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.backgroundColor = '#f3f4f6';
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.backgroundColor = 'transparent';
+            }}
+            title="Home"
+          >
+            <Home style={{ width: '18px', height: '18px', color: '#6b7280' }} />
+          </button>
+
+          {/* Divider */}
+          <div style={{ width: '1px', height: '20px', backgroundColor: '#e5e7eb' }} />
+
+          {/* AI Action Icons moved to right side */}
+          <button
+            onClick={onTranslate}
+            disabled={isGenerating || isFetching}
+            style={{
+              padding: '4px',
+              backgroundColor: 'transparent',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: isGenerating || isFetching ? 'not-allowed' : 'pointer',
+              opacity: isGenerating || isFetching ? 0.5 : 1,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              outline: 'none',
+              boxShadow: 'none',
+              appearance: 'none',
+              WebkitAppearance: 'none',
+              MozAppearance: 'none',
+            }}
+            onMouseEnter={e => {
+              if (!isGenerating && !isFetching) {
+                e.currentTarget.style.backgroundColor = '#f3f4f6';
+              }
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.backgroundColor = 'transparent';
+            }}
+            title="Translate the entire document in a new block note"
+          >
+            <Languages style={{ width: '18px', height: '18px', color: '#6b7280' }} />
+          </button>
+
+          <button
+            onClick={onCorrect}
+            disabled={isGenerating || isFetching}
+            style={{
+              padding: '4px',
+              backgroundColor: 'transparent',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: isGenerating || isFetching ? 'not-allowed' : 'pointer',
+              opacity: isGenerating || isFetching ? 0.5 : 1,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              outline: 'none',
+              boxShadow: 'none',
+              appearance: 'none',
+              WebkitAppearance: 'none',
+              MozAppearance: 'none',
+            }}
+            onMouseEnter={e => {
+              if (!isGenerating && !isFetching) {
+                e.currentTarget.style.backgroundColor = '#f3f4f6';
+              }
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.backgroundColor = 'transparent';
+            }}
+            title="Correct the entire document in a new block note"
+          >
+            <CheckCircle style={{ width: '18px', height: '18px', color: '#6b7280' }} />
+          </button>
+
+          <button
+            onClick={onSummarize}
+            disabled={isGenerating || isFetching}
+            style={{
+              padding: '4px',
+              backgroundColor: 'transparent',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: isGenerating || isFetching ? 'not-allowed' : 'pointer',
+              opacity: isGenerating || isFetching ? 0.5 : 1,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              outline: 'none',
+              boxShadow: 'none',
+              appearance: 'none',
+              WebkitAppearance: 'none',
+              MozAppearance: 'none',
+            }}
+            onMouseEnter={e => {
+              if (!isGenerating && !isFetching) {
+                e.currentTarget.style.backgroundColor = '#f3f4f6';
+              }
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.backgroundColor = 'transparent';
+            }}
+            title="Summarize the entire document"
+          >
+            <FileText style={{ width: '18px', height: '18px', color: '#6b7280' }} />
+          </button>
+
+          <button
+            onClick={onDevelop}
+            disabled={isGenerating || isFetching}
+            style={{
+              padding: '4px',
+              backgroundColor: 'transparent',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: isGenerating || isFetching ? 'not-allowed' : 'pointer',
+              opacity: isGenerating || isFetching ? 0.5 : 1,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              outline: 'none',
+              boxShadow: 'none',
+              appearance: 'none',
+              WebkitAppearance: 'none',
+              MozAppearance: 'none',
+            }}
+            onMouseEnter={e => {
+              if (!isGenerating && !isFetching) {
+                e.currentTarget.style.backgroundColor = '#f3f4f6';
+              }
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.backgroundColor = 'transparent';
+            }}
+            title="Generate text from bullet points"
+          >
+            <Lightbulb style={{ width: '18px', height: '18px', color: '#6b7280' }} />
+          </button>
+
+          {/* Stop */}
           <button
             onClick={onStop}
             disabled={!isGenerating}
@@ -319,6 +337,9 @@ export const Header: React.FC<HeaderProps> = ({
               style={{ width: '18px', height: '18px', color: '#6b7280' }}
             />
           </button>
+
+          {/* Divider between Stop and Settings */}
+          <div style={{ width: '1px', height: '20px', backgroundColor: '#e5e7eb' }} />
 
           <button
             onClick={() =>

@@ -71,6 +71,9 @@ const App = () => {
     undefined
   );
   const [pageTitle, setPageTitle] = useState('Untitled Page');
+  const [breadcrumbs, setBreadcrumbs] = useState<{ id: string; label: string }[]>([
+    { id: 'dashboard', label: 'Dashboard' },
+  ]);
   const sidebarRef = useRef<SidebarRef>(null);
   const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -175,9 +178,37 @@ const App = () => {
     if (report.progress === 1) {
       setProgressPercentage(0);
       setOutput('');
+      setProgress('');
+      return; // prevent setting to the final text like "Finish loading on WebGPU - nvidia"
     }
     setProgress(report.text);
   };
+
+  const buildBreadcrumbs = async (pageId?: string) => {
+    if (!pageId) {
+      setBreadcrumbs([{ id: 'dashboard', label: 'Dashboard' }]);
+      return;
+    }
+    try {
+      const chain: { id: string; label: string }[] = [];
+      let current: string | null | undefined = pageId;
+      while (current) {
+        const res = await fetch(`http://localhost:4000/api/pages/${current}`);
+        if (!res.ok) break;
+        const p = await res.json();
+        chain.unshift({ id: current, label: p.title || 'Untitled Page' });
+        current = p.parentId ?? null;
+      }
+      setBreadcrumbs([{ id: 'dashboard', label: 'Dashboard' }, ...chain]);
+    } catch (e) {
+      setBreadcrumbs([{ id: 'dashboard', label: 'Dashboard' }]);
+    }
+  };
+
+  useEffect(() => {
+    buildBreadcrumbs(currentPageId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPageId]);
 
   //const loadTokenizer = async () => {
   // 	const tokenizer = await AutoTokenizer.from_pretrained('/models');
@@ -606,6 +637,10 @@ const App = () => {
       if (response.ok) {
         const newPage = await response.json();
         setCurrentPageId(newPage.id);
+        try {
+          localStorage.setItem('lastOpenPageId', newPage.id);
+          localStorage.setItem('lastOpenPageTitle', newPage.title || 'Untitled Page');
+        } catch {}
         // Refresh sidebar to show new page
         sidebarRef.current?.refreshPages();
         // Auto-select the title field
@@ -645,6 +680,10 @@ const App = () => {
         mainEditor.replaceBlocks(mainEditor.document, blocks);
 
         setCurrentPageId(pageId);
+        try {
+          localStorage.setItem('lastOpenPageId', pageId);
+          localStorage.setItem('lastOpenPageTitle', page.title || 'Untitled Page');
+        } catch {}
       } else {
         console.error('Failed to load page');
       }
@@ -764,6 +803,10 @@ const App = () => {
       if (response.ok) {
         const newPage = await response.json();
         setCurrentPageId(newPage.id);
+        try {
+          localStorage.setItem('lastOpenPageId', newPage.id);
+          localStorage.setItem('lastOpenPageTitle', newPage.title || 'Untitled Page');
+        } catch {}
         // Refresh sidebar to show new subpage
         sidebarRef.current?.refreshPages();
         // Auto-select the title field
@@ -884,20 +927,28 @@ const App = () => {
           isGenerating={isGenerating}
           isFetching={isFetching}
           currentProcess={currentProccess}
-          breadcrumbs={currentPageId ? [{ id: currentPageId, label: pageTitle }] : []}
-          onBreadcrumbClick={id => loadPageContent(id)}
+          breadcrumbs={breadcrumbs}
+          onBreadcrumbClick={id => {
+            if (id === 'dashboard') {
+              setCurrentPageId(undefined);
+              return;
+            }
+            loadPageContent(id);
+          }}
+          onHome={() => setCurrentPageId(undefined)}
         />
 
         <main className="flex-1 flex overflow-hidden">
           <div className="flex-1 flex min-w-0">
             <div className="flex-1 bg-white min-w-0 overflow-auto">
               {/* Dashboard when no page selected */}
-              {!currentPageId ? (
+              {!currentPageId && (
                 <Dashboard onNewPage={createNewPage} onSelectPage={loadPageContent} />
-              ) : (
-                <>
-              {/* Title Input Field */}
-              <input
+              )}
+              {/* Always mount editor; just hide when no page */}
+              <div style={{ display: currentPageId ? 'block' : 'none' }}>
+                {/* Title Input Field */}
+                <input
                 type="text"
                 value={pageTitle}
                 onChange={e => {
@@ -919,28 +970,27 @@ const App = () => {
                   boxSizing: 'border-box',
                   backgroundColor: 'transparent',
                 }}
-              />
-              <BlockNoteView
-                editor={mainEditor}
-                className="h-full w-full"
-                formattingToolbar={false}
-              >
-                <FormattingToolbarController
-                  formattingToolbar={() => (
-                    <CustomFormattingToolbar
-                      onSend={onSend}
-                      isGenerating={isGenerating}
-                      setIsGenerating={setIsGenerating}
-                      currentProccess={currentProccess}
-                      setCurrentProcess={setCurrentProcess}
-                      isFetching={isFetching}
-                      setOutput={setOutput}
-                    />
-                  )}
                 />
-              </BlockNoteView>
-                </>
-              )}
+                <BlockNoteView
+                  editor={mainEditor}
+                  className="h-full w-full"
+                  formattingToolbar={false}
+                >
+                  <FormattingToolbarController
+                    formattingToolbar={() => (
+                      <CustomFormattingToolbar
+                        onSend={onSend}
+                        isGenerating={isGenerating}
+                        setIsGenerating={setIsGenerating}
+                        currentProccess={currentProccess}
+                        setCurrentProcess={setCurrentProcess}
+                        isFetching={isFetching}
+                        setOutput={setOutput}
+                      />
+                    )}
+                  />
+                </BlockNoteView>
+              </div>
             </div>
 
             {showSecondEditor && (
@@ -954,16 +1004,17 @@ const App = () => {
           </div>
         </main>
 
-        <Footer
-          progress={progress}
-          progressPercentage={progressPercentage}
-          output={output}
-          error={error}
-          errorBrowserMessage={errorBrowserMessage}
-          runtimeStats={runtimeStats}
-          isFetching={isFetching}
-          currentPageTitle={currentPageId ? pageTitle : undefined}
-        />
+        {(isFetching || isGenerating || !!progress || !!output || !!error || !!errorBrowserMessage) && (
+          <Footer
+            progress={progress}
+            progressPercentage={progressPercentage}
+            output={output}
+            error={error}
+            errorBrowserMessage={errorBrowserMessage}
+            runtimeStats={runtimeStats}
+            isFetching={isFetching}
+          />
+        )}
       </div>
     </div>
   );
