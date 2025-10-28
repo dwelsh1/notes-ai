@@ -1126,7 +1126,51 @@ const App = () => {
                         },
                       } as const;
 
-                      // Insert Divider directly after "Paragraph" inside the existing Basic blocks group
+                      // Additional Heading levels (H4–H6)
+                      const headingItems = [4, 5, 6].map(level => ({
+                        title: `Heading ${level}`,
+                        group: 'Basic blocks',
+                        subtext: `Insert an H${level} heading`,
+                        aliases: [`h${level}`, `heading ${level}`] as const,
+                        icon: (
+                          <span style={{ fontWeight: 600 }}>{`H${level}`}</span>
+                        ),
+                        onItemClick: async () => {
+                          setTimeout(() => {
+                            try {
+                              const cursorPos =
+                                (mainEditor as any).getTextCursorPosition();
+                              const currentBlock = cursorPos.block;
+                              const inserted = (mainEditor as any).insertBlocks(
+                                [
+                                  {
+                                    type: 'heading',
+                                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                    props: { level: level } as any,
+                                    content: [],
+                                  },
+                                ],
+                                currentBlock,
+                                'after'
+                              );
+                              setTimeout(() => {
+                                try {
+                                  (mainEditor as any).setTextCursorPosition(
+                                    inserted[0],
+                                    'end'
+                                  );
+                                } catch (e) {
+                                  // no-op
+                                }
+                              }, 0);
+                            } catch (e) {
+                              // no-op
+                            }
+                          }, 0);
+                        },
+                      }));
+
+                      // Insert Divider directly after "Paragraph" inside the existing Basic blocks group and add H4–H6 after H3
                       const items = [...defaults];
                       const paragraphIndex = items.findIndex(
                         i => i.title === 'Paragraph'
@@ -1141,6 +1185,16 @@ const App = () => {
                         const insertAt =
                           firstAdvanced === -1 ? items.length : firstAdvanced;
                         items.splice(insertAt, 0, dividerItem as any);
+                      }
+
+                      // Place H4–H6 after Heading 3
+                      const h3Index = items.findIndex(
+                        i => i.title === 'Heading 3'
+                      );
+                      if (h3Index !== -1) {
+                        items.splice(h3Index + 1, 0, ...(headingItems as any));
+                      } else {
+                        items.push(...(headingItems as any));
                       }
 
                       return filterSuggestionItems(items as any, query) as any;

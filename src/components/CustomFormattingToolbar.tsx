@@ -9,6 +9,7 @@ import {
   ReplaceImageButton,
   TextAlignButton,
   UnnestBlockButton,
+  useBlockNoteEditor,
 } from '@blocknote/react';
 import { TranslateToolbarButton } from './TranslateToolbarButton';
 import { CorrectToolbarButton } from './CorrectToolbarButton';
@@ -23,9 +24,49 @@ export function CustomFormattingToolbar({
   isFetching,
   setOutput,
 }) {
+  const editor = useBlockNoteEditor();
+
+  const applyHeadingLevel = (level: 4 | 5 | 6) => {
+    try {
+      const selection = editor.getSelection();
+      const targets = selection?.blocks?.length
+        ? selection.blocks
+        : editor.getTextCursorPosition()?.block
+        ? [editor.getTextCursorPosition().block]
+        : [];
+      for (const b of targets) {
+        // @ts-expect-error - union props; BlockNote accepts heading with level
+        editor.updateBlock(b.id, { type: 'heading', props: { level } });
+      }
+    } catch {
+      /* noop */
+    }
+  };
   return (
     <FormattingToolbar>
       <BlockTypeSelect key={'blockTypeSelect'} />
+      {/* Quick add for Heading 4-6 */}
+      <select
+        key={'headingSelectH4H6'}
+        onChange={e => {
+          const val = e.target.value;
+          if (val === 'h4') applyHeadingLevel(4);
+          if (val === 'h5') applyHeadingLevel(5);
+          if (val === 'h6') applyHeadingLevel(6);
+          // reset placeholder
+          e.currentTarget.selectedIndex = 0;
+        }}
+        defaultValue=""
+        style={{ marginLeft: 6, padding: '2px 4px', fontSize: 12 }}
+        title="Set heading level to H4–H6"
+      >
+        <option value="" disabled>
+          H4–H6
+        </option>
+        <option value="h4">Heading 4</option>
+        <option value="h5">Heading 5</option>
+        <option value="h6">Heading 6</option>
+      </select>
 
       <ImageCaptionButton key={'imageCaptionButton'} />
       <ReplaceImageButton key={'replaceImageButton'} />
