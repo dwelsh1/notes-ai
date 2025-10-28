@@ -10,6 +10,7 @@ import {
   TextAlignButton,
   UnnestBlockButton,
 } from '@blocknote/react';
+import { ToolbarButton, useBlockNoteEditor } from '@blocknote/react';
 import { TranslateToolbarButton } from './TranslateToolbarButton';
 import { CorrectToolbarButton } from './CorrectToolbarButton';
 import { DevelopToolbarButton } from './DevelopToolbarButton';
@@ -23,6 +24,7 @@ export function CustomFormattingToolbar({
   isFetching,
   setOutput,
 }) {
+  const editor = useBlockNoteEditor();
   return (
     <FormattingToolbar>
       <BlockTypeSelect key={'blockTypeSelect'} />
@@ -88,6 +90,29 @@ export function CustomFormattingToolbar({
       <UnnestBlockButton key={'unnestBlockButton'} />
 
       <CreateLinkButton key={'createLinkButton'} />
+
+      {/* Divider insert (Markdown '---') */}
+      <ToolbarButton
+        key={'dividerButton'}
+        mainTooltip={'Divider'}
+        isDisabled={isFetching || isGenerating}
+        onClick={async () => {
+          try {
+            const blocks = await editor.tryParseMarkdownToBlocks('---');
+            const sel = editor.getSelection();
+            const afterId = sel?.blocks?.[sel.blocks.length - 1]?.id;
+            if (afterId) {
+              editor.insertBlocks(blocks, afterId, 'after');
+            } else {
+              editor.insertBlocks(blocks);
+            }
+          } catch (e) {
+            // no-op
+          }
+        }}
+      >
+        Divider
+      </ToolbarButton>
     </FormattingToolbar>
   );
 }

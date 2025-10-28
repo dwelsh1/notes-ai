@@ -123,6 +123,25 @@ const App = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mainEditor, currentPageId]);
 
+  // Markdown shortcut: when a paragraph contains exactly '---', convert to divider
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      const cursor = mainEditor.getTextCursorPosition();
+      const block = cursor?.block;
+      if (!block) return;
+      const text = convertBlockToString(block).trim();
+      if (text === '---') {
+        (async () => {
+          const blocks = await mainEditor.tryParseMarkdownToBlocks('---');
+          mainEditor.replaceBlocks([block.id], blocks);
+        })();
+      }
+    };
+    document.addEventListener('keyup', handler);
+    return () => document.removeEventListener('keyup', handler);
+  }, [mainEditor]);
+
   // Test function for debugging - currently unused
   // const test = async () => {
   //   let loadedEngine = engine;
