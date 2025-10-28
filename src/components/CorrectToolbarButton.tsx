@@ -38,7 +38,6 @@ export function CorrectToolbarButton({
     setCurrentProcess('correction');
     const correctedTextColor = 'blue';
     if (false && blocks.length == 1) {
-      const text = editor.getSelectedText();
       const block = blocks[0];
       const correctProps = block.props;
       correctProps['textColor'] = correctedTextColor;
