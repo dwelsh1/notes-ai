@@ -1,6 +1,5 @@
 import { ToolbarButton, useBlockNoteEditor } from '@blocknote/react';
 import { Quote } from 'lucide-react';
-import { convertBlockToString } from '../utils/ParserBlockToString';
 
 export function QuoteToolbarButton() {
   const editor = useBlockNoteEditor();
@@ -28,23 +27,9 @@ export function QuoteToolbarButton() {
       }
       for (const b of targets) {
         if (import.meta.env.DEV)
-          console.log('[QuoteToolbarButton] process block', b?.id, b?.type);
-        const text = convertBlockToString(b as any);
-        const inserted = editor.insertBlocks(
-          [
-            {
-              // @ts-expect-error: union includes blockquote
-              type: 'blockquote',
-              content: [],
-            },
-          ],
-          (b as any).id,
-          'after'
-        );
-        if (import.meta.env.DEV)
-          console.log('[QuoteToolbarButton] inserted', inserted?.[0]?.id);
-        editor.updateBlock(inserted[0].id, { content: text } as any);
-        editor.setTextCursorPosition(inserted[0], 'end');
+          console.log('[QuoteToolbarButton] update block', b?.id, b?.type);
+        // @ts-expect-error: union includes blockquote via custom schema
+        editor.updateBlock(b.id, { type: 'blockquote' });
       }
     } catch (e) {
       if (import.meta.env.DEV)

@@ -1,41 +1,44 @@
 import React from 'react';
 import { BlockNoteSchema, defaultBlockSpecs, defaultProps } from '@blocknote/core';
 import { createReactBlockSpec } from '@blocknote/react';
-import { QuoteBlock } from './QuoteBlock';
 
-export const DividerBlock = createReactBlockSpec(
+export const QuoteBlock = createReactBlockSpec(
   {
-    type: 'divider' as const,
+    type: 'blockquote' as const,
     propSchema: defaultProps,
-    content: 'none',
+    content: 'inline',
   },
   {
-    render: () => (
-      <hr
+    render: ({ contentRef }) => (
+      <blockquote
+        ref={contentRef as unknown as React.RefObject<HTMLQuoteElement>}
         style={{
-          border: 'none',
-          borderTop: '1px solid #e5e7eb',
+          borderLeft: '4px solid #e5e7eb',
           margin: '12px 0',
+          paddingLeft: '12px',
+          color: '#374151',
         }}
       />
     ),
     toExternalHTML: () => (
-      <hr
+      <blockquote
         style={{
-          border: 'none',
-          borderTop: '1px solid #e5e7eb',
+          borderLeft: '4px solid #e5e7eb',
           margin: '12px 0',
+          paddingLeft: '12px',
+          color: '#374151',
         }}
       />
     ),
   }
 );
 
-export const createSchemaWithDivider = () =>
+export const createSchemaWithQuote = () =>
   BlockNoteSchema.create({
     blockSpecs: {
       ...defaultBlockSpecs,
-      divider: DividerBlock,
       blockquote: QuoteBlock,
     },
   });
+
+

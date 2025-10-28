@@ -1167,6 +1167,7 @@ const App = () => {
                                 if (import.meta.env.DEV)
                                   console.log('[SlashMenu/Quote] update', b?.id);
                                 (mainEditor as any).updateBlock(b.id, {
+                                  // custom schema adds blockquote
                                   type: 'blockquote',
                                 });
                               }
