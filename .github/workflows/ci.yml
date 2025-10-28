@@ -1,20 +1,26 @@
 name: CI/CD Pipeline
 
 on:
-  push:
-    branches: [main, develop]
-  pull_request:
-    branches: [main, develop]
-  workflow_dispatch: # Manual trigger
+  # Run automatically after PR Quality Checks finish
+  workflow_run:
+    workflows: ['Pull Request Checks']
+    types:
+      - completed
+  # Allow manual runs when needed
+  workflow_dispatch:
 
 jobs:
   quality-checks:
     name: Quality Checks
     runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          # When triggered via workflow_run, test the same commit from PR checks
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -53,6 +59,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
