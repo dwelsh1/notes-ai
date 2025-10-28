@@ -1138,30 +1138,24 @@ const App = () => {
                         onItemClick: async () => {
                           setTimeout(() => {
                             try {
-                              const cursorPos =
-                                (mainEditor as any).getTextCursorPosition();
-                              if (!cursorPos || !cursorPos.block) return;
-                              const currentBlock = cursorPos.block;
-                              const inserted = (mainEditor as any).insertBlocks(
-                                [
-                                  {
-                                    type: 'blockquote',
-                                    content: [],
-                                  },
-                                ],
-                                currentBlock,
-                                'after'
-                              );
-                              setTimeout(() => {
-                                try {
-                                  (mainEditor as any).setTextCursorPosition(
-                                    inserted[0],
-                                    'end'
-                                  );
-                                } catch (e) {
-                                  // no-op
-                                }
-                              }, 0);
+                              const selection =
+                                (mainEditor as any).getSelection?.();
+                              const targets = selection?.blocks?.length
+                                ? selection.blocks
+                                : (mainEditor as any)
+                                    .getTextCursorPosition?.()
+                                    ?.block
+                                ? [
+                                    (mainEditor as any).getTextCursorPosition()
+                                      .block,
+                                  ]
+                                : [];
+                              if (!targets.length) return;
+                              for (const b of targets) {
+                                (mainEditor as any).updateBlock(b.id, {
+                                  type: 'blockquote',
+                                });
+                              }
                             } catch (e) {
                               // no-op
                             }

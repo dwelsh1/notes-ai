@@ -6,20 +6,17 @@ export function QuoteToolbarButton() {
 
   const applyQuote = () => {
     try {
-      const cursor = editor.getTextCursorPosition();
-      if (!cursor?.block) return;
-      const inserted = editor.insertBlocks(
-        [
-          {
-            // @ts-expect-error: BlockNote supports blockquote type
-            type: 'blockquote',
-            content: [],
-          },
-        ],
-        cursor.block,
-        'after'
-      );
-      editor.setTextCursorPosition(inserted[0], 'end');
+      const selection = editor.getSelection();
+      const targets = selection?.blocks?.length
+        ? selection.blocks
+        : editor.getTextCursorPosition()?.block
+        ? [editor.getTextCursorPosition().block]
+        : [];
+      if (!targets.length) return;
+      for (const b of targets) {
+        // @ts-expect-error: union includes blockquote
+        editor.updateBlock(b.id, { type: 'blockquote' });
+      }
     } catch {
       /* no-op */
     }
