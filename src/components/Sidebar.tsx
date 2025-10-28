@@ -271,7 +271,7 @@ export const Sidebar = forwardRef<SidebarRef, SidebarProps>(
             style={{
               padding: '4px 16px',
               paddingLeft: `${16 + depth * 16}px`,
-              cursor: 'grab',
+              cursor: isDragging ? 'grabbing' : 'pointer',
               backgroundColor: isActive ? '#e0e7ff' : 'transparent',
               display: 'flex',
               alignItems: 'center',
