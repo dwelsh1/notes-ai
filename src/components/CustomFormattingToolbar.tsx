@@ -1,6 +1,5 @@
 import {
   BasicTextStyleButton,
-  BlockTypeSelect,
   ColorStyleButton,
   CreateLinkButton,
   FormattingToolbar,
@@ -26,7 +25,7 @@ export function CustomFormattingToolbar({
 }) {
   const editor = useBlockNoteEditor();
 
-  const applyHeadingLevel = (level: 4 | 5 | 6) => {
+  const applyHeadingLevel = (level: 1 | 2 | 3 | 4 | 5 | 6) => {
     try {
       const selection = editor.getSelection();
       const targets = selection?.blocks?.length
@@ -42,14 +41,34 @@ export function CustomFormattingToolbar({
       /* noop */
     }
   };
+
+  const applyParagraph = () => {
+    try {
+      const selection = editor.getSelection();
+      const targets = selection?.blocks?.length
+        ? selection.blocks
+        : editor.getTextCursorPosition()?.block
+        ? [editor.getTextCursorPosition().block]
+        : [];
+      for (const b of targets) {
+        editor.updateBlock(b.id, { type: 'paragraph', props: {} });
+      }
+    } catch {
+      /* noop */
+    }
+  };
   return (
     <FormattingToolbar>
-      <BlockTypeSelect key={'blockTypeSelect'} />
-      {/* Quick add for Heading 4-6 */}
+      {/* Custom block type dropdown including H1–H6 */}
       <select
-        key={'headingSelectH4H6'}
+        key={'blockTypeSelect'}
+        data-testid="block-type-select"
         onChange={e => {
           const val = e.target.value;
+          if (val === 'paragraph') applyParagraph();
+          if (val === 'h1') applyHeadingLevel(1);
+          if (val === 'h2') applyHeadingLevel(2);
+          if (val === 'h3') applyHeadingLevel(3);
           if (val === 'h4') applyHeadingLevel(4);
           if (val === 'h5') applyHeadingLevel(5);
           if (val === 'h6') applyHeadingLevel(6);
@@ -58,11 +77,15 @@ export function CustomFormattingToolbar({
         }}
         defaultValue=""
         style={{ marginLeft: 6, padding: '2px 4px', fontSize: 12 }}
-        title="Set heading level to H4–H6"
+        title="Change block type"
       >
         <option value="" disabled>
-          H4–H6
+          Paragraph / Headings
         </option>
+        <option value="paragraph">Paragraph</option>
+        <option value="h1">Heading 1</option>
+        <option value="h2">Heading 2</option>
+        <option value="h3">Heading 3</option>
         <option value="h4">Heading 4</option>
         <option value="h5">Heading 5</option>
         <option value="h6">Heading 6</option>
