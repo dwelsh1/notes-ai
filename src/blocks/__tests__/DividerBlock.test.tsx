@@ -13,7 +13,10 @@ jest.mock('@blocknote/react', () => ({
 }));
 
 // Now import subject under test (after mocks)
-import { DividerBlock, createSchemaWithDivider } from '../../blocks/DividerBlock';
+import {
+  DividerBlock,
+  createSchemaWithDivider,
+} from '../../blocks/DividerBlock';
 
 describe('DividerBlock', () => {
   it('registers a divider block in the schema', () => {
