@@ -34,6 +34,7 @@ import { checkInputLength } from './utils/tokenizer';
 import { env } from '@xenova/transformers';
 import { extractSearchableText } from './utils/extractSearchableText';
 import { filterSuggestionItems } from '@blocknote/core';
+import { createSchemaWithDivider } from './blocks/DividerBlock';
 
 declare global {
   interface Window {
@@ -95,8 +96,10 @@ const App = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [engine]);
 
-  const mainEditor = useCreateBlockNote();
+  const schemaWithDivider = createSchemaWithDivider();
+  const mainEditor = useCreateBlockNote({ schema: schemaWithDivider });
   const secondEditor = useCreateBlockNote({
+    schema: schemaWithDivider,
     initialContent: mainEditor.document,
   });
 
@@ -1041,19 +1044,39 @@ const App = () => {
                         />
                       ),
                       onItemClick: async () => {
-                        // Insert a true horizontal rule via TipTap and move caret below
+                        // Insert custom divider block and move caret below
                         setTimeout(() => {
                           try {
-                            const tt = (mainEditor as any)._tiptapEditor;
-                            if (tt?.commands?.setHorizontalRule) {
-                              tt.chain().focus().setHorizontalRule().run();
-                              // Create a new paragraph below and place caret there
-                              tt.commands.splitBlock();
-                              tt.commands.focus();
-                            }
-                          } catch {
-                            // no-op
-                          }
+                            const cursorPos = mainEditor.getTextCursorPosition();
+                            const currentBlock = cursorPos.block;
+                            const inserted = mainEditor.insertBlocks(
+                              [
+                                {
+                                  type: 'divider' as any,
+                                },
+                              ],
+                              currentBlock,
+                              'after'
+                            );
+                            const afterParagraph = mainEditor.insertBlocks(
+                              [
+                                {
+                                  type: 'paragraph',
+                                  content: [],
+                                },
+                              ],
+                              inserted[0].id,
+                              'after'
+                            );
+                            setTimeout(() => {
+                              try {
+                                mainEditor.setTextCursorPosition(
+                                  afterParagraph[0],
+                                  'end'
+                                );
+                              } catch {}
+                            }, 0);
+                          } catch {}
                         }, 0);
                       },
                     } as const;
