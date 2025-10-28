@@ -196,7 +196,6 @@ const App = () => {
       {
         initProgressCallback: initProgressCallback,
         appConfig: appConfig,
-        chatOpts: { max_gen_len: 4096 },
       }
     );
     setIsFetching(false);
