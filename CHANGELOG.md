@@ -1,5 +1,7 @@
 ## [Unreleased]
 
+## [v0.1.1] - 2025-10-28
+
 ### Added
 
 - Editor: Slash menu item "Divider" under Basic blocks (beneath Paragraph)
