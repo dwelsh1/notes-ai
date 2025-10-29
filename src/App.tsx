@@ -102,14 +102,11 @@ const App = () => {
     typeof window !== 'undefined' && window.location.search.includes('bn=default');
 
   const schemaWithDivider = createSchemaWithDivider();
-  const mainEditor = useCreateBlockNote(
-    useDefaultBN ? {} : { schema: schemaWithDivider }
-  );
-  const secondEditor = useCreateBlockNote(
-    useDefaultBN
-      ? { initialContent: mainEditor.document }
-      : { schema: schemaWithDivider, initialContent: mainEditor.document }
-  );
+  const mainEditor = useCreateBlockNote({ schema: schemaWithDivider });
+  const secondEditor = useCreateBlockNote({
+    schema: schemaWithDivider,
+    initialContent: mainEditor.document,
+  });
 
   // Auto-save functionality - debounced save on editor changes
   useEffect(() => {
