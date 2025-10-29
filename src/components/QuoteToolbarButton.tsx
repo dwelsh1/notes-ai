@@ -28,8 +28,13 @@ export function QuoteToolbarButton() {
       for (const b of targets) {
         if (import.meta.env.DEV)
           console.log('[QuoteToolbarButton] update block', b?.id, b?.type);
+        // Preserve inline content when converting to blockquote
         // @ts-expect-error: union includes blockquote via custom schema
-        editor.updateBlock(b.id, { type: 'blockquote' });
+        editor.updateBlock(b.id, {
+          type: 'blockquote',
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          content: (b as any)?.content ?? [],
+        });
       }
     } catch (e) {
       if (import.meta.env.DEV)

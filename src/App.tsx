@@ -1169,6 +1169,7 @@ const App = () => {
                                 (mainEditor as any).updateBlock(b.id, {
                                   // custom schema adds blockquote
                                   type: 'blockquote',
+                                  content: (b as any)?.content ?? [],
                                 });
                               }
                             } catch (e) {
