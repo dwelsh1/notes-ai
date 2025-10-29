@@ -1,13 +1,13 @@
 import { useEffect, useState, useRef } from 'react';
 import '@blocknote/core/fonts/inter.css';
+import { useCreateBlockNote } from '@blocknote/react';
 import {
   BlockNoteView,
-  useCreateBlockNote,
   FormattingToolbarController,
   SuggestionMenuController,
   FormattingToolbar,
   BlockTypeSelect,
-} from '@blocknote/react';
+} from '@blocknote/mantine';
 import '@blocknote/react/style.css';
 import './styles/App.css';
 import {
@@ -1085,7 +1085,7 @@ const App = () => {
                       triggerCharacter="/"
                       getItems={async query => {
                       const defaults = (
-                        await import('@blocknote/react')
+                        await import('@blocknote/mantine')
                       ).getDefaultReactSlashMenuItems(mainEditor as any);
                       const dividerItem = {
                         title: 'Divider',

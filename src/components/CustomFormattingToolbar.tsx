@@ -1,3 +1,4 @@
+import { useBlockNoteEditor } from '@blocknote/react';
 import {
   BasicTextStyleButton,
   ColorStyleButton,
@@ -6,8 +7,7 @@ import {
   NestBlockButton,
   TextAlignButton,
   UnnestBlockButton,
-  useBlockNoteEditor,
-} from '@blocknote/react';
+} from '@blocknote/mantine';
 import { TranslateToolbarButton } from './TranslateToolbarButton';
 import { CorrectToolbarButton } from './CorrectToolbarButton';
 import { DevelopToolbarButton } from './DevelopToolbarButton';
