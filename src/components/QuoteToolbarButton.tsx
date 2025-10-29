@@ -60,15 +60,18 @@ export function QuoteToolbarButton() {
             );
             if (import.meta.env.DEV)
               console.log('[QuoteToolbarButton] inserted', inserted?.[0]?.id);
-            try {
-              editor.removeBlocks([b as any]);
-            } catch {}
             const after = inserted?.[0];
             if (import.meta.env.DEV)
               console.log('[QuoteToolbarButton] after type', after?.type);
             try {
               editor.setTextCursorPosition(after, 'start');
             } catch {}
+            // Defer removal to next tick to avoid plugin measuring during mutation
+            setTimeout(() => {
+              try {
+                editor.removeBlocks([b as any]);
+              } catch {}
+            }, 0);
           }
         } catch (e) {
           if (import.meta.env.DEV)

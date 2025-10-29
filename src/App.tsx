@@ -1192,9 +1192,6 @@ const App = () => {
                                 );
                                 if (import.meta.env.DEV)
                                   console.log('[SlashMenu/Quote] inserted', inserted?.[0]?.id);
-                                try {
-                                  (mainEditor as any).removeBlocks([b]);
-                                } catch {}
                                 const after = inserted?.[0];
                                 try {
                                   (mainEditor as any).setTextCursorPosition(
@@ -1202,6 +1199,11 @@ const App = () => {
                                     'start'
                                   );
                                 } catch {}
+                                setTimeout(() => {
+                                  try {
+                                    (mainEditor as any).removeBlocks([b]);
+                                  } catch {}
+                                }, 0);
                               }
                             } catch (e) {
                               if (import.meta.env.DEV)
