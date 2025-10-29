@@ -34,11 +34,11 @@ export function QuoteToolbarButton() {
             try {
               // Try built-in quote first
               // @ts-expect-error
-              editor.updateBlock(b.id, { type: 'quote' });
+              editor.updateBlock(b.id, { type: 'quote', content: (b as any)?.content ?? [] });
             } catch {
               // Fallback to custom blockquote
               // @ts-expect-error
-              editor.updateBlock(b.id, { type: 'blockquote' });
+              editor.updateBlock(b.id, { type: 'blockquote', content: (b as any)?.content ?? [] });
             }
             const txt = (convertBlockToString as any)?.(b) ?? '';
             if (!txt || txt.trim().length === 0) {
@@ -49,8 +49,11 @@ export function QuoteToolbarButton() {
                 });
               } catch {}
             }
+            const after = editor.getBlock((b as any).id) as any;
+            if (import.meta.env.DEV)
+              console.log('[QuoteToolbarButton] after type', after?.type);
             try {
-              editor.setTextCursorPosition(b, 'start');
+              editor.setTextCursorPosition(after ?? b, 'start');
             } catch {}
           }
         } catch (e) {

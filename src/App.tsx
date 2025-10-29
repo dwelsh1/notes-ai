@@ -1169,10 +1169,10 @@ const App = () => {
                                 // Convert in-place using built-in type, fallback to custom
                                 try {
                                   // @ts-expect-error
-                                  (mainEditor as any).updateBlock(b.id, { type: 'quote' });
+                                  (mainEditor as any).updateBlock(b.id, { type: 'quote', content: (b as any)?.content ?? [] });
                                 } catch {
                                   // @ts-expect-error
-                                  (mainEditor as any).updateBlock(b.id, { type: 'blockquote' });
+                                  (mainEditor as any).updateBlock(b.id, { type: 'blockquote', content: (b as any)?.content ?? [] });
                                 }
                                 const txt = (convertBlockToString as any)?.(b) ?? '';
                                 if (!txt || txt.trim().length === 0) {
@@ -1184,8 +1184,9 @@ const App = () => {
                                     });
                                   } catch {}
                                 }
+                                const after = (mainEditor as any).getBlock(b.id);
                                 try {
-                                  (mainEditor as any).setTextCursorPosition(b, 'start');
+                                  (mainEditor as any).setTextCursorPosition(after ?? b, 'start');
                                 } catch {}
                               }
                             } catch (e) {
