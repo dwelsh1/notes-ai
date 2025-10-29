@@ -1166,20 +1166,16 @@ const App = () => {
                               for (const b of targets) {
                                 if (import.meta.env.DEV)
                                   console.log('[SlashMenu/Quote] update', b?.id);
-                                let existingContent = (b as any)?.content ?? [];
-                                if (!existingContent || existingContent.length === 0) {
-                                  existingContent = [{ type: 'text', text: '' }];
-                                }
+                                const text = convertBlockToString(b as any) ?? '';
                                 if (import.meta.env.DEV)
-                                  console.log(
-                                    '[SlashMenu/Quote] existing content len',
-                                    existingContent?.length ?? 0
-                                  );
+                                  console.log('[SlashMenu/Quote] extracted text len', text.length);
                                 const inserted = (mainEditor as any).insertBlocks(
                                   [
                                     {
                                       type: 'blockquote',
-                                      content: existingContent as any,
+                                      content: [
+                                        { type: 'text', text, styles: {} },
+                                      ] as any,
                                     },
                                   ],
                                   b.id,

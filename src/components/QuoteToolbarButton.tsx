@@ -1,5 +1,6 @@
 import { ToolbarButton, useBlockNoteEditor } from '@blocknote/react';
 import { Quote } from 'lucide-react';
+import { convertBlockToString } from '../utils/ParserBlockToString';
 
 export function QuoteToolbarButton() {
   const editor = useBlockNoteEditor();
@@ -31,12 +32,9 @@ export function QuoteToolbarButton() {
             if (import.meta.env.DEV)
               console.log('[QuoteToolbarButton] update block', b?.id, b?.type);
             // Prefer preserving existing inline content directly to avoid util dependency
-            let existingContent = (b as any)?.content ?? [];
-            if (!existingContent || existingContent.length === 0) {
-              existingContent = [{ type: 'text', text: '' }];
-            }
+            const text = convertBlockToString(b as any) ?? '';
             if (import.meta.env.DEV)
-              console.log('[QuoteToolbarButton] existing content len', existingContent?.length ?? 0);
+              console.log('[QuoteToolbarButton] extracted text len', text.length);
             // Insert a new blockquote after, then remove original to avoid selection glitches
             const inserted = editor.insertBlocks(
               [
@@ -44,7 +42,9 @@ export function QuoteToolbarButton() {
                   // @ts-expect-error: union includes blockquote via custom schema
                   type: 'blockquote',
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  content: existingContent as any,
+                  content: [
+                    { type: 'text', text, styles: {} },
+                  ] as any,
                 },
               ] as any,
               (b as any).id,
