@@ -34,14 +34,16 @@ export function QuoteToolbarButton() {
             const existingContent = (b as any)?.content ?? [];
             if (import.meta.env.DEV)
               console.log('[QuoteToolbarButton] existing content len', existingContent?.length ?? 0);
-            // Convert block in place and inject inline content so caret can be placed
-            // @ts-expect-error: union includes blockquote via custom schema
-            editor.updateBlock(b.id, {
-              type: 'blockquote',
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              content: existingContent as any,
-            });
-            const after = editor.getBlock(b.id) as any;
+            // Replace block atomically to avoid transient invalid selection
+            editor.replaceBlocks([b as any], [
+              {
+                // @ts-expect-error: union includes blockquote via custom schema
+                type: 'blockquote',
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                content: (existingContent as any) ?? [],
+              },
+            ] as any);
+            const after = editor.getBlock((b as any).id) as any;
             if (import.meta.env.DEV)
               console.log('[QuoteToolbarButton] after type', after?.type);
             try {

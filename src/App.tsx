@@ -1172,11 +1172,12 @@ const App = () => {
                                     '[SlashMenu/Quote] existing content len',
                                     existingContent?.length ?? 0
                                   );
-                                (mainEditor as any).updateBlock(b.id, {
-                                  // custom schema adds blockquote
-                                  type: 'blockquote',
-                                  content: existingContent as any,
-                                });
+                                (mainEditor as any).replaceBlocks([b], [
+                                  {
+                                    type: 'blockquote',
+                                    content: existingContent as any,
+                                  },
+                                ]);
                                 const after = (mainEditor as any).getBlock(b.id);
                                 try {
                                   (mainEditor as any).setTextCursorPosition(
