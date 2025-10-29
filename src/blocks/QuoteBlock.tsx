@@ -11,14 +11,15 @@ export const QuoteBlock = createReactBlockSpec(
   {
     render: ({ contentRef }) => (
       <blockquote
-        ref={contentRef}
         style={{
           borderLeft: '4px solid #e5e7eb',
           margin: '12px 0',
           paddingLeft: '12px',
           color: '#374151',
         }}
-      />
+      >
+        <div ref={contentRef} />
+      </blockquote>
     ),
     toExternalHTML: () => (
       <blockquote
