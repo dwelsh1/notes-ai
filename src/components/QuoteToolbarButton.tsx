@@ -43,6 +43,7 @@ export function QuoteToolbarButton() {
                 {
                   // @ts-expect-error: union includes blockquote via custom schema
                   type: 'blockquote',
+                  props: {},
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   content: [
                     {

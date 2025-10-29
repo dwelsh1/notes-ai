@@ -1175,6 +1175,7 @@ const App = () => {
                                   [
                                     {
                                       type: 'blockquote',
+                                      props: {},
                                       content: [
                                         {
                                           type: 'text',
