@@ -1166,19 +1166,31 @@ const App = () => {
                               for (const b of targets) {
                                 if (import.meta.env.DEV)
                                   console.log('[SlashMenu/Quote] update', b?.id);
-                                const existingContent = (b as any)?.content ?? [];
+                                let existingContent = (b as any)?.content ?? [];
+                                if (!existingContent || existingContent.length === 0) {
+                                  existingContent = [{ type: 'text', text: '' }];
+                                }
                                 if (import.meta.env.DEV)
                                   console.log(
                                     '[SlashMenu/Quote] existing content len',
                                     existingContent?.length ?? 0
                                   );
-                                (mainEditor as any).replaceBlocks([b], [
-                                  {
-                                    type: 'blockquote',
-                                    content: existingContent as any,
-                                  },
-                                ]);
-                                const after = (mainEditor as any).getBlock(b.id);
+                                const inserted = (mainEditor as any).insertBlocks(
+                                  [
+                                    {
+                                      type: 'blockquote',
+                                      content: existingContent as any,
+                                    },
+                                  ],
+                                  b.id,
+                                  'after'
+                                );
+                                if (import.meta.env.DEV)
+                                  console.log('[SlashMenu/Quote] inserted', inserted?.[0]?.id);
+                                try {
+                                  (mainEditor as any).removeBlocks([b]);
+                                } catch {}
+                                const after = inserted?.[0];
                                 try {
                                   (mainEditor as any).setTextCursorPosition(
                                     after,

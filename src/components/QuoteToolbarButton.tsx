@@ -31,19 +31,31 @@ export function QuoteToolbarButton() {
             if (import.meta.env.DEV)
               console.log('[QuoteToolbarButton] update block', b?.id, b?.type);
             // Prefer preserving existing inline content directly to avoid util dependency
-            const existingContent = (b as any)?.content ?? [];
+            let existingContent = (b as any)?.content ?? [];
+            if (!existingContent || existingContent.length === 0) {
+              existingContent = [{ type: 'text', text: '' }];
+            }
             if (import.meta.env.DEV)
               console.log('[QuoteToolbarButton] existing content len', existingContent?.length ?? 0);
-            // Replace block atomically to avoid transient invalid selection
-            editor.replaceBlocks([b as any], [
-              {
-                // @ts-expect-error: union includes blockquote via custom schema
-                type: 'blockquote',
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                content: (existingContent as any) ?? [],
-              },
-            ] as any);
-            const after = editor.getBlock((b as any).id) as any;
+            // Insert a new blockquote after, then remove original to avoid selection glitches
+            const inserted = editor.insertBlocks(
+              [
+                {
+                  // @ts-expect-error: union includes blockquote via custom schema
+                  type: 'blockquote',
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  content: existingContent as any,
+                },
+              ] as any,
+              (b as any).id,
+              'after'
+            );
+            if (import.meta.env.DEV)
+              console.log('[QuoteToolbarButton] inserted', inserted?.[0]?.id);
+            try {
+              editor.removeBlocks([b as any]);
+            } catch {}
+            const after = inserted?.[0];
             if (import.meta.env.DEV)
               console.log('[QuoteToolbarButton] after type', after?.type);
             try {
