@@ -1166,44 +1166,27 @@ const App = () => {
                               for (const b of targets) {
                                 if (import.meta.env.DEV)
                                   console.log('[SlashMenu/Quote] update', b?.id);
-                                let text = convertBlockToString(b as any) ?? '';
-                                if (import.meta.env.DEV)
-                                  console.log('[SlashMenu/Quote] extracted text len', text.length);
-                                const isEmpty = text.trim().length === 0;
-                                if (isEmpty) text = 'Empty quote';
-                                const inserted = (mainEditor as any).insertBlocks(
-                                  [
-                                    {
-                                      type: 'blockquote',
-                                      props: {},
-                                      content: [
-                                        {
-                                          type: 'text',
-                                          text,
-                                          styles: isEmpty
-                                            ? { textColor: '#9ca3af' }
-                                            : {},
-                                        },
-                                      ] as any,
-                                    },
-                                  ],
-                                  b.id,
-                                  'after'
-                                );
-                                if (import.meta.env.DEV)
-                                  console.log('[SlashMenu/Quote] inserted', inserted?.[0]?.id);
-                                const after = inserted?.[0];
+                                // Convert in-place using built-in type, fallback to custom
                                 try {
-                                  (mainEditor as any).setTextCursorPosition(
-                                    after,
-                                    'start'
-                                  );
-                                } catch {}
-                                setTimeout(() => {
+                                  // @ts-expect-error
+                                  (mainEditor as any).updateBlock(b.id, { type: 'quote' });
+                                } catch {
+                                  // @ts-expect-error
+                                  (mainEditor as any).updateBlock(b.id, { type: 'blockquote' });
+                                }
+                                const txt = (convertBlockToString as any)?.(b) ?? '';
+                                if (!txt || txt.trim().length === 0) {
                                   try {
-                                    (mainEditor as any).removeBlocks([b]);
+                                    (mainEditor as any).updateBlock(b.id, {
+                                      content: [
+                                        { type: 'text', text: 'Empty quote', styles: { textColor: '#9ca3af' } },
+                                      ] as any,
+                                    });
                                   } catch {}
-                                }, 0);
+                                }
+                                try {
+                                  (mainEditor as any).setTextCursorPosition(b, 'start');
+                                } catch {}
                               }
                             } catch (e) {
                               if (import.meta.env.DEV)

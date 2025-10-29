@@ -30,48 +30,28 @@ export function QuoteToolbarButton() {
         try {
           for (const b of targets) {
             if (import.meta.env.DEV)
-              console.log('[QuoteToolbarButton] update block', b?.id, b?.type);
-            // Prefer preserving existing inline content directly to avoid util dependency
-            let text = convertBlockToString(b as any) ?? '';
-            if (import.meta.env.DEV)
-              console.log('[QuoteToolbarButton] extracted text len', text.length);
-            const isEmpty = text.trim().length === 0;
-            if (isEmpty) text = 'Empty quote';
-            // Insert a new blockquote after, then remove original to avoid selection glitches
-            const inserted = editor.insertBlocks(
-              [
-                {
-                  // @ts-expect-error: union includes blockquote via custom schema
-                  type: 'blockquote',
-                  props: {},
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  content: [
-                    {
-                      type: 'text',
-                      text,
-                      // light gray placeholder style if empty
-                      styles: isEmpty ? { textColor: '#9ca3af' } : {},
-                    },
-                  ] as any,
-                },
-              ] as any,
-              (b as any).id,
-              'after'
-            );
-            if (import.meta.env.DEV)
-              console.log('[QuoteToolbarButton] inserted', inserted?.[0]?.id);
-            const after = inserted?.[0];
-            if (import.meta.env.DEV)
-              console.log('[QuoteToolbarButton] after type', after?.type);
+              console.log('[QuoteToolbarButton] convert in-place', b?.id, b?.type);
             try {
-              editor.setTextCursorPosition(after, 'start');
-            } catch {}
-            // Defer removal to next tick to avoid plugin measuring during mutation
-            setTimeout(() => {
+              // Try built-in quote first
+              // @ts-expect-error
+              editor.updateBlock(b.id, { type: 'quote' });
+            } catch {
+              // Fallback to custom blockquote
+              // @ts-expect-error
+              editor.updateBlock(b.id, { type: 'blockquote' });
+            }
+            const txt = (convertBlockToString as any)?.(b) ?? '';
+            if (!txt || txt.trim().length === 0) {
               try {
-                editor.removeBlocks([b as any]);
+                editor.updateBlock(b.id, {
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  content: [{ type: 'text', text: 'Empty quote', styles: { textColor: '#9ca3af' } }] as any,
+                });
               } catch {}
-            }, 0);
+            }
+            try {
+              editor.setTextCursorPosition(b, 'start');
+            } catch {}
           }
         } catch (e) {
           if (import.meta.env.DEV)
