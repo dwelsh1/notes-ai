@@ -1166,15 +1166,23 @@ const App = () => {
                               for (const b of targets) {
                                 if (import.meta.env.DEV)
                                   console.log('[SlashMenu/Quote] update', b?.id);
-                                const text = convertBlockToString(b as any) ?? '';
+                                let text = convertBlockToString(b as any) ?? '';
                                 if (import.meta.env.DEV)
                                   console.log('[SlashMenu/Quote] extracted text len', text.length);
+                                const isEmpty = text.trim().length === 0;
+                                if (isEmpty) text = 'Empty quote';
                                 const inserted = (mainEditor as any).insertBlocks(
                                   [
                                     {
                                       type: 'blockquote',
                                       content: [
-                                        { type: 'text', text, styles: {} },
+                                        {
+                                          type: 'text',
+                                          text,
+                                          styles: isEmpty
+                                            ? { textColor: '#9ca3af' }
+                                            : {},
+                                        },
                                       ] as any,
                                     },
                                   ],
@@ -1190,7 +1198,7 @@ const App = () => {
                                 try {
                                   (mainEditor as any).setTextCursorPosition(
                                     after,
-                                    'end'
+                                    'start'
                                   );
                                 } catch {}
                               }

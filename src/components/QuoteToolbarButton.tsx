@@ -32,9 +32,11 @@ export function QuoteToolbarButton() {
             if (import.meta.env.DEV)
               console.log('[QuoteToolbarButton] update block', b?.id, b?.type);
             // Prefer preserving existing inline content directly to avoid util dependency
-            const text = convertBlockToString(b as any) ?? '';
+            let text = convertBlockToString(b as any) ?? '';
             if (import.meta.env.DEV)
               console.log('[QuoteToolbarButton] extracted text len', text.length);
+            const isEmpty = text.trim().length === 0;
+            if (isEmpty) text = 'Empty quote';
             // Insert a new blockquote after, then remove original to avoid selection glitches
             const inserted = editor.insertBlocks(
               [
@@ -43,7 +45,12 @@ export function QuoteToolbarButton() {
                   type: 'blockquote',
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   content: [
-                    { type: 'text', text, styles: {} },
+                    {
+                      type: 'text',
+                      text,
+                      // light gray placeholder style if empty
+                      styles: isEmpty ? { textColor: '#9ca3af' } : {},
+                    },
                   ] as any,
                 },
               ] as any,
@@ -59,7 +66,7 @@ export function QuoteToolbarButton() {
             if (import.meta.env.DEV)
               console.log('[QuoteToolbarButton] after type', after?.type);
             try {
-              editor.setTextCursorPosition(after, 'end');
+              editor.setTextCursorPosition(after, 'start');
             } catch {}
           }
         } catch (e) {
