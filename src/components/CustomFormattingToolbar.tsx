@@ -3,9 +3,7 @@ import {
   ColorStyleButton,
   CreateLinkButton,
   FormattingToolbar,
-  ImageCaptionButton,
   NestBlockButton,
-  ReplaceImageButton,
   TextAlignButton,
   UnnestBlockButton,
   useBlockNoteEditor,
@@ -117,8 +115,7 @@ export function CustomFormattingToolbar({
         </option>
       </select>
 
-      <ImageCaptionButton key={'imageCaptionButton'} />
-      <ReplaceImageButton key={'replaceImageButton'} />
+      {/* Image buttons are not available in current BlockNote API; omitted */}
 
       <BasicTextStyleButton basicTextStyle={'bold'} key={'boldStyleButton'} />
       <BasicTextStyleButton
