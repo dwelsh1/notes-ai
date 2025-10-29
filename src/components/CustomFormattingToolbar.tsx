@@ -154,6 +154,12 @@ export function CustomFormattingToolbar({
 
       <ColorStyleButton key={'colorStyleButton'} />
 
+      {/* Divider after Color icon */}
+      <div
+        key={'divider-after-color'}
+        style={{ width: '1px', height: '20px', background: '#e5e7eb', margin: '0 6px' }}
+      />
+
       <NestBlockButton key={'nestBlockButton'} />
       <UnnestBlockButton key={'unnestBlockButton'} />
 

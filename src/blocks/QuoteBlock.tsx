@@ -11,7 +11,7 @@ export const QuoteBlock = createReactBlockSpec(
   {
     render: ({ contentRef }) => (
       <blockquote
-        ref={contentRef as unknown as React.RefObject<HTMLQuoteElement>}
+        ref={contentRef}
         style={{
           borderLeft: '4px solid #e5e7eb',
           margin: '12px 0',
