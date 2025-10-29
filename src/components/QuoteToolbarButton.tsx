@@ -1,4 +1,4 @@
-import { ToolbarButton, useBlockNoteEditor } from '@blocknote/react';
+import { useBlockNoteEditor } from '@blocknote/react';
 import { Quote } from 'lucide-react';
 import { convertBlockToString } from '../utils/ParserBlockToString';
 
@@ -85,13 +85,23 @@ export function QuoteToolbarButton() {
   };
 
   return (
-    <ToolbarButton
-      key={'quoteButton'}
-      mainTooltip={'Quote: format selection as a block quote'}
+    <button
+      type="button"
+      title={'Quote: format selection as a block quote'}
       onClick={applyQuote}
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 28,
+        height: 24,
+        border: 'none',
+        background: 'transparent',
+        cursor: 'pointer',
+      }}
     >
       <Quote style={{ width: 18, height: 18, color: '#6b7280' }} />
-    </ToolbarButton>
+    </button>
   );
 }
 

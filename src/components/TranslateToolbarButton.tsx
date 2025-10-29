@@ -1,9 +1,5 @@
 import { Block, BlockNoteEditor } from '@blocknote/core';
-import {
-  ToolbarButton,
-  useBlockNoteEditor,
-  useEditorContentOrSelectionChange,
-} from '@blocknote/react';
+import { useBlockNoteEditor, useEditorContentOrSelectionChange } from '@blocknote/react';
 import { useState } from 'react';
 import { Languages } from 'lucide-react';
 
@@ -108,14 +104,23 @@ export function TranslateToolbarButton({
   }, editor);
 
   return (
-    <ToolbarButton
-      mainTooltip={'Translate selection to English in a new block (keeps formatting)'}
-      isDisabled={isFetching || isGenerating}
-      onClick={() => {
-        translateBlocks(selectedBlocks, editor);
+    <button
+      type="button"
+      title={'Translate selection to English in a new block (keeps formatting)'}
+      disabled={isFetching || isGenerating}
+      onClick={() => translateBlocks(selectedBlocks, editor)}
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 28,
+        height: 24,
+        border: 'none',
+        background: 'transparent',
+        cursor: isFetching || isGenerating ? 'not-allowed' : 'pointer',
       }}
     >
       <Languages style={{ width: '16px', height: '16px', color: '#6b7280' }} />
-    </ToolbarButton>
+    </button>
   );
 }

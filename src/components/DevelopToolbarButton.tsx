@@ -1,5 +1,5 @@
 import { Block } from '@blocknote/core';
-import { ToolbarButton, useBlockNoteEditor } from '@blocknote/react';
+import { useBlockNoteEditor } from '@blocknote/react';
 import { Lightbulb } from 'lucide-react';
 import { updateBlock } from '../utils/blockManipulation';
 import { convertBlockToString } from '../utils/ParserBlockToString';
@@ -50,17 +50,28 @@ export function DevelopToolbarButton({
   // Selection state not needed for current onClick path; rely on editor.getSelection()
 
   return (
-    <ToolbarButton
-      mainTooltip={'Develop: expand selected bullets/notes into fuller prose (adds a new paragraph)'}
-      isDisabled={isFetching || isGenerating}
+    <button
+      type="button"
+      title={'Develop: expand selected bullets/notes into fuller prose (adds a new paragraph)'}
+      disabled={isFetching || isGenerating}
       onClick={() => {
         const selection = editor.getSelection();
         if (selection?.blocks) {
           developBlocks(selection.blocks);
         }
       }}
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 28,
+        height: 24,
+        border: 'none',
+        background: 'transparent',
+        cursor: isFetching || isGenerating ? 'not-allowed' : 'pointer',
+      }}
     >
       <Lightbulb style={{ width: '16px', height: '16px', color: '#6b7280' }} />
-    </ToolbarButton>
+    </button>
   );
 }

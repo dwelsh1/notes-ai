@@ -1,5 +1,5 @@
 import { Block, BlockNoteEditor } from '@blocknote/core';
-import { ToolbarButton, useBlockNoteEditor } from '@blocknote/react';
+import { useBlockNoteEditor } from '@blocknote/react';
 import { CheckCircle } from 'lucide-react';
 import correctSingleBlock from '../utils/correctSingleBlock';
 
@@ -63,14 +63,23 @@ export function CorrectToolbarButton({
   // (Selection tracking not needed here; we read selection on click.)
 
   return (
-    <ToolbarButton
-      mainTooltip={'Correct grammar and spelling for selection (writes improved text to a new block)'}
-      isDisabled={isFetching || isGenerating}
-      onClick={() => {
-        correctBlocks(editor.getSelection()?.blocks, editor);
+    <button
+      type="button"
+      title={'Correct grammar and spelling for selection (writes improved text to a new block)'}
+      disabled={isFetching || isGenerating}
+      onClick={() => correctBlocks(editor.getSelection()?.blocks, editor)}
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 28,
+        height: 24,
+        border: 'none',
+        background: 'transparent',
+        cursor: isFetching || isGenerating ? 'not-allowed' : 'pointer',
       }}
     >
       <CheckCircle style={{ width: '16px', height: '16px', color: '#6b7280' }} />
-    </ToolbarButton>
+    </button>
   );
 }
