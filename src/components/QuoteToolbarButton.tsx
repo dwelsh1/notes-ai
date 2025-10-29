@@ -30,15 +30,16 @@ export function QuoteToolbarButton() {
           for (const b of targets) {
             if (import.meta.env.DEV)
               console.log('[QuoteToolbarButton] update block', b?.id, b?.type);
-            const text = convertBlockToString(b as any);
+            // Prefer preserving existing inline content directly to avoid util dependency
+            const existingContent = (b as any)?.content ?? [];
             if (import.meta.env.DEV)
-              console.log('[QuoteToolbarButton] existing text', text);
+              console.log('[QuoteToolbarButton] existing content len', existingContent?.length ?? 0);
             // Convert block in place and inject inline content so caret can be placed
             // @ts-expect-error: union includes blockquote via custom schema
             editor.updateBlock(b.id, {
               type: 'blockquote',
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              content: [{ type: 'text', text }] as any,
+              content: existingContent as any,
             });
             const after = editor.getBlock(b.id) as any;
             if (import.meta.env.DEV)

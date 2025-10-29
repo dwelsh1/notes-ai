@@ -1166,13 +1166,16 @@ const App = () => {
                               for (const b of targets) {
                                 if (import.meta.env.DEV)
                                   console.log('[SlashMenu/Quote] update', b?.id);
-                                const text = convertBlockToString(b as any);
+                                const existingContent = (b as any)?.content ?? [];
                                 if (import.meta.env.DEV)
-                                  console.log('[SlashMenu/Quote] existing text', text);
+                                  console.log(
+                                    '[SlashMenu/Quote] existing content len',
+                                    existingContent?.length ?? 0
+                                  );
                                 (mainEditor as any).updateBlock(b.id, {
                                   // custom schema adds blockquote
                                   type: 'blockquote',
-                                  content: [{ type: 'text', text }] as any,
+                                  content: existingContent as any,
                                 });
                                 const after = (mainEditor as any).getBlock(b.id);
                                 try {
