@@ -30,14 +30,21 @@ export function QuoteToolbarButton() {
           for (const b of targets) {
             if (import.meta.env.DEV)
               console.log('[QuoteToolbarButton] update block', b?.id, b?.type);
-            // Convert block in place; BlockNote preserves content
+            const text = convertBlockToString(b as any);
+            if (import.meta.env.DEV)
+              console.log('[QuoteToolbarButton] existing text', text);
+            // Convert block in place and inject inline content so caret can be placed
             // @ts-expect-error: union includes blockquote via custom schema
-            editor.updateBlock(b.id, { type: 'blockquote' });
+            editor.updateBlock(b.id, {
+              type: 'blockquote',
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              content: [{ type: 'text', text }] as any,
+            });
             const after = editor.getBlock(b.id) as any;
             if (import.meta.env.DEV)
               console.log('[QuoteToolbarButton] after type', after?.type);
             try {
-              editor.setTextCursorPosition(b, 'end');
+              editor.setTextCursorPosition(after, 'end');
             } catch {}
           }
         } catch (e) {

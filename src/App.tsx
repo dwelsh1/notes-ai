@@ -1166,12 +1166,20 @@ const App = () => {
                               for (const b of targets) {
                                 if (import.meta.env.DEV)
                                   console.log('[SlashMenu/Quote] update', b?.id);
+                                const text = convertBlockToString(b as any);
+                                if (import.meta.env.DEV)
+                                  console.log('[SlashMenu/Quote] existing text', text);
                                 (mainEditor as any).updateBlock(b.id, {
                                   // custom schema adds blockquote
                                   type: 'blockquote',
+                                  content: [{ type: 'text', text }] as any,
                                 });
+                                const after = (mainEditor as any).getBlock(b.id);
                                 try {
-                                  (mainEditor as any).setTextCursorPosition(b, 'end');
+                                  (mainEditor as any).setTextCursorPosition(
+                                    after,
+                                    'end'
+                                  );
                                 } catch {}
                               }
                             } catch (e) {
