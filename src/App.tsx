@@ -5,6 +5,8 @@ import {
   useCreateBlockNote,
   FormattingToolbarController,
   SuggestionMenuController,
+  FormattingToolbar,
+  BlockTypeSelect,
 } from '@blocknote/react';
 import '@blocknote/react/style.css';
 import './styles/App.css';
@@ -36,6 +38,7 @@ import { extractSearchableText } from './utils/extractSearchableText';
 import { filterSuggestionItems } from '@blocknote/core';
 import { createSchemaWithDivider } from './blocks/DividerBlock';
 import { Quote as QuoteIcon } from 'lucide-react';
+import { QuoteToolbarButton } from './components/QuoteToolbarButton';
 
 declare global {
   interface Window {
@@ -1052,7 +1055,14 @@ const App = () => {
                   slashMenu={useDefaultBN}
                 >
                   {useDefaultBN ? (
-                    <FormattingToolbarController />
+                    <FormattingToolbarController
+                      formattingToolbar={() => (
+                        <FormattingToolbar>
+                          <BlockTypeSelect key={'blockTypeSelect-default'} />
+                          <QuoteToolbarButton />
+                        </FormattingToolbar>
+                      )}
+                    />
                   ) : (
                     <FormattingToolbarController
                       formattingToolbar={() => (
