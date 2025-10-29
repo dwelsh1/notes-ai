@@ -97,12 +97,19 @@ const App = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [engine]);
 
+  // Dev toggle: enable default BlockNote toolbar/menus via ?bn=default
+  const useDefaultBN =
+    typeof window !== 'undefined' && window.location.search.includes('bn=default');
+
   const schemaWithDivider = createSchemaWithDivider();
-  const mainEditor = useCreateBlockNote({ schema: schemaWithDivider });
-  const secondEditor = useCreateBlockNote({
-    schema: schemaWithDivider,
-    initialContent: mainEditor.document,
-  });
+  const mainEditor = useCreateBlockNote(
+    useDefaultBN ? {} : { schema: schemaWithDivider }
+  );
+  const secondEditor = useCreateBlockNote(
+    useDefaultBN
+      ? { initialContent: mainEditor.document }
+      : { schema: schemaWithDivider, initialContent: mainEditor.document }
+  );
 
   // Auto-save functionality - debounced save on editor changes
   useEffect(() => {
@@ -1044,27 +1051,32 @@ const App = () => {
                 <BlockNoteView
                   editor={mainEditor}
                   className="h-full w-full"
-                  formattingToolbar={false}
-                  slashMenu={false}
+                  formattingToolbar={!useDefaultBN ? false : undefined}
+                  slashMenu={useDefaultBN}
                 >
-                  <FormattingToolbarController
-                    formattingToolbar={() => (
-                      <CustomFormattingToolbar
-                        onSend={onSend}
-                        isGenerating={isGenerating}
-                        setIsGenerating={setIsGenerating}
-                        currentProccess={currentProccess}
-                        setCurrentProcess={setCurrentProcess}
-                        isFetching={isFetching}
-                        setOutput={setOutput}
-                      />
-                    )}
-                  />
+                  {useDefaultBN ? (
+                    <FormattingToolbarController />
+                  ) : (
+                    <FormattingToolbarController
+                      formattingToolbar={() => (
+                        <CustomFormattingToolbar
+                          onSend={onSend}
+                          isGenerating={isGenerating}
+                          setIsGenerating={setIsGenerating}
+                          currentProccess={currentProccess}
+                          setCurrentProcess={setCurrentProcess}
+                          isFetching={isFetching}
+                          setOutput={setOutput}
+                        />
+                      )}
+                    />
+                  )}
 
-                  {/* Slash menu with custom Divider item */}
-                  <SuggestionMenuController
-                    triggerCharacter="/"
-                    getItems={async query => {
+                  {/* Slash menu with custom items (disabled when using default) */}
+                  {!useDefaultBN && (
+                    <SuggestionMenuController
+                      triggerCharacter="/"
+                      getItems={async query => {
                       const defaults = (
                         await import('@blocknote/react')
                       ).getDefaultReactSlashMenuItems(mainEditor as any);
@@ -1289,9 +1301,10 @@ const App = () => {
                         items.push(...(headingItems as any));
                       }
 
-                      return filterSuggestionItems(items as any, query) as any;
-                    }}
-                  />
+                        return filterSuggestionItems(items as any, query) as any;
+                      }}
+                    />
+                  )}
                 </BlockNoteView>
               </div>
             </div>
