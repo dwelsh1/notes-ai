@@ -25,17 +25,26 @@ export function QuoteToolbarButton() {
           console.warn('[QuoteToolbarButton] no targets, abort');
         return;
       }
-      for (const b of targets) {
-        if (import.meta.env.DEV)
-          console.log('[QuoteToolbarButton] update block', b?.id, b?.type);
-        // Preserve inline content when converting to blockquote
-        // @ts-expect-error: union includes blockquote via custom schema
-        editor.updateBlock(b.id, {
-          type: 'blockquote',
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          content: (b as any)?.content ?? [],
-        });
-      }
+      setTimeout(() => {
+        try {
+          for (const b of targets) {
+            if (import.meta.env.DEV)
+              console.log('[QuoteToolbarButton] update block', b?.id, b?.type);
+            // Convert block in place; BlockNote preserves content
+            // @ts-expect-error: union includes blockquote via custom schema
+            editor.updateBlock(b.id, { type: 'blockquote' });
+            const after = editor.getBlock(b.id) as any;
+            if (import.meta.env.DEV)
+              console.log('[QuoteToolbarButton] after type', after?.type);
+            try {
+              editor.setTextCursorPosition(b, 'end');
+            } catch {}
+          }
+        } catch (e) {
+          if (import.meta.env.DEV)
+            console.error('[QuoteToolbarButton] deferred error', e);
+        }
+      }, 0);
     } catch (e) {
       if (import.meta.env.DEV)
         console.error('[QuoteToolbarButton] error', e);

@@ -1169,8 +1169,10 @@ const App = () => {
                                 (mainEditor as any).updateBlock(b.id, {
                                   // custom schema adds blockquote
                                   type: 'blockquote',
-                                  content: (b as any)?.content ?? [],
                                 });
+                                try {
+                                  (mainEditor as any).setTextCursorPosition(b, 'end');
+                                } catch {}
                               }
                             } catch (e) {
                               if (import.meta.env.DEV)
