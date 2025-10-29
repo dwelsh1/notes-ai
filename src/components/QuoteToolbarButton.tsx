@@ -29,32 +29,49 @@ export function QuoteToolbarButton() {
       setTimeout(() => {
         try {
           for (const b of targets) {
+            const raw = (convertBlockToString as any)?.(b) ?? '';
+            const isEmpty = raw.trim().length === 0;
+            const content: any = [{
+              type: 'text',
+              text: isEmpty ? 'Empty quote' : raw,
+              styles: isEmpty ? { textColor: '#9ca3af' } : {},
+            }];
             if (import.meta.env.DEV)
               console.log('[QuoteToolbarButton] convert in-place', b?.id, b?.type);
+            let converted = false;
             try {
               // Try built-in quote first
               // @ts-expect-error
-              editor.updateBlock(b.id, { type: 'quote', content: (b as any)?.content ?? [] });
-            } catch {
-              // Fallback to custom blockquote
-              // @ts-expect-error
-              editor.updateBlock(b.id, { type: 'blockquote', content: (b as any)?.content ?? [] });
-            }
-            const txt = (convertBlockToString as any)?.(b) ?? '';
-            if (!txt || txt.trim().length === 0) {
+              editor.updateBlock(b.id, { type: 'quote' });
+              converted = true;
+            } catch {}
+            if (!converted) {
               try {
-                editor.updateBlock(b.id, {
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  content: [{ type: 'text', text: 'Empty quote', styles: { textColor: '#9ca3af' } }] as any,
-                });
+                // Fallback to custom block
+                // @ts-expect-error
+                editor.updateBlock(b.id, { type: 'blockquote' });
+                converted = true;
               } catch {}
             }
-            const after = editor.getBlock((b as any).id) as any;
-            if (import.meta.env.DEV)
-              console.log('[QuoteToolbarButton] after type', after?.type);
-            try {
-              editor.setTextCursorPosition(after ?? b, 'start');
-            } catch {}
+            if (converted) {
+              // Set plain text content on next tick to avoid selection errors
+              setTimeout(() => {
+                try {
+                  editor.updateBlock(b.id, { content });
+                  const after = editor.getBlock((b as any).id) as any;
+                  try { editor.setTextCursorPosition(after ?? b, 'start'); } catch {}
+                } catch {}
+              }, 0);
+            } else {
+              // As a last resort, non-destructive insert-after to avoid data loss
+              try {
+                const inserted = editor.insertBlocks([
+                  { type: 'blockquote', props: {}, content },
+                ] as any, (b as any).id, 'after');
+                const after = inserted?.[0];
+                try { editor.setTextCursorPosition(after ?? b, 'start'); } catch {}
+              } catch {}
+            }
           }
         } catch (e) {
           if (import.meta.env.DEV)

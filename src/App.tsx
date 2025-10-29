@@ -1166,28 +1166,43 @@ const App = () => {
                               for (const b of targets) {
                                 if (import.meta.env.DEV)
                                   console.log('[SlashMenu/Quote] update', b?.id);
-                                // Convert in-place using built-in type, fallback to custom
+                                const raw = (convertBlockToString as any)?.(b) ?? '';
+                                const isEmpty = raw.trim().length === 0;
+                                const content: any = [{
+                                  type: 'text',
+                                  text: isEmpty ? 'Empty quote' : raw,
+                                  styles: isEmpty ? { textColor: '#9ca3af' } : {},
+                                }];
+                                let converted = false;
                                 try {
                                   // @ts-expect-error
-                                  (mainEditor as any).updateBlock(b.id, { type: 'quote', content: (b as any)?.content ?? [] });
-                                } catch {
-                                  // @ts-expect-error
-                                  (mainEditor as any).updateBlock(b.id, { type: 'blockquote', content: (b as any)?.content ?? [] });
-                                }
-                                const txt = (convertBlockToString as any)?.(b) ?? '';
-                                if (!txt || txt.trim().length === 0) {
+                                  (mainEditor as any).updateBlock(b.id, { type: 'quote' });
+                                  converted = true;
+                                } catch {}
+                                if (!converted) {
                                   try {
-                                    (mainEditor as any).updateBlock(b.id, {
-                                      content: [
-                                        { type: 'text', text: 'Empty quote', styles: { textColor: '#9ca3af' } },
-                                      ] as any,
-                                    });
+                                    // @ts-expect-error
+                                    (mainEditor as any).updateBlock(b.id, { type: 'blockquote' });
+                                    converted = true;
                                   } catch {}
                                 }
-                                const after = (mainEditor as any).getBlock(b.id);
-                                try {
-                                  (mainEditor as any).setTextCursorPosition(after ?? b, 'start');
-                                } catch {}
+                                if (converted) {
+                                  setTimeout(() => {
+                                    try {
+                                      (mainEditor as any).updateBlock(b.id, { content });
+                                      const after = (mainEditor as any).getBlock(b.id);
+                                      try {(mainEditor as any).setTextCursorPosition(after ?? b, 'start');} catch {}
+                                    } catch {}
+                                  }, 0);
+                                } else {
+                                  try {
+                                    const inserted = (mainEditor as any).insertBlocks([
+                                      { type: 'blockquote', props: {}, content },
+                                    ], b.id, 'after');
+                                    const after = inserted?.[0];
+                                    try {(mainEditor as any).setTextCursorPosition(after ?? b, 'start');} catch {}
+                                  } catch {}
+                                }
                               }
                             } catch (e) {
                               if (import.meta.env.DEV)
